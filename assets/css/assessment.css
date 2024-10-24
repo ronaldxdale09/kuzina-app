@@ -1,0 +1,413 @@
+.custom-form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 20px auto;
+    transition: all 0.3s ease-in-out;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+input:focus,
+select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+
+input::placeholder,
+select::placeholder {
+    color: #999;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.checkbox-group div {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+}
+
+.checkbox-group input {
+    margin-right: 8px;
+    transform: scale(1.2);
+}
+
+.btn-solid {
+    background-color: #800020;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.4s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.btn-solid:hover {
+    background-color: #a32638;
+    box-shadow: 0 4px 10px rgba(163, 38, 56, 0.5);
+}
+
+.btn-next {
+    margin-top: 15px;
+}
+
+.d-flex {
+    display: flex;
+    gap: 10px;
+}
+
+.me-2 {
+    margin-right: 8px;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* Diet and Goal Buttons */
+
+.diet-type,
+.health-goals {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.diet-button,
+.goal-button {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    width: 48%;
+    margin: 12px 0;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.diet-button img,
+.goal-button img {
+    max-width: 40px;
+    margin-bottom: 5px;
+    width: 50px;
+    /* Ensure consistent image size */
+    height: auto;
+}
+
+.diet-button span,
+.goal-button span {
+    font-size: 16px;
+    color: #333;
+    display: block;
+}
+
+.diet-button:hover,
+.goal-button:hover {
+    transform: scale(1.08);
+    background-color: #f5faff;
+    border-color: #007bff;
+}
+
+
+/* Form Navigation */
+
+.form-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+
+/* Styling for the Previous Button */
+
+.btn-outline {
+    background-color: transparent;
+    color: #800020;
+    border: 2px solid #800020;
+    padding: 14px;
+    border-radius: 12px;
+    width: 48%;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+}
+
+.btn-outline:hover {
+    background-color: #800020;
+    color: white;
+    border-color: #a32638;
+}
+
+.chip-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 16px;
+    padding: 15px;
+    width: 45%;
+    margin-bottom: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.chip img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    margin-bottom: 8px;
+}
+
+.chip span {
+    font-size: 16px;
+    color: #333;
+}
+
+.chip:hover {
+    border-color: #800020;
+    background-color: #cef4c9;
+    transform: scale(1.05);
+}
+
+.chip.active {
+    border-color: #800020;
+    background-color: #cef4c9;
+}
+
+.btn-solid {
+    background-color: #800020;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.btn-solid:hover {
+    background-color: #a32638;
+}
+
+.form-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: #800020;
+    border: 2px solid #800020;
+    padding: 14px;
+    border-radius: 12px;
+    width: 48%;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-outline:hover {
+    background-color: #800020;
+    color: white;
+}
+
+.title-label {
+    font-size: 16px;
+    font-weight: 600;
+    /* Slightly reduce the font weight */
+    color: #555;
+    /* A softer shade of gray to reduce contrast */
+    display: block;
+    margin-bottom: 8px;
+    text-align: center;
+    letter-spacing: 0.5px;
+    /* Reduced spacing for a more subtle look */
+    text-transform: none;
+    /* Remove uppercase for a more neutral appearance */
+    background-color: #f9f9f9;
+    /* Lighter background to be less eye-catching */
+    padding: 8px;
+    border-radius: 6px;
+    box-shadow: none;
+    /* Remove the shadow for simplicity */
+}
+
+.title-label::after {
+    content: '';
+    display: block;
+    width: 50px;
+    /* Reduce the width of the underline */
+    height: 1.5px;
+    /* Thinner underline */
+    background-color: #800020;
+    /* Keep the color consistent */
+    margin: 6px auto 0;
+    /* Slightly reduce the margin */
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+h1::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: #800020;
+    border-radius: 2px;
+}
+
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 244, 230, 0.5);
+    /* Light gray with 80% opacity */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    /* Ensure it covers everything */
+}
+
+#loading-spinner img {
+    width: 100px;
+    height: 100px;
+}
+
+
+/* Modal Styling */
+
+.modal {
+    visibility: hidden;
+    opacity: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: visibility 0s, opacity 0.5s;
+}
+
+
+/* Modal visible */
+
+.modal.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/* Modal content */
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.modal h2 {
+    color: #e74c3c;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.modal p {
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+.modal-btn {
+    background-color: #e74c3c;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.modal-btn:hover {
+    background-color: #c0392b;
+}
+
+.close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}

@@ -1,0 +1,144 @@
+.product-list-item {
+    display: flex;
+    gap: 12px;
+    background: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    position: relative;
+    /* Make the container a reference for absolute positioning */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    width: 100%;
+}
+
+
+/* Remove any inherited margins */
+
+.product-list-item * {
+    margin: 0;
+}
+
+.product-image-link {
+    flex-shrink: 0;
+}
+
+.product-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.product-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.product-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    text-decoration: none;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-text {
+    color: #666;
+    font-size: 13px;
+    line-height: 1.3;
+}
+
+.rating-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 2px 0;
+}
+
+.bxs-star {
+    color: #FF6B35;
+    font-size: 14px;
+}
+
+.rating-text {
+    color: #FF6B35;
+    font-size: 13px;
+}
+
+.product-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+.price-tag {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.meal-type-tag {
+    position: absolute;
+    top: 8px;
+    /* Position at the top */
+    right: 8px;
+    /* Position to the right */
+    background: #FF680F;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    z-index: 1;
+    /* Ensure it's on top of other content */
+}
+
+.category-tag {
+    background: #66023B;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+
+/* Container styles */
+
+.product-container {
+    padding: 0;
+    /* Remove container padding */
+    width: 100%;
+}
+
+
+/* Optional: Add a subtle border between items */
+
+.product-list-item {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+
+/* Remove border from last item */
+
+.product-list-item:last-child {
+    border-bottom: none;
+}
+
+#pills-tabContent {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.fade-in {
+    opacity: 1;
+}
+
+#pills-tabContent:not(.fade-in) {
+    opacity: 0;
+    /* Fade-out effect when switching categories */
+}

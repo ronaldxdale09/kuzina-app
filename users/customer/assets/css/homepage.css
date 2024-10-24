@@ -1,0 +1,86 @@
+.badge {
+    display: inline-block;
+    padding: 0.1em 0.4em;
+    /* Smaller padding to make the badge more compact */
+    font-size: 0.5rem;
+    /* Keep the font size small */
+    color: #fff;
+    background-color: #28a745;
+    /* Green background */
+    border-radius: 20px;
+    /* Rounded, but less pill-like */
+    margin-top: 5px;
+    text-align: center;
+    width: fit-content;
+    /* Adjusts the width automatically based on the text */
+    white-space: nowrap;
+    /* Prevent text from breaking into multiple lines */
+    line-height: 1.2;
+    /* Better vertical alignment */
+    font-weight: 500;
+    /* Slightly lighter font weight for a balanced look */
+    letter-spacing: 0.5px;
+    /* Slight letter spacing for readability */
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for a refined effect */
+}
+
+.product-card .content-wrap {
+    text-align: center;
+    margin-top: 10px;
+}
+
+
+/* Adjust product card layout */
+
+.product-card {
+    border: 1px solid #eaeaea;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-card-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.price-cart-wrap {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.img-wrap img {
+    width: 100%;
+    height: auto;
+    max-height: 150px;
+    /* Ensures images don't take too much vertical space */
+    object-fit: cover;
+    /* Makes sure the image fills the space nicely */
+}
+
+.cart-icon {
+    margin-left: 10px;
+    color: #660338 !important;
+    /* Updated color for the cart icon */
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.price-cart-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    padding-top: 10px;
+    margin-top: auto;
+    position: relative;
+    bottom: 0;
+}

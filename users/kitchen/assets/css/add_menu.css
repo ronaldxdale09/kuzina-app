@@ -1,0 +1,307 @@
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.page-header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.page-header a {
+    color: #d22701;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    padding: 0 5px;
+    /* Add some padding to give form elements breathing space */
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    /* Add more margin for better visual separation */
+    display: block;
+    color: #4e0707;
+}
+
+input:focus,
+textarea:focus {
+    border: 1px solid #d22701;
+    /* Improve focus style for better accessibility */
+    outline: none;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 5px;
+    transition: border 0.3s ease;
+}
+
+.upload-photo {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+
+/* Photo placeholder styling */
+
+.upload-photo .photo-placeholder {
+    width: 80px;
+    height: 80px;
+    background-color: #fde4ce;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #d22701;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: relative;
+    /* Ensures the remove button is positioned correctly */
+}
+
+
+/* Hover effect for the photo placeholder */
+
+.upload-photo .photo-placeholder:hover {
+    background-color: #fbc2a8;
+}
+
+
+/* Styling the camera icon inside the placeholder */
+
+.upload-photo .photo-placeholder label {
+    cursor: pointer;
+    font-size: 24px;
+    /* Adjust icon size */
+}
+
+
+/* Image styling for uploaded photos */
+
+.upload-photo .photo-placeholder img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+
+/* Remove button styling */
+
+.upload-photo .photo-placeholder .remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+/* Hover effect for the remove button */
+
+.upload-photo .photo-placeholder .remove-image:hover {
+    background-color: rgba(255, 0, 0, 1);
+}
+
+
+/* Image container to ensure proper positioning of the image and remove button */
+
+.upload-photo .photo-placeholder .image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.price-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.price-input label {
+    margin-bottom: 0;
+}
+
+.pickup-delivery {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.pickup-delivery .option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fde4ce;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    gap: 8px;
+}
+
+.pickup-delivery .option.active {
+    background-color: #d22701;
+    color: white;
+}
+
+.pickup-delivery .option.active label {
+    color: white;
+}
+
+.pickup-delivery .option.active i {
+    color: white;
+}
+
+.pickup-delivery .option:hover {
+    background-color: #d22701;
+    color: #ece7e6;
+    transform: scale(1.05);
+}
+
+.pickup-delivery .option label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #d22701;
+    cursor: pointer;
+}
+
+.pickup-delivery .option i {
+    font-size: 16px;
+    transition: color 0.3s ease;
+    color: #d22701;
+}
+
+.chip-group .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: #f7f1eb;
+    border-radius: 20px;
+    padding: 8px 12px;
+    margin: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    font-size: 14px;
+    color: #333;
+    /* Default color */
+}
+
+.chip-group .chip.active {
+    background-color: #768f43;
+    color: white;
+}
+
+.chip-group .chip:hover {
+    background-color: #ABCF63;
+    transform: scale(1.05);
+    color: white;
+}
+
+.chip-group .chip label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: inherit;
+    /* Ensure the label color changes with the chip */
+}
+
+
+/* Add a subtle box shadow for form elements */
+
+input,
+textarea,
+select {
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Add a subtle shadow to the save button */
+
+.save-btn {
+    background-color: #4e0707;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.save-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.save-btn:hover:not(:disabled) {
+    background-color: #d22701;
+    transform: scale(1.05);
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
+    /* More prominent shadow on hover */
+}
+
+
+/* Spinner inside the button */
+
+.spinner-border {
+    margin-right: 8px;
+}
+
+
+/* Popup Styling */
+
+#custom-popup {
+    display: none;
+    /* Ensure the popup is hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#custom-popup .popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
