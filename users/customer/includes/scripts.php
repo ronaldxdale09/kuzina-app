@@ -21,3 +21,4 @@
 
 <!-- Script js -->
 <script src="assets/js/script.js"></script>
+<?php include 'modal/modal.dev.php'?>

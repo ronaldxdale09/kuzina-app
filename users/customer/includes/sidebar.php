@@ -15,11 +15,11 @@
         <nav class="navigation">
             <ul>
                 <li>
-                    <a href="index.html" class="nav-link title-color font-sm">
+                    <a href="homepage.php" class="nav-link title-color font-sm">
                         <i class="iconly-Home icli"></i>
                         <span>Home</span>
                     </a>
-                    <a class="arrow" href="index.html"><i data-feather="chevron-right"></i></a>
+                    <a class="arrow" href="homepage.php"><i data-feather="chevron-right"></i></a>
                 </li>
                 <!-- 
         <li>
@@ -31,7 +31,7 @@
         </li> -->
 
                 <li>
-                    <a href="category-wide.html" class="nav-link title-color font-sm">
+                    <a href="shop.php" class="nav-link title-color font-sm">
                         <i class="iconly-Category icli"></i>
                         <span>Shop by Category</span>
                     </a>
@@ -39,52 +39,45 @@
                 </li>
 
                 <li>
-                    <a href="order-history.html" class="nav-link title-color font-sm">
+                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="nav-link title-color font-sm">
                         <i class="iconly-Document icli"></i>
                         <span>Orders</span>
                     </a>
-                    <a class="arrow" href="order-history.html"><i data-feather="chevron-right"></i></a>
+                    <a class="arrow" href="#"><i data-feather="chevron-right"></i></a>
                 </li>
 
                 <li>
-                    <a href="wishlist.html" class="nav-link title-color font-sm">
+                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev"  class="nav-link title-color font-sm">
                         <i class="iconly-Heart icli"></i>
                         <span>Your Wishlist</span>
                     </a>
-                    <a class="arrow" href="wishlist.html"><i data-feather="chevron-right"></i></a>
+                    <a class="arrow" href="#"><i data-feather="chevron-right"></i></a>
                 </li>
 
-                <li>
-                    <a href="javascript:void(0)" data-bs-toggle="offcanvas" data-bs-target="#language"
-                        aria-controls="language" class="nav-link title-color font-sm">
-                        <img src="assets/icons/png/flags.png" alt="flag" />
-                        <span>Langauge</span>
-                    </a>
-                    <a class="arrow" href="javascript:void(0)"><i data-feather="chevron-right"></i></a>
-                </li>
+    
 
                 <li>
-                    <a href="account.html" class="nav-link title-color font-sm">
+                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev"  class="nav-link title-color font-sm">
                         <i class="iconly-Add-User icli"></i>
                         <span>Your Account</span>
                     </a>
-                    <a class="arrow" href="account.html"><i data-feather="chevron-right"></i></a>
+                    <a class="arrow" href="#"><i data-feather="chevron-right"></i></a>
                 </li>
 
                 <li>
-                    <a href="notification.html" class="nav-link title-color font-sm">
+                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="nav-link title-color font-sm">
                         <i class="iconly-Notification icli"></i>
                         <span>Notification</span>
                     </a>
-                    <a class="arrow" href="notification.html"><i data-feather="chevron-right"></i></a>
+                    <a class="arrow" href="#"><i data-feather="chevron-right"></i></a>
                 </li>
 
                 <li>
-                    <a href="setting.html" class="nav-link title-color font-sm">
+                    <a href="#"  data-bs-toggle="offcanvas" data-bs-target="#underDev"  class="nav-link title-color font-sm">
                         <i class="iconly-Setting icli"></i>
                         <span>Settings</span>
                     </a>
-                    <a class="arrow" href="setting.html"><i data-feather="chevron-right"></i></a>
+                    <a class="arrow" href="#"><i data-feather="chevron-right"></i></a>
                 </li>
 
                 <!-- <li>

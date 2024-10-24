@@ -83,7 +83,7 @@
 
     <!-- Footer Start -->
     <footer class="footer-wrap footer-button">
-        <a href="address1.html" class="font-md">Proceed to Checkout</a>
+        <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="font-md">Proceed to Checkout</a>
     </footer>
     <!-- Footer End -->
 
@@ -241,24 +241,7 @@
     });
     </script>
 
-    <!-- jquery 3.6.0 -->
-    <script src="assets/js/jquery-3.6.0.min.js"></script>
-
-    <!-- Bootstrap Js -->
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Feather Icon -->
-    <script src="assets/js/feather.min.js"></script>
-
-    <!-- Theme Setting js -->
-    <script src="assets/js/theme-setting.js"></script>
-
-    <!-- Swiper Js -->
-    <script src="assets/js/jquery-swipe-1.11.3.min.js"></script>
-    <script src="assets/js/jquery.mobile-1.4.5.min.js"></script>
-
-    <!-- Script js -->
-    <script src="assets/js/script.js"></script>
+<?php include 'includes/scripts.php'; ?>
 
 </body>
 <!-- Body End -->

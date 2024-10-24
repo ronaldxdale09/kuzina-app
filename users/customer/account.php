@@ -106,7 +106,7 @@
                     Modifiying it for this object will create a new permission for this object</p>
                 <div class="btn-box">
                     <button class="btn-outline" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
-                    <a href="onboarding2.html" class="btn-solid d-block" data-bs-dismiss="offcanvas"
+                    <a href="functions/logout.php" class="btn-solid d-block" data-bs-dismiss="offcanvas"
                         aria-label="Close">Sign Out</a>
                 </div>
             </div>

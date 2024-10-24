@@ -93,14 +93,8 @@
     <!-- Main End -->
 
     <!-- Footer Start -->
-    <footer class="footer-wrap shop">
-        <ul class="footer">
-            <li class="footer-item"><span class="font-xs">2 Items</span> <span class="font-sm">$250.00</span></li>
-            <li class="footer-item">
-                <a href="cart.html" class="font-md">View Cart <i data-feather="chevron-right"></i></a>
-            </li>
-        </ul>
-    </footer>
+    <?php include 'components/shop.viewCart.php'; ?>
+
     <!-- Footer End -->
 
     <!-- Filter Offcanvas Start -->

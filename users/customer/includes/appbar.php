@@ -19,7 +19,7 @@
             </a>
         </li>
         <li class="footer-item">
-            <a href="journal.html" class="footer-link">
+            <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="footer-link">
                 <i class="iconly-Paper icli"></i>
                 <span>Journal</span>
             </a>

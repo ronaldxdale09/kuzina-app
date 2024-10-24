@@ -24,8 +24,8 @@
 
                 <!-- Phone Number Input start -->
                 <div class="input-box">
-                    <input type="number" id="phone" name="phone" placeholder="Phone Number" required class="form-control"
-                        autocomplete="off" />
+                    <input type="number" id="phone" name="phone" placeholder="Phone Number" required
+                        class="form-control" autocomplete="off" />
                     <i class="iconly-Call icli"></i>
                 </div>
                 <!-- Phone Number Input End -->
@@ -54,8 +54,26 @@
     </main>
     <!-- Main End -->
 
-    <a href="index.html" class="footer d-block text-center font-md title-color text-decoration-underline">Continue as
+    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev"
+        class="footer d-block text-center font-md title-color text-decoration-underline">Continue as
         guest</a>
+
+
+    <div class="action action-confirmation offcanvas offcanvas-bottom" tabindex="-1" id="underDev"
+        aria-labelledby="confirmation">
+        <div class="offcanvas-body small">
+            <div class="confirmation-box">
+                <h2>Feature Under Development</h2>
+                <p class="font-sm content-color">We apologize for the inconvenience, but this feature or module is
+                    currently under development. Please check back soon for updates or contact support for further
+                    assistance.</p>
+                <div class="btn-box">
+                    <button class="btn-outline" data-bs-dismiss="offcanvas" aria-label="Close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <!-- Main End -->
@@ -94,7 +112,7 @@
                 // Ensure the loader is visible for at least 3 seconds
                 setTimeout(() => {
                     document.getElementById('loading-overlay').style.display =
-                    'none'; // Hide loader
+                        'none'; // Hide loader
 
                     if (data.success) {
                         // Redirect to homepage
@@ -108,7 +126,7 @@
             .catch(error => {
                 setTimeout(() => {
                     document.getElementById('loading-overlay').style.display =
-                    'none'; // Hide loader
+                        'none'; // Hide loader
                     console.error('Error:', error);
                     showErrorModal('An error occurred during login. Please try again.');
                 }, 2500); // Minimum 3 seconds delay

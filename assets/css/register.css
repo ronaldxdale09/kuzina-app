@@ -43,14 +43,14 @@
 }
 
 .btn-location:hover {
-    background-color: #0056b3;
+    background-color: #D22600;
     /* Darker blue on hover */
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
     /* Increase shadow on hover */
 }
 
 .btn-location:active {
-    background-color: #004080;
+    background-color: #D22600;
     /* Even darker on active click */
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
     /* Shadow change on click */
