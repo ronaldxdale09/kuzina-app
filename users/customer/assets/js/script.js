@@ -22,12 +22,12 @@
 // 13. Password Showhide js
 
 
-(function ($) {
+(function($) {
 
     /*========================
       01. Service Worker Register js
       ==========================*/
-    $(window).on('load', function () {
+    $(window).on('load', function() {
         'use strict';
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker
@@ -38,8 +38,8 @@
     /*=====================
      02. Pre Loader js 
      ==========================*/
-    $(window).on('load', function () {
-        setTimeout(function () {
+    $(window).on('load', function() {
+        setTimeout(function() {
             $('.skeleton-loader').fadeOut('slow');
         }, 500);
         $('.skeleton-loader').remove('slow');
@@ -59,7 +59,7 @@
     $(".bg_size_content").parent().addClass('b_size_content'); // background size content
     $(".bg-img").parent().addClass('bg-size');
     $(".bg-img.blur-up").parent().addClass('blur-up lazyload');
-    $('.bg-img').each(function () {
+    $('.bg-img').each(function() {
 
         var el = $(this),
             src = el.attr('src'),
@@ -80,11 +80,11 @@
     /*=====================
         04.  Header sidebar js
       ==========================*/
-    $(".nav-bar").on('click', function () {
+    $(".nav-bar").on('click', function() {
         $(".header-sidebar,.overlay-sidebar").addClass("show");
         $('body').addClass("bluer");
     });
-    $(".user-panel, .overlay-sidebar ").on('click', function () {
+    $(".user-panel, .overlay-sidebar ").on('click', function() {
         $(".header-sidebar,.overlay-sidebar").removeClass("show");
         $('body').removeClass("bluer");
     });
@@ -92,37 +92,28 @@
     /*=====================
       05. Filter select js
     ==========================*/
-    $('.filter-row li').on('click', function (e) {
+    $('.filter-row li').on('click', function(e) {
         $(this).addClass('active').siblings('.active').removeClass('active');
     });
 
     /*========================
        06. Address Active js
        =============================*/
-    $('.address-box').on('click', function (e) {
+    $('.address-box').on('click', function(e) {
         $(this).addClass('active').siblings('.active').removeClass('active');
     });
 
     /*=====================
      07. Plus Minus Item  Js 
     ==========================*/
-    $('.add').on('click', function () {
-        if ($(this).prev().val() < 10) {
-            $(this).prev().val(+$(this).prev().val() + 1);
-        }
-    });
-    $('.sub').on('click', function () {
-        if ($(this).next().val() > 1) {
-            if ($(this).next().val() > 1) $(this).next().val(+$(this).next().val() - 1);
-        }
-    });
+
 
     /*========================
     08. Catagories Mordent Menu js
     =============================*/
-    $(".catagories-menu").on('click', function () {
+    $(".catagories-menu").on('click', function() {
         $('#myScrollspy,.overlay').addClass("show");
-        $(".toggle .overlay, .list-group-item").on('click', function () {
+        $(".toggle .overlay, .list-group-item").on('click', function() {
             $('#myScrollspy,.overlay').removeClass("show");
         });
     });
@@ -130,7 +121,7 @@
     /*========================
     09. Filter Active js
     =============================*/
-    $(".size").on('click', function () {
+    $(".size").on('click', function() {
         $(".size").removeClass('active');
         $(this).addClass('active');
     });
@@ -140,17 +131,17 @@
     /*==============================
        10. Swipe To Show Delete cart page js
     =====================================*/
-    $(".swipe-to-show").on("swipeleft", function () {
+    $(".swipe-to-show").on("swipeleft", function() {
         $(this).addClass('active').siblings().removeClass("active")
     })
-    $(".swipe-to-show").on("swiperight", function () {
+    $(".swipe-to-show").on("swiperight", function() {
         $(this).removeClass("active")
     });
 
     /*==============================
       11. Product card Heart Fill js
      =====================================*/
-    $(".product-card .iconly-Heart").on('click', function () {
+    $(".product-card .iconly-Heart").on('click', function() {
         $(this).toggleClass("icli")
         $(this).toggleClass("icbo")
     });
@@ -159,11 +150,11 @@
     /*==============================
       12. Product card Plus js
      =====================================*/
-    $(".plus-theme").on('click', function () {
+    $(".plus-theme").on('click', function() {
         $(this).parent().addClass("active")
     });
 
-    $(".sub").on('click', function () {
+    $(".sub").on('click', function() {
         if ($(this).siblings(".val").val() <= 1) {
             $(this).parentsUntil("active").removeClass("active")
         }
@@ -173,18 +164,16 @@
     /*==============================
     13. Password Showhide js
    =====================================*/
-    $(".showHidePassword").on("click", function () {
+    $(".showHidePassword").on("click", function() {
         $(this).toggleClass("iconly-Hide");
         $(this).toggleClass("iconly-Show");
         let inputEl = $(this).parent().find($('input'));
         if (inputEl.attr("type") == "password") {
             inputEl.attr("type", "text");
-        }
-        else {
+        } else {
             inputEl.attr("type", "password");
         }
 
     });
 
 })(jQuery);
-

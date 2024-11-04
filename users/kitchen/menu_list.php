@@ -1,19 +1,6 @@
-<?php include 'includes/header.php';
-
-// Fetch all menu items from the database
-$query = "SELECT food_id, food_name, description, price, meal_type, photo1 FROM food_listings WHERE available = 1";
-$result = mysqli_query($conn, $query);
-
-$menuItems = [];
-
-if ($result) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        // Group items by category
-        $menuItems['all'][] = $row;
-        $menuItems[strtolower($row['meal_type'])][] = $row;  // Group by category like breakfast, lunch, etc.
-    }
-}
-
+<?php 
+include 'includes/header.php';
+include 'fetch/fetch.menulist.php';
 ?>
 
 <link rel="stylesheet" type="text/css" href="assets/css/menu_list.css" />
@@ -26,7 +13,7 @@ if ($result) {
     <!-- Skeleton loader End -->
 
     <!-- Header Start -->
-    <?php include 'includes/top_header.php'; ?>
+    <?php include 'navbar/main.navbar.php'; ?>
 
     <!-- Header End -->
 
@@ -81,90 +68,22 @@ if ($result) {
         <div class="tab-content container menu-list">
             <!-- All Menu Items -->
             <div class="tab-pane fade show active" id="all">
-                <?php if (!empty($menuItems['all'])): ?>
-                <?php foreach ($menuItems['all'] as $item): ?>
-                <div class="menu-item">
-                    <img src="../../uploads/<?= htmlspecialchars($item['photo1']) ?>"
-                        alt="<?= htmlspecialchars($item['food_name']) ?>" />
-                    <div class="menu-info">
-                        <h5><?= htmlspecialchars($item['food_name']) ?></h5>
-                        <span class="badge"><?= htmlspecialchars($item['meal_type']) ?></span>
-                        <div class="price">PHP <?= number_format($item['price'], 2) ?></div>
-                    </div>
-                    <div class="action-icons">
-                        <button><i class="fas fa-ellipsis-h"></i></button>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-                <?php else: ?>
-                <p>No menu items found.</p>
-                <?php endif; ?>
+                <?php renderMenuItems($menuItems['all']); ?>
             </div>
 
             <!-- Breakfast Tab -->
             <div class="tab-pane fade" id="breakfast">
-                <?php if (!empty($menuItems['breakfast'])): ?>
-                <?php foreach ($menuItems['breakfast'] as $item): ?>
-                <div class="menu-item">
-                    <img src="../../uploads/<?= htmlspecialchars($item['photo1']) ?>"
-                        alt="<?= htmlspecialchars($item['food_name']) ?>" />
-                    <div class="menu-info">
-                        <h5><?= htmlspecialchars($item['food_name']) ?></h5>
-                        <span class="badge"><?= htmlspecialchars($item['meal_type']) ?></span>
-                        <div class="price">PHP <?= number_format($item['price'], 2) ?></div>
-                    </div>
-                    <div class="action-icons">
-                        <button><i class="fas fa-ellipsis-h"></i></button>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-                <?php else: ?>
-                <p>No breakfast items found.</p>
-                <?php endif; ?>
+                <?php renderMenuItems($menuItems['breakfast']); ?>
             </div>
 
             <!-- Lunch Tab -->
             <div class="tab-pane fade" id="lunch">
-                <?php if (!empty($menuItems['lunch'])): ?>
-                <?php foreach ($menuItems['lunch'] as $item): ?>
-                <div class="menu-item">
-                    <img src="../../uploads/<?= htmlspecialchars($item['photo1']) ?>"
-                        alt="<?= htmlspecialchars($item['food_name']) ?>" />
-                    <div class="menu-info">
-                        <h5><?= htmlspecialchars($item['food_name']) ?></h5>
-                        <span class="badge"><?= htmlspecialchars($item['meal_type']) ?></span>
-                        <div class="price">PHP <?= number_format($item['price'], 2) ?></div>
-                    </div>
-                    <div class="action-icons">
-                        <button><i class="fas fa-ellipsis-h"></i></button>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-                <?php else: ?>
-                <p>No lunch items found.</p>
-                <?php endif; ?>
+                <?php renderMenuItems($menuItems['lunch']); ?>
             </div>
 
             <!-- Dinner Tab -->
             <div class="tab-pane fade" id="dinner">
-                <?php if (!empty($menuItems['dinner'])): ?>
-                <?php foreach ($menuItems['dinner'] as $item): ?>
-                <div class="menu-item">
-                    <img src="../../uploads/<?= htmlspecialchars($item['photo1']) ?>"
-                        alt="<?= htmlspecialchars($item['food_name']) ?>" />
-                    <div class="menu-info">
-                        <h5><?= htmlspecialchars($item['food_name']) ?></h5>
-                        <span class="badge"><?= htmlspecialchars($item['meal_type']) ?></span>
-                        <div class="price">PHP <?= number_format($item['price'], 2) ?></div>
-                    </div>
-                    <div class="action-icons">
-                        <button><i class="fas fa-ellipsis-h"></i></button>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-                <?php else: ?>
-                <p>No dinner items found.</p>
-                <?php endif; ?>
+                <?php renderMenuItems($menuItems['dinner']); ?>
             </div>
         </div>
 
@@ -175,28 +94,26 @@ if ($result) {
     </main>
 
     <!-- Main End -->
+    <div id="removeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2>Confirm Removal</h2>
+            <p>Are you sure you want to remove the following item?</p>
+            <div class="modal-item-info">
+                <p><strong>Food ID:</strong> <span id="modalFoodId"></span></p>
+                <p><strong>Food Name:</strong> <span id="modalFoodName"></span></p>
+                <p><strong>Price:</strong> PHP <span id="modalFoodPrice"></span></p>
+            </div>
+            <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+            <button class="btn-confirm" onclick="confirmRemoval()">Confirm</button>
+        </div>
+    </div>
 
     <!-- Footer Start -->
 
     <?php include 'includes/appbar.php'; ?>
     <!-- Footer End -->
 
-    <!-- Action Language Start -->
-    <div class="action action-language offcanvas offcanvas-bottom" tabindex="-1" id="language"
-        aria-labelledby="language">
-        <div class="offcanvas-body small">
-            <h2 class="m-b-title1 font-md">Select Language</h2>
-
-            <ul class="list">
-                <li>
-                    <a href="javascript:void(0)" data-bs-dismiss="offcanvas" aria-label="Close"> <img
-                            src="assets/icons/flag/us.svg" alt="us" /> English </a>
-                </li>
-
-            </ul>
-        </div>
-    </div>
-    <!-- Action Language End -->
 
     <!-- Pwa Install App Popup Start -->
 

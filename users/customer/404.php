@@ -40,8 +40,8 @@
       <header class="header">
         <div class="logo-wrap">
           <i class="iconly-Category icli nav-bar"></i>
-          <a href="index.html"> <img class="logo logo-w" src="assets/images/logo/logo-w.png" alt="logo" /></a
-          ><a href="index.html"> <img class="logo" src="assets/images/logo/logo.png" alt="logo" /></a>
+          <a href="homepage.php"> <img class="logo logo-w" src="assets/images/logo/logo-w.png" alt="logo" /></a
+          ><a href="homepage.php"> <img class="logo" src="assets/images/logo/logo.png" alt="logo" /></a>
         </div>
         <div class="avatar-wrap">
           <span class="font-sm"><i class="iconly-Location icli font-xl"></i> Los Angeles</span>
@@ -77,7 +77,7 @@
     <header class="header">
       <div class="logo-wrap">
         <i class="iconly-Category icli nav-bar"></i>
-        <a href="index.html"> <img class="logo logo-w" src="assets/images/logo/logo-w.png" alt="logo" /></a><a href="index.html"> <img class="logo" src="assets/images/logo/logo.png" alt="logo" /></a>
+        <a href="homepage.php"> <img class="logo logo-w" src="assets/images/logo/logo-w.png" alt="logo" /></a><a href="homepage.php"> <img class="logo" src="assets/images/logo/logo.png" alt="logo" /></a>
       </div>
       <div class="avatar-wrap">
         <span class="font-sm"><i class="iconly-Location icli font-xl"></i> Los Angeles</span>
@@ -106,11 +106,11 @@
         <nav class="navigation">
           <ul>
             <li>
-              <a href="index.html" class="nav-link title-color font-sm">
+              <a href="homepage.php" class="nav-link title-color font-sm">
                 <i class="iconly-Home icli"></i>
                 <span>Home</span>
               </a>
-              <a class="arrow" href="index.html"><i data-feather="chevron-right"></i></a>
+              <a class="arrow" href="homepage.php"><i data-feather="chevron-right"></i></a>
             </li>
 
             <li>
@@ -225,7 +225,7 @@
       <section class="error mb-large">
         <h2 class="font-lg">PAGE NOT FOUND</h2>
         <p class="content-color font-md">We are sorry but the page you are looking for doesn't exist or has been removed. Please check back later or search again.</p>
-        <a href="index.html" class="btn-solid">Back to Home</a>
+        <a href="homepage.php" class="btn-solid">Back to Home</a>
       </section>
       <!-- Error Section End -->
     </main>
@@ -235,7 +235,7 @@
     <footer class="footer-wrap">
       <ul class="footer">
         <li class="footer-item">
-          <a href="index.html" class="footer-link">
+          <a href="homepage.php" class="footer-link">
             <i class="iconly-Home icli"></i>
             <span>Home</span>
           </a>

@@ -3,8 +3,8 @@
     <header class="header">
       <div class="logo-wrap">
         <i class="iconly-Category icli"></i>
-        <a href="index.html"> <img class="logo logo-w" src="assets/images/logo/logo-w2.png" alt="logo" /></a><a
-          href="index.html"> <img class="logo" src="assets/images/logo/logo-w2.png" alt="logo" /></a>
+        <a href="homepage.php"> <img class="logo logo-w" src="assets/images/logo/logo-w2.png" alt="logo" /></a><a
+          href="homepage.php"> <img class="logo" src="assets/images/logo/logo-w2.png" alt="logo" /></a>
       </div>
     
     </header>

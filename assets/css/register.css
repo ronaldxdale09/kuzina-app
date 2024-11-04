@@ -182,3 +182,117 @@ p.font-sm {
     cursor: pointer;
     color: #333;
 }
+
+
+/* Profile Picture Section */
+
+.profile-picture {
+    position: relative;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.profile-label {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-input {
+    display: none;
+    /* Hide default file input */
+}
+
+
+/* Profile Picture Preview Styling */
+
+#profilePreview {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 2px solid #7b1e2e;
+    /* Border color to match theme */
+}
+
+
+/* Edit Icon Styling */
+
+.edit-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: #7b1e2e;
+    /* Theme color */
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2rem;
+    border: 2px solid #fff;
+    /* White border around the icon */
+}
+
+
+/* Container to align buttons in the same row */
+
+.button-row {
+    display: flex;
+    gap: 10px;
+    /* Space between buttons */
+    margin-top: 20px;
+}
+
+
+/* Style for Previous and Register buttons */
+
+.button-row .btn-prev,
+.button-row .btn-solid {
+    flex: 1;
+    /* Make both buttons equal width */
+    padding: 12px 0;
+    /* Uniform padding for equal height */
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    box-sizing: border-box;
+    /* Ensures padding and border size are included */
+    height: 100%;
+    /* Ensures buttons align in height */
+}
+
+
+/* Previous button styling */
+
+.btn-prev {
+    background-color: #fff;
+    color: #7b1e2e;
+    /* Match theme color */
+    border: 1px solid #7b1e2e;
+}
+
+.btn-prev:hover {
+    background-color: #f8f8f8;
+    color: #5a1621;
+    /* Slightly darker for hover */
+}
+
+
+/* Register button styling */
+
+.btn-solid {
+    background-color: #7b1e2e;
+    /* Match theme color */
+    color: #fff;
+    border: none;
+}
+
+.btn-solid:hover {
+    background-color: #5a1621;
+    /* Darker shade for hover */
+}

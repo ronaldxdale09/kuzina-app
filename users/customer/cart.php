@@ -1,5 +1,6 @@
 <?php include 'includes/header.php'; ?>
 <link rel="stylesheet" href="assets/boxicons/css/boxicons.min.css">
+<link rel="stylesheet" href="assets/css/cart.css">
 
 <!-- Head End -->
 
@@ -10,8 +11,6 @@
     <?php include 'skeleton/sk_cart.php'; ?>
 
     <!-- Skeleton loader End -->
-    <!-- Header Start -->
-    <?php include 'navbar/main.navbar.php'; ?>
 
     <!-- Header Start -->
     <header class="header">
@@ -22,57 +21,30 @@
             <h1 class="title-color font-md">My Cart <span class="font-sm content-color">(4 Items)</span></h1>
         </div>
         <div class="avatar-wrap">
-            <a href="index.html">
+            <a href="homepage.php">
                 <i class="iconly-Home icli"></i>
             </a>
         </div>
     </header>
     <!-- Header End -->
 
+
     <!-- Main Start -->
     <main class="main-wrap cart-page mb-xxl">
+        <?php       
+            include 'fetch/cart.address.php';
+            ?> <br>
+
         <!-- Cart Item Section Start  -->
         <div class="cart-item-wrap pt-0">
-            <?php             
-            $customer_id = 1;
-
+            <?php       
             include 'fetch/cart.items.php';
             include 'fetch/cart.order.details.php';
             ?>
         </div>
         <!-- Cart Item Section End  -->
 
-        <!-- Coupons Section Start -->
-        <section class="pt-0 coupon-ticket-wrap">
-            <div class="coupon-ticket" data-bs-toggle="offcanvas" data-bs-target="#offer-1" aria-controls="offer-1">
-                <div class="media">
-                    <div class="off">
-                        <span>50</span>
-                        <span><span>%</span><span>OFF</span> </span>
-                    </div>
-                    <div class="media-body">
-                        <h2 class="title-color">on your first order</h2>
-                        <span class="content-color">on order above ₱250.00</span>
-                    </div>
-                    <div class="big-circle">
-                        <span></span>
-                    </div>
-                    <div class="code">
-                        <span class="content-color">Use Code: </span>
-                        <a href="javascript:void(0)">SCD450</a>
-                    </div>
-                </div>
-                <div class="circle-5 left">
-                    <span class="circle-shape"></span>
-                    <span class="circle-shape"></span>
-                </div>
-                <div class="circle-5 right">
-                    <span class="circle-shape"></span>
-                    <span class="circle-shape"></span>
-                </div>
-            </div>
-        </section>
-        <!-- Coupons Section End  -->
+
 
         <!-- Order Detail Start -->
 
@@ -83,7 +55,7 @@
 
     <!-- Footer Start -->
     <footer class="footer-wrap footer-button">
-        <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="font-md">Proceed to Checkout</a>
+        <a href="address.php" class="font-md">Proceed to Checkout</a>
     </footer>
     <!-- Footer End -->
 
@@ -133,116 +105,24 @@
     <!-- Offer Offcanvas End -->
 
 
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        let bagTotal = parseFloat(document.getElementById('bag-total').innerText.replace(/,/g, '')) || 0;
-        const deliveryFee = 50.00;
-        let couponDiscount = 0.00;
+    <!-- jquery 3.6.0 -->
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
 
-        // Function to update the total amount
-        function updateTotalAmount() {
-            const totalAmountElement = document.getElementById('total-amount');
-            const totalAmount = (bagTotal + deliveryFee - couponDiscount).toFixed(2);
-            if (totalAmountElement) {
-                totalAmountElement.innerText = totalAmount;
-            } else {
-                console.error("Total amount element not found.");
-            }
-        }
+    <!-- Bootstrap Js -->
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
 
-        // Function to update the bag total in real-time
-        function updateBagTotal(newBagTotal) {
-            bagTotal = newBagTotal;
-            const bagTotalElement = document.getElementById('bag-total');
-            if (bagTotalElement) {
-                bagTotalElement.innerText = bagTotal.toFixed(2); // Update bag total
-            } else {
-                console.error("Bag total element not found.");
-            }
-            updateTotalAmount();
-        }
+    <!-- Feather Icon -->
+    <script src="assets/js/feather.min.js"></script>
 
-        // Function to update the cart quantity on the server
-        function updateCartQuantity(foodId, newQuantity) {
-            fetch('functions/updateCart.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams({
-                        food_id: foodId,
-                        quantity: newQuantity
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const priceDisplay = document.querySelector(
-                                `.quantity-input[data-food-id="${foodId}"]`)
-                            ?.closest('.media-body')
-                            ?.querySelector('.price-display');
+    <!-- Theme Setting js -->
+    <script src="assets/js/theme-setting.js"></script>
 
-                        if (priceDisplay) {
-                            priceDisplay.innerText = (data.new_price).toFixed(2);
-                        } else {
-                            console.error("Price display element not found for food ID:", foodId);
-                        }
+    <!-- Swiper Js -->
+    <script src="assets/js/jquery-swipe-1.11.3.min.js"></script>
+    <script src="assets/js/jquery.mobile-1.4.5.min.js"></script>
 
-                        updateBagTotal(data.new_bag_total);
-                    } else {
-                        alert('Error: ' + data.message);
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        // Add event listeners to plus and minus buttons
-        document.querySelectorAll('.plus-minus i').forEach(button => {
-            button.addEventListener('click', function() {
-                const foodId = this.getAttribute('data-food-id');
-                const quantityInput = this.closest('.plus-minus').querySelector(
-                    '.quantity-input');
-
-                if (quantityInput) {
-                    let currentQuantity = parseInt(quantityInput.value);
-
-                    if (this.classList.contains('add') && currentQuantity < 10) {
-                        currentQuantity++; // Increase quantity by 1
-                    } else if (this.classList.contains('sub') && currentQuantity > 1) {
-                        currentQuantity--; // Decrease quantity by 1
-                    }
-
-                    if (currentQuantity < 1) {
-                        currentQuantity = 1;
-                    }
-
-                    quantityInput.value = currentQuantity;
-                    updateCartQuantity(foodId, currentQuantity);
-                } else {
-                    console.error('Quantity input not found for food ID:', foodId);
-                }
-            });
-        });
-
-        // Function to apply coupon discount
-        document.getElementById('apply-coupon-btn').addEventListener('click', () => {
-            const couponCode = document.getElementById('coupon-code').value;
-
-            if (couponCode === 'DISCOUNT10') {
-                couponDiscount = bagTotal * 0.1; // 10% discount
-                document.getElementById('coupon-discount').innerText = `₱${couponDiscount.toFixed(2)}`;
-            } else {
-                couponDiscount = 0;
-                document.getElementById('coupon-discount').innerText = '₱0.00';
-            }
-
-            updateTotalAmount();
-        });
-    });
-    </script>
-
-<?php include 'includes/scripts.php'; ?>
-
+    <!-- Script js -->
+    <script src="assets/js/script.js"></script>
 </body>
 <!-- Body End -->
 

@@ -1,0 +1,107 @@
+/* General styling for the list item */
+
+.order-detail li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+.coupon-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e0e0e0;
+    gap: 8px;
+}
+
+.coupon-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+
+/* Styling for the input field */
+
+#coupon-code {
+    padding: 8px 10px;
+    width: 200px;
+    border: 1px solid #2f0d0d;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+#coupon-code:focus {
+    border-color: #800000;
+    /* Matches theme color */
+}
+
+
+/* Styling for the Apply button */
+
+#apply-coupon-btn {
+    padding: 8px 12px;
+    background-color: #800000;
+    /* Theme color */
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+#apply-coupon-btn:hover {
+    background-color: #a00000;
+    /* Slightly lighter red on hover */
+    transform: scale(1.05);
+    /* Slight scale effect */
+}
+
+#apply-coupon-btn:active {
+    transform: scale(0.98);
+    /* Slight shrink on click */
+}
+
+
+/* Discount display styling */
+
+.discount-amount {
+    font-weight: bold;
+    font-size: 16px;
+    color: #800000;
+    /* Matches theme color */
+}
+
+
+/* Styling for the list item labels */
+
+.order-detail li span:first-child {
+    flex: 1;
+    font-weight: 500;
+}
+
+
+/* Responsive adjustments */
+
+@media (max-width: 480px) {
+    #coupon-code {
+        width: 140px;
+    }
+    #apply-coupon-btn {
+        padding: 7px 12px;
+        font-size: 13px;
+    }
+    .discount-amount {
+        font-size: 14px;
+    }
+}

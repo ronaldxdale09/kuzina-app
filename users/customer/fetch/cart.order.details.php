@@ -1,32 +1,82 @@
-<section class="order-detail pt-1">
-    <h3 class="title-2">Order Details</h3>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const deliveryFee = 50.00;
+    let couponDiscount = 0.00;
 
-    <!-- Detail list Start -->
-    <ul>
-        <li>
-            <span>Bag total</span>
-            <span>₱<span id="bag-total">0.00</span></span> <!-- Changed from <label> to <span> -->
-        </li>
+    function calculateTotals() {
+        let bagTotal = Array.from(document.querySelectorAll('.quantity-input')).reduce((total, input) => {
+            const foodId = input.getAttribute('data-food-id');
+            const quantity = parseInt(input.value) || 1;
 
-        <li>
-            <span>Coupon Discount</span>
-            <div style="display: flex; align-items: center;">
-                <input type="text" id="coupon-code" placeholder="Enter coupon code" class="font-danger"
-                    style="width: 150px; margin-right: 10px;">
-                <button id="apply-coupon-btn" style="padding: 5px 10px;">Apply</button>
-                <span id="coupon-discount" style="margin-left: 10px;">₱0.00</span>
-            </div>
-        </li>
+            const priceDisplay = document.querySelector(`.price-display[data-food-id="${foodId}"]`);
+            const unitPrice = parseFloat(priceDisplay.getAttribute('data-price')) || 0;
 
-        <li>
-            <span>Delivery</span>
-            <span>₱<span id="delivery-fee">50.00</span></span>
-        </li>
+            const itemTotal = unitPrice * quantity;
+            priceDisplay.innerText = itemTotal.toFixed(2); // Update item total display
 
-        <li>
-            <span>Total Amount</span>
-            <span>₱<span id="total-amount">0.00</span></span> <!-- Added initial value of 0.00 -->
-        </li>
-    </ul>
-    <!-- Detail list End -->
-</section>
+            return total + itemTotal;
+        }, 0);
+
+        document.getElementById('bag-total').innerText = bagTotal.toFixed(2);
+        document.getElementById('coupon-discount').innerText = couponDiscount.toFixed(2);
+        document.getElementById('delivery-fee').innerText = deliveryFee.toFixed(2);
+
+        const totalAmount = (bagTotal + deliveryFee - couponDiscount).toFixed(2);
+        document.getElementById('total-amount').innerText = totalAmount;
+    }
+
+    function updateCartQuantity(foodId, newQuantity) {
+        fetch('functions/updateCart.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    food_id: foodId,
+                    quantity: newQuantity
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    calculateTotals();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error updating quantity:', error));
+    }
+
+    document.querySelectorAll('.plus-minus i').forEach(button => {
+        button.addEventListener('click', function() {
+            const foodId = this.getAttribute('data-food-id');
+            const quantityInput = this.closest('.plus-minus').querySelector('.quantity-input');
+            let currentQuantity = parseInt(quantityInput.value);
+
+            // Update quantity based on the button clicked
+            if (this.classList.contains('add') && currentQuantity < 10) {
+                currentQuantity++;
+            } else if (this.classList.contains('sub') && currentQuantity > 1) {
+                currentQuantity--;
+            }
+
+            // Set the new quantity and update the server
+            quantityInput.value = currentQuantity;
+            updateCartQuantity(foodId, currentQuantity);
+        });
+    });
+
+    document.getElementById('apply-coupon-btn').addEventListener('click', () => {
+        const couponCode = document.getElementById('coupon-code').value.trim();
+        if (couponCode === 'DISCOUNT10') {
+            couponDiscount = parseFloat(document.getElementById('bag-total').innerText) * 0.1;
+        } else {
+            couponDiscount = 0;
+        }
+        calculateTotals();
+    });
+
+    // Initial calculation on page load
+    calculateTotals();
+});
+</script>

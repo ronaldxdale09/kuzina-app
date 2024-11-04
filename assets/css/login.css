@@ -86,3 +86,92 @@
     cursor: pointer;
     color: #333;
 }
+
+
+/* Container for the login options buttons */
+
+.login-options {
+    display: flex;
+    gap: 10px;
+    /* Space between buttons */
+    justify-content: center;
+    /* Center-align buttons */
+    margin-top: 20px;
+    /* Add spacing from the login form */
+}
+
+
+/* Button styling for Kitchen and Rider login */
+
+.login-options .btn-outline {
+    padding: 8px 16px;
+    /* Smaller padding for compact look */
+    font-size: 0.875rem;
+    /* Smaller font for a professional appearance */
+    font-weight: 600;
+    color: #e74c3c;
+    /* Button text color */
+    border: 1px solid #e74c3c;
+    /* Outline style */
+    border-radius: 5px;
+    /* Slightly rounded corners */
+    text-decoration: none;
+    /* Remove underline */
+    transition: all 0.3s ease;
+    /* Smooth transition for hover effect */
+}
+
+
+/* Hover effect for the buttons */
+
+.login-options .btn-outline:hover {
+    background-color: #4C0710;
+    /* Background on hover */
+    color: #fff;
+    /* Text color on hover */
+    border-color: #fefefe;
+    /* Keep the border color consistent */
+}
+
+
+/* Join Us Now button styling */
+
+
+/* Join Us Now button styling */
+
+.join-now {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-join {
+    display: inline-block;
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: #7b1e2e;
+    /* Dark red/burgundy color to match theme */
+    border: 1px solid #7b1e2e;
+    border-radius: 8px;
+    /* Rounded corners for a modern look */
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+
+/* Hover effect for a subtle modern feel */
+
+.btn-join:hover {
+    background-color: #5a1621;
+    /* Slightly darker shade on hover */
+    border-color: #5a1621;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    /* Soft shadow effect */
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    /* Centers the logo horizontally */
+}

@@ -3,6 +3,8 @@ include '../../../connection/db.php';
 
 $response = ['success' => false, 'message' => ''];
 try {
+    $kitchen_id = $_COOKIE['kitchen_user_id'] ?? null;
+
     // Validate and sanitize input data
     $itemName = trim($_POST['itemName'] ?? '');
     $price = filter_var($_POST['price'] ?? 0, FILTER_VALIDATE_FLOAT);
@@ -85,9 +87,9 @@ try {
     }
 
     // Insert into the database, saving photo1, photo2, and photo3 into separate columns
-    $stmt = $conn->prepare("INSERT INTO food_listings (food_name,meal_type, price, description, category, photo1, photo2, photo3, diet_type_suitable, health_goal_suitable, allergens) VALUES (?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO food_listings (kitchen_id,food_name,meal_type, price, description, category, photo1, photo2, photo3, diet_type_suitable, health_goal_suitable, allergens) VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?)");
     if ($stmt) {
-        $stmt->bind_param("ssdssssssss", $itemName,  $mealType, $price, $description, $pickupDelivery, $photo1, $photo2, $photo3, $dietType, $healthGoal, $allergens);
+        $stmt->bind_param("sssdssssssss",$kitchen_id,  $itemName,  $mealType, $price, $description, $pickupDelivery, $photo1, $photo2, $photo3, $dietType, $healthGoal, $allergens);
 
         if ($stmt->execute()) {
             $response['success'] = true;

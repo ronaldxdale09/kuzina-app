@@ -28,8 +28,8 @@
                 <div class="media">
                     <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" > <img src="assets/images/logo/logo49.png" alt="avatar" /></a>
                     <div class="media-body">
-                        <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev"  class="title-color"><?php echo  $_COOKIE['user_fname']?>
-                            <span class="content-color font-sm"><?php echo  $_COOKIE['user_email']?></span>
+                        <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev"  class="title-color"><?php //echo  $_COOKIE['user_fname']?>
+                            <span class="content-color font-sm"><?php //echo  $_COOKIE['user_email']?></span>
                         </a>
                     </div>
                 </div>

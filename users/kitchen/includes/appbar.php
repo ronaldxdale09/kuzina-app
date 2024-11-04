@@ -8,7 +8,7 @@
         </li>
         <li class="footer-item">
             <a href="menu_list.php" class="footer-link">
-                <i class="bx bx-category icli"></i>
+                <i class="bx bx-restaurant icli"></i>
                 <span>Menu</span>
             </a>
         </li>

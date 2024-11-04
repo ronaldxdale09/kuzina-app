@@ -34,7 +34,7 @@ function fetch_and_render_random_products($conn, $limit = 5) {
     <div class="product-card">
         <div class="img-wrap">
             <a href="product.php?prod=<?= $food_id ?>">
-                <img src="../../uploads/<?= $photo1 ?>" class="img-fluid" alt="<?= $food_name ?>" loading="lazy" />
+            <img src="../../uploads/<?= $photo1 ?>" class="img-fluid" alt="<?= $food_name ?>" loading="lazy" />
             </a>
         </div>
         <div class="content-wrap">

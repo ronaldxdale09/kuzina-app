@@ -1,4 +1,28 @@
-<?php include 'includes/header.php'; ?>
+<?php include 'includes/header.php'; 
+
+// Check if kitchen user is logged in and retrieve kitchen ID
+$kitchen_id = $_COOKIE['kitchen_user_id'] ?? null;
+
+if (!$kitchen_id) {
+    header("Location: kitchen_login.php");
+    exit();
+}
+
+// Query to check if the kitchen is approved
+$stmt = $conn->prepare("SELECT isApproved FROM kitchens WHERE kitchen_id = ? AND isApproved = 1");
+$stmt->bind_param("i", $kitchen_id);
+$stmt->execute();
+$stmt->store_result();
+
+// Redirect if the kitchen is not approved
+if ($stmt->num_rows === 0) {
+    header("Location: isApproved.php");
+    exit();
+}
+
+// Close the statement and connection
+$stmt->close();
+?>
 <link rel="stylesheet" type="text/css" href="assets/css/homepage.css" />
 
 <body>
@@ -9,7 +33,7 @@
     <!-- Skeleton loader End -->
 
     <!-- Header Start -->
-    <?php include 'includes/top_header.php'; ?>
+    <?php include 'navbar/main.navbar.php'; ?>
 
     <!-- Header End -->
 
@@ -45,43 +69,13 @@
     <main class="main-wrap dashboard-page mb-xxl">
 
         <!-- Order Statistics Section -->
-        <section class="statistics-section">
-            <div class="statistics-box">
-                <div class="stat-item">
-                    <i class='bx bx-package'></i> <!-- Icon for Running Orders -->
-                    <h3>20</h3>
-                    <p>Running Orders</p>
-                </div>
-                <div class="stat-item">
-                    <i class='bx bx-receipt'></i> <!-- Icon for Order Requests -->
-                    <h3>05</h3>
-                    <p>Order Requests</p>
-                </div>
-            </div>
-        </section>
+        <?php include 'components/statistic.homepage.php'; ?>
+
 
 
         <!-- Revenue Chart Section -->
-        <section class="revenue-section">
-            <div class="revenue-top">
-                <h4>Total Revenue</h4>
-                <div class="revenue-filter">
-                    <select id="revenue-duration" class="custom-select">
-                        <option value="daily">Daily</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="monthly">Monthly</option>
-                    </select>
-                </div>
-            </div>
-            <div class="revenue-total">
-                <h3>Php 2,402</h3>
-                <a href="#" class="details-link">See Details</a>
-            </div>
-            <!-- Chart Placeholder -->
-            <div class="chart-wrap">
-                <canvas id="revenueChart"></canvas>
-            </div>
-        </section>
+        <?php include 'components/chart.homepage.php'; ?>
+
 
         <!-- Reviews Section -->
         <section class="reviews-section">
@@ -157,36 +151,6 @@
             <a href="#" class="nav-item"><i class="icon-profile"></i></a>
         </nav>
     </main>
-
-    <!-- Chart.js for Revenue Graph -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-    var ctx = document.getElementById('revenueChart').getContext('2d');
-    var revenueChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['10AM', '12PM', '2PM', '4PM', '6PM', '8PM'],
-            datasets: [{
-                label: 'Revenue',
-                data: [203, 400, 150, 320, 500, 350],
-                borderColor: '#FF6B6B',
-                fill: false
-            }]
-        },
-        options: {
-            scales: {
-                x: {
-                    display: true
-                },
-                y: {
-                    display: true,
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-    </script>
-
 
     <!-- Main End -->
 

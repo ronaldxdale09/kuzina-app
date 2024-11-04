@@ -2,6 +2,7 @@
 <html lang="en">
 <!-- Head Start -->
 <?php include '../../connection/db.php'?>
+
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -30,8 +31,11 @@
   <!-- Slick css -->
   <link rel="stylesheet" type="text/css" href="assets/css/vendors/slick.css" />
   <link rel="stylesheet" type="text/css" href="assets/css/vendors/slick-theme.css" />
-  <link rel="stylesheet" href="assets/boxicons/css/boxicons.min.css">
 
   <!-- Style css -->
   <link rel="stylesheet" id="change-link" type="text/css" href="assets/css/style.css" />
+  <link rel="stylesheet" id="change-link" type="text/css" href="assets/css/modal.css" />
+  <link rel="stylesheet" href="assets/boxicons/css/boxicons.min.css">
+
+
 </head>

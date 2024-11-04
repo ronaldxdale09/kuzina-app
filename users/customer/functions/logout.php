@@ -1,21 +1,21 @@
-<script>
-function signOut() {
-    // Clear session storage (or localStorage if used)
-    sessionStorage.clear(); // You can also use localStorage.clear(); if needed.
+<?php
+// Start the session
+session_start();
 
-    // Optionally, you can clear specific tokens or user data
-    // sessionStorage.removeItem('token');
-    // sessionStorage.removeItem('user');
+// Destroy the session and unset session variables
+session_unset(); // Unset all session variables
+session_destroy(); // Destroy the session itself
 
-    // Redirect the user to the login or home page
-    window.location.href = '../../../index.php'; // Replace 'login.html' with the actual login or landing page
+// Clear cookies (if any user-related cookies are set)
+if (isset($_COOKIE['user_id'])) {
+    setcookie('user_id', '', time() - 3600, "/"); // Clear the user_id cookie
 }
 
-signOut();
-</script>
-<?php
-// Destroy all session data
-session_destroy();
+if (isset($_COOKIE['user_fname'])) {
+    setcookie('user_fname', '', time() - 3600, "/"); // Clear the user_fname cookie
+}
 
+// Redirect to login page or homepage
+header("Location: ../../../index.php"); // Replace with the actual path to your login or homepage
 exit();
 ?>

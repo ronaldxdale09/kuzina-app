@@ -13,79 +13,131 @@
         </div>
     </div>
 
-    <!-- Main Start -->
+
+
+    <!-- Registration Section Start -->
     <main class="main-wrap login-page mb-xxl">
         <div class="center-content">
             <img class="logo" src="assets/images/logo/logo-w2.png" alt="logo" />
-            <img class="logo logo-w" src="assets/images/logo/logo-w2.png" alt="logo" />
             <p class="font-sm content-color">
-                Please create an account or sign in to your existing account to start browsing our selection of
-                delicious meals from your kitchen mothers.
+                Please create an account to start browsing our selection of delicious meals from your kitchen
+                mothers.
             </p>
         </div>
 
-        <!-- Login Section Start -->
+        <!-- Registration Section Start -->
         <section class="login-section p-0">
             <!-- Registration Form Start -->
-            <form id="registration-form" method="POST" class="custom-form">
+            <form id="registration-form" method="POST" class="custom-form" enctype="multipart/form-data">
                 <h1 class="font-md title-color fw-600">Register Account</h1>
-                <input type="text" name="type" value="customer" hidden />
+                <input type="text" name="type" value="kitchen" hidden />
+                <!-- Tab 1: Personal Information -->
+                <div class="form-tab" id="tab-1">
 
-                <!-- Full Name Input Start -->
-                <div class="input-box">
-                    <input type="text" name="fname" placeholder="First Name" required class="form-control"
-                        autocomplete="off" />
-                    <i class="iconly-Profile icli"></i>
-                </div>
-                <div class="input-box">
-                    <input type="text" name="lname" placeholder="Last Name" required class="form-control"
-                        autocomplete="off" />
-                    <i class="iconly-Profile icli"></i>
-                </div>
+                    <div class="profile-picture">
+                        <label for="profilePhoto" class="profile-label">
+                            <img id="profilePreview" src="assets/images/logo/default.png" alt="Profile Picture" />
+                            <div class="edit-icon">
+                                <i class="iconly-Edit icli"></i>
+                            </div>
+                        </label>
+                        <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" class="profile-input"
+                            onchange="previewImage(event)" />
+                    </div> <br>
+                    <!-- Full Name Inputs Start -->
+                    <div class="input-box">
+                        <input type="text" name="fname" placeholder="First Name" required class="form-control"
+                            autocomplete="off" />
+                        <i class="iconly-Profile icli"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" name="lname" placeholder="Last Name" required class="form-control"
+                            autocomplete="off" />
+                        <i class="iconly-Profile icli"></i>
+                    </div>
 
-                <!-- Email Input Start -->
-                <div class="input-box">
-                    <input type="email" name="email" placeholder="Email Address" required class="form-control"
-                        autocomplete="off" />
-                    <i data-feather="at-sign"></i>
-                </div>
+                    <!-- Email Input Start -->
+                    <div class="input-box">
+                        <input type="email" name="email" placeholder="Email Address" required class="form-control"
+                            autocomplete="off" />
+                        <i data-feather="at-sign"></i>
+                    </div>
 
-                <!-- Phone Number Input Start -->
-                <div class="input-box">
-                    <input type="number" name="phone" placeholder="Phone Number" required class="form-control"
-                        autocomplete="off" />
-                    <i class="iconly-Call icli"></i>
-                </div>
+                    <!-- Phone Number Input Start -->
 
-                <!-- Location Input Start -->
-                <div class="input-box">
-                    <input type="text" id="location" name="location" placeholder="City, Barangay, Postal Code" required
-                        class="form-control" />
-                    <button type="button" class="btn btn-location" id="getLocationBtn"> Use My Location
-                    </button>
-
-                </div>
-                <!-- Location Input End -->
-
-                <!-- Hidden Latitude and Longitude Inputs -->
-                <input type="hidden" id="latitude" name="latitude" />
-                <input type="hidden" id="longitude" name="longitude" />
-
-                <!-- Password Input Start -->
-                <div class="input-box">
-                    <input type="password" name="password" placeholder="Password" required class="form-control" />
-                    <i class="iconly-Hide icli showHidePassword"></i>
+                    <!-- Next Button -->
+                    <button type="button" class="btn-solid btn-next" onclick="nextTab()">Next</button>
                 </div>
 
-                <button id="submit-btn" class="btn-solid" type="submit">Register</button>
+                <!-- Tab 2: Location, Password, and Profile Picture -->
+                <div class="form-tab" id="tab-2" style="display: none;">
+
+
+
+                    <!-- Location Input Start -->
+                    <div class="input-box">
+                        <input type="text" id="location" name="location" placeholder="City, Barangay, Postal Code"
+                            required class="form-control" readonly />
+                        <button type="button" class="btn btn-location" id="getLocationBtn"> Use My Location
+                        </button>
+                    </div>
+
+                    <!-- Hidden Latitude and Longitude Inputs -->
+                    <input type="hidden" id="latitude" name="latitude" />
+                    <input type="hidden" id="longitude" name="longitude" />
+
+                    <div class="input-box">
+                        <input type="text" name="phone" placeholder="Phone Number" required class="form-control"
+                            autocomplete="off" />
+                        <i class="iconly-Call icli"></i>
+                    </div>
+                    <!-- Password Input Start -->
+                    <div class="input-box">
+                        <input type="password" name="password" placeholder="Password" required class="form-control" />
+                        <i class="iconly-Hide icli showHidePassword"></i>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="button-row">
+                        <button type="button" class="btn-outline btn-prev" onclick="prevTab()">Previous</button>
+                        <button id="submit-btn" class="btn-solid" type="submit">Register</button>
+                    </div>
+                </div>
+
                 <span class="content-color font-sm d-block text-center fw-600">Already have an Account?
-                    <a href="login.html" class="underline">Sign In</a>
+                    <a href="kitchen_login.php" class="underline">Sign In</a>
                 </span>
             </form>
             <!-- Registration Form End -->
         </section>
-        <!-- Login Section End -->
+        <!-- Registration Section End -->
     </main>
+
+    <script>
+    // JavaScript to handle tab navigation
+    function nextTab() {
+        document.getElementById("tab-1").style.display = "none";
+        document.getElementById("tab-2").style.display = "block";
+    }
+
+    function prevTab() {
+        document.getElementById("tab-2").style.display = "none";
+        document.getElementById("tab-1").style.display = "block";
+    }
+
+    // JavaScript for image preview
+    function previewImage(event) {
+        const preview = document.getElementById('profilePreview');
+        const file = event.target.files[0];
+
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+        } else {
+            preview.src = 'assets/images/logo/default.png'; // Reset to default if no file selected
+        }
+    }
+    </script>
+
 
     <!-- Main End -->
     <div id="loading-overlay" style="display: none;">
@@ -100,11 +152,14 @@
     <div id="successModal" class="modal">
         <div class="modal-content">
             <span id="closeSuccessModal" class="close">&times;</span>
-            <h2>Registration Successful!</h2>
-            <p>Let's proceed with a quick nutritional assessment for better food recommendations.</p>
-            <button id="goToAssessment" class="btn-solid">Proceed to Assessment</button>
+            <h2>Welcome to the Family!</h2>
+            <p>Thank you for joining our community of passionate kitchen mothers! Your application is now under review,
+                and we can’t wait to see you bring delicious, home-cooked meals to life. You’ll hear from us soon with
+                the next steps!</p>
+            <button id="goToDashboard" class="btn-solid">Proceed</button>
         </div>
     </div>
+
 
     <!-- Error Modal -->
     <div id="errorModal" class="modal">
@@ -112,7 +167,7 @@
             <span id="closeErrorModal" class="close">&times;</span>
             <h2>Error</h2>
             <p id="errorMessage"></p>
-            <button class="btn-outline close-modal">Close</button>
+            <button class="btn-outline" class="close">Close</button>
         </div>
     </div>
     <script>
@@ -205,6 +260,11 @@
         successModal.classList.add('show'); // Add the 'show' class to make it visible
     }
 
+    // Close the success modal
+    document.getElementById('closeSuccessModal').onclick = function() {
+        document.getElementById('successModal').classList.remove('show'); // Remove 'show' class to hide it
+    };
+
     // Proceed to the assessment page
     document.getElementById('goToAssessment').onclick = function() {
         window.location.href = 'assessment.php';
@@ -217,33 +277,15 @@
         }
     };
 
+    // Handle form submission and show modal on success
     document.getElementById('submit-btn').addEventListener('click', function(e) {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
 
-        // Check if all required fields are filled
-        const form = document.getElementById('registration-form');
-        const requiredFields = form.querySelectorAll('[required]');
-        let allFieldsFilled = true;
-
-        requiredFields.forEach(field => {
-            if (field.value.trim() === '') {
-                allFieldsFilled = false;
-                field.classList.add('input-error'); // Add a class for highlighting empty fields
-            } else {
-                field.classList.remove('input-error'); // Remove the class if field is filled
-            }
-        });
-
-        if (!allFieldsFilled) {
-            showErrorModal("Please fill in all required fields before submitting.");
-            return; // Stop form submission if there are empty fields
-        }
-
-        // Show the loader and handle AJAX if all fields are filled
+        // Show the loader and handle AJAX
         document.getElementById('loading-spinner').style.visibility = 'visible';
 
         // Perform AJAX request
-        const formData = new FormData(form);
+        const formData = new FormData(document.getElementById('registration-form'));
 
         fetch('functions/registration.php', {
                 method: 'POST',
@@ -251,15 +293,15 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('loading-spinner').style.visibility = 'hidden';
+                document.getElementById('loading-spinner').style.visibility = 'hidden'; // Hide loader
                 if (data.success) {
-                    showSuccessModal();
+                    showSuccessModal(); // Show success modal
                 } else {
-                    showErrorModal(data.message || 'Registration failed. Please try again.');
+                    showErrorModal(data.message); // Show error modal
                 }
             })
             .catch(error => {
-                document.getElementById('loading-spinner').style.visibility = 'hidden';
+                document.getElementById('loading-spinner').style.visibility = 'hidden'; // Hide loader
                 console.error('Error:', error);
                 showErrorModal('An error occurred during registration. Please try again.');
             });
@@ -272,19 +314,10 @@
         errorModal.classList.add('show'); // Show error modal
     }
 
-    // Close the error modal when clicking the close icon or button
+    // Close the error modal
     document.getElementById('closeErrorModal').onclick = function() {
         document.getElementById('errorModal').classList.remove('show');
     };
-
-    document.querySelector('.close-modal').onclick = function() {
-        document.getElementById('errorModal').classList.remove('show');
-    };
-
-    // CSS styling for input-error class
-    document.querySelectorAll('.input-error').forEach(field => {
-        field.style.borderColor = 'red';
-    });
     </script>
 
 

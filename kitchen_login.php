@@ -1,16 +1,16 @@
 <?php include 'includes/header.php';
 
-
-// Check if the 'user_id' cookie is set and not empty
-if (isset($_COOKIE['user_id']) && !empty($_COOKIE['user_id'])) {
-    // Proceed to customer homepage
-    header("Location: users/customer/homepage.php"); // Replace 'customer_homepage.php' with the actual path to your customer homepage
-    exit(); // Make sure to exit after redirection
-}
+// Check if the 'kitchen_user_id' cookie is set and not empty
+// if (isset($_COOKIE['kitchen_user_id']) && !empty($_COOKIE['kitchen_user_id'])) {
+//     // Redirect to Kitchen dashboard
+//     header("Location: kitchen/dashboard.php");
+//     exit();
+// }
 
 ?>
 <!-- Body Start -->
 <link rel="stylesheet" href="assets/css/login.css">
+<link rel="stylesheet" href="assets/boxicons/css/boxicons.min.css">
 
 <body>
     <div class="bg-pattern-wrap ratio2_1">
@@ -22,26 +22,24 @@ if (isset($_COOKIE['user_id']) && !empty($_COOKIE['user_id'])) {
 
     <!-- Main Start -->
     <main class="main-wrap login-page mb-xxl">
-        <div class="logo-container">
-            <img class="logo" src="assets/images/logo/logo-w2.png" alt="logo" />
-        </div>
-        <p class="font-sm content-color">Explore a wide range of nutritious, homemade recipes crafted by home cooks.
-            Enjoy wholesome, balanced meals made with fresh ingredients and love.</p>
-
+        <img class="logo" src="assets/images/logo/logo-w2.png" alt="logo" />
+        <img class="logo logo-w" src="assets/images/logo/logo-w2.png" alt="logo" />
+        <p class="font-sm content-color">Manage kitchen orders and inventory efficiently. Access all features from your
+            dedicated dashboard.</p>
         <section class="login-section p-0">
             <!-- Login Form Start -->
             <form id="login-form" class="custom-form" method="POST">
-                <h1 class="font-md title-color fw-600">Login Account</h1>
+                <h1 class="font-md title-color fw-600">Kitchen Login</h1>
 
-                <!-- Phone Number Input start -->
+                <!-- Username Input Start -->
                 <div class="input-box">
-                    <input type="number" id="phone" name="phone" placeholder="Phone Number" required
+                    <input type="text" id="phone" name="phone" placeholder="Username" required
                         class="form-control" autocomplete="off" />
-                    <i class="iconly-Call icli"></i>
+                    <i class="iconly-User icli"></i>
                 </div>
-                <!-- Phone Number Input End -->
+                <!-- Username Input End -->
 
-                <!-- Password Input start -->
+                <!-- Password Input Start -->
                 <div class="input-box">
                     <input type="password" id="password" name="password" placeholder="Password" required
                         class="form-control" />
@@ -49,28 +47,31 @@ if (isset($_COOKIE['user_id']) && !empty($_COOKIE['user_id'])) {
                 </div>
                 <!-- Password Input End -->
 
-                <button type="submit" id="login-submit" class="btn-solid">Sign in</button>
+                <button type="submit" id="login-submit" class="btn-solid">Sign in to Kitchen</button>
 
                 <span class="content-color font-sm d-block text-center fw-600">
-                    If you are new, <a href="register.php" class="underline">Create Now</a>
+                    Forgot your password? <a href="forgot_password.php" class="underline">Reset Now</a>
                 </span>
-
-                <!-- Buttons to switch to Kitchen or Rider Login -->
+                <!-- Join Us Now Button -->
+                <div class="join-now">
+                    <a href="k_registration.php" class="btn-join">
+                        <i class='bx bx-restaurant'></i> Join Us Now
+                    </a>
+                </div>
+                <!-- Login Options -->
                 <div class="login-options">
-                    <a href="kitchen_login.php" class="btn-outline">Login as Kitchen</a>
+                    <a href="index.php" class="btn-outline">Login as Customer</a>
                     <a href="rider_login.php" class="btn-outline">Login as Rider</a>
                 </div>
+
+
             </form>
             <!-- Login Form End -->
         </section>
+
+
+    </main>
     <!-- Main End -->
-     <br>
-
-    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev"
-        class="footer d-block text-center font-md title-color text-decoration-underline">Continue as
-        guest</a>
-
-
     <div class="action action-confirmation offcanvas offcanvas-bottom" tabindex="-1" id="underDev"
         aria-labelledby="confirmation">
         <div class="offcanvas-body small">
@@ -115,7 +116,7 @@ if (isset($_COOKIE['user_id']) && !empty($_COOKIE['user_id'])) {
         const formData = new FormData(document.getElementById('login-form'));
 
         // Perform AJAX request for login
-        fetch('functions/login.php', {
+        fetch('functions/kitchen.login.php', {
                 method: 'POST',
                 body: formData
             })
@@ -128,7 +129,7 @@ if (isset($_COOKIE['user_id']) && !empty($_COOKIE['user_id'])) {
 
                     if (data.success) {
                         // Redirect to homepage
-                        window.location.href = 'users/customer/homepage.php';
+                        window.location.href = 'users/kitchen/homepage.php';
                     } else {
                         // Show error message if login failed
                         showErrorModal(data.message);
@@ -190,13 +191,8 @@ if (isset($_COOKIE['user_id']) && !empty($_COOKIE['user_id'])) {
 
     // Call the function to prompt for geolocation permission
     </script>
-    <!-- jquery 3.6.0 -->
+
     <?php include 'includes/script.php';?>
-
-
-
 </body>
-<!-- Body End -->
 
 </html>
-<!-- Html End -->
