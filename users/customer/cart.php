@@ -55,7 +55,7 @@
 
     <!-- Footer Start -->
     <footer class="footer-wrap footer-button">
-        <a href="address.php" class="font-md">Proceed to Checkout</a>
+        <a href="payment.php" class="font-md">Proceed to Checkout</a>
     </footer>
     <!-- Footer End -->
 
@@ -80,9 +80,9 @@
     <div class="offcanvas offer-offcanvas offcanvas-bottom" tabindex="-1" id="offer-1" aria-labelledby="offer-1Label">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title font-lg" id="offer-1Label">Flat 50% off</h5>
-            <span class="font-sm">on order above $250.00</span>
+            <span class="font-sm">on order above PHP 250.00</span>
             <div class="code">
-                <span class="font-sm">Code: <strong> SCD450</strong></span>
+                <span class="font-sm">Code: <strong> KUZINA</strong></span>
                 <button class="btn-outline" data-bs-dismiss="offcanvas" aria-label="Close">Copy Code</button>
             </div>
         </div>
@@ -97,7 +97,7 @@
                 <li class="font-sm content-color">
                     Each claimant is entitled to one coupon per accommodation establishment. Coupons are not
                     transferable and are not redeemable for cash and cannot be combined with any other coupons or any
-                    other offer or discounts or promotions offered by Quovai.
+                    other offer or discounts or promotions offered by KUZINA.
                 </li>
             </ol>
         </div>

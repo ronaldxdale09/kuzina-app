@@ -2,12 +2,12 @@
 include '../../../connection/db.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Check if product ID is provided
+    // Check if food ID is provided
     $food_id = $_POST['food_id'] ?? null;
 
     if ($food_id) {
         // Prepare the SQL delete statement
-        $stmt = $conn->prepare("DELETE FROM kitchens WHERE kitchen_id = ?");
+        $stmt = $conn->prepare("DELETE FROM food_listings WHERE food_id = ?");
         $stmt->bind_param("i", $food_id);
         
         if ($stmt->execute()) {

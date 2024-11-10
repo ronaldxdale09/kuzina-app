@@ -3,7 +3,7 @@ include '../../../connection/db.php';
 
 $response = ['success' => false, 'message' => ''];
 try {
-    $kitchen_id = $_COOKIE['kitchen_user_id'] ?? null;
+    $kitchen_id = $_COOKIE['kitchen_id'] ?? null;
 
     // Validate and sanitize input data
     $itemName = trim($_POST['itemName'] ?? '');

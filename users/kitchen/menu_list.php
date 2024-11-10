@@ -8,7 +8,8 @@ include 'fetch/fetch.menulist.php';
 <body>
 
     <!-- Skeleton loader Start -->
-    <?php include 'skeleton/sk_homepage.php'; ?>
+    <!-- Skeleton loader Start -->
+    <?php include 'skeleton/sk_menulist.php'; ?>
 
     <!-- Skeleton loader End -->
 
@@ -32,9 +33,6 @@ include 'fetch/fetch.menulist.php';
                 </div>
             </div>
 
-            <!-- Navigation Start -->
-            <?php include 'includes/navbar.php'; ?>
-            <!-- Navigation End -->
         </div>
 
         <div class="contact-us">
@@ -62,8 +60,13 @@ include 'fetch/fetch.menulist.php';
                 <a class="nav-link" href="#dinner" data-bs-toggle="tab">Dinner</a>
             </li>
         </ul>
-        <h3 class="text-center pt-4"><span>Menu List </span><span class="line"></span></h3>
-
+        <div class="header-content">
+            <h3>Menu List</h3>
+            <a href="add_menu.php" class="add-new-btn">
+                <i class='bx bx-plus-circle'></i>
+                Add New Product
+            </a>
+        </div>
         <!-- Tab Content -->
         <div class="tab-content container menu-list">
             <!-- All Menu Items -->
@@ -87,27 +90,9 @@ include 'fetch/fetch.menulist.php';
             </div>
         </div>
 
-        <!-- Add New Product Button -->
-        <div class="add-new pt-1">
-            <a href="add_menu.php">+ Add New Product</a>
-        </div>
+
     </main>
 
-    <!-- Main End -->
-    <div id="removeModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
-            <h2>Confirm Removal</h2>
-            <p>Are you sure you want to remove the following item?</p>
-            <div class="modal-item-info">
-                <p><strong>Food ID:</strong> <span id="modalFoodId"></span></p>
-                <p><strong>Food Name:</strong> <span id="modalFoodName"></span></p>
-                <p><strong>Price:</strong> PHP <span id="modalFoodPrice"></span></p>
-            </div>
-            <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-            <button class="btn-confirm" onclick="confirmRemoval()">Confirm</button>
-        </div>
-    </div>
 
     <!-- Footer Start -->
 

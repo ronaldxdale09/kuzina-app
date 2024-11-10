@@ -61,7 +61,7 @@
                 <!-- Login Options -->
                 <div class="login-options">
                     <a href="index.php" class="btn-outline">Login as Customer</a>
-                    <a href="rider_login.php" class="btn-outline">Login as Rider</a>
+                    <a href="#" class="btn-outline">Login as Rider</a>
                 </div>
 
 

@@ -314,3 +314,36 @@
 .cart-popup p {
     color: white;
 }
+
+.kitchen-section {
+    padding: 1rem;
+}
+
+.kitchen-profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.kitchen-img img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.kitchen-info {
+    flex: 1;
+}
+
+.kitchen-name {
+    font-size: 1.2rem;
+    margin: 0;
+    font-weight: bold;
+}
+
+.kitchen-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.2rem;
+}

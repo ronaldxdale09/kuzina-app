@@ -1,4 +1,6 @@
-(function($) {
+
+
+(function ($) {
     /// Home Banner Slider slider ///
     $(".h-banner-slider").slick({
         dots: false,
@@ -8,7 +10,8 @@
         centerPadding: "50px",
         arrows: false,
         slidesToScroll: 1,
-        responsive: [{
+        responsive: [
+            {
                 breakpoint: 475,
                 settings: {
                     centerPadding: "20px",
@@ -27,39 +30,33 @@
     /// Product Slider ///
     $(".product-slider").slick({
         dots: false,
-        slidesToShow: 3, // Adjust based on your layout
-        slidesToScroll: 1, // Number of slides to scroll at once
-        arrows: false, // Keep arrows disabled if preferred
-        centerMode: false, // Disable center mode for left alignment
-        infinite: false, // Ensure that infinite scrolling is off to start the slides at the left side
-        responsive: [{
+        slidesToShow: 3,
+        centerMode: true,
+        centerPadding: "50px",
+        arrows: false,
+        slidesToScroll: 1,
+        responsive: [
+            {
                 breakpoint: 567,
                 settings: {
-                    slidesToShow: 3,
-                    centerMode: false, // Ensure center mode is disabled for small screens
-                }
+                    slidesToShow: 3, centerPadding: "25px",
+                },
             },
             {
                 breakpoint: 475,
                 settings: {
-                    slidesToShow: 2,
-                    centerMode: false, // Ensure center mode is disabled for small screens
-                }
+                    slidesToShow: 2, centerPadding: "25px",
+                },
             },
             {
                 breakpoint: 375,
                 settings: {
                     slidesToShow: 1,
-                    centerMode: false, // Ensure center mode is disabled
-                    centerPadding: "0px", // No padding for smaller screens
-                }
+                    centerPadding: "120px"
+                },
             }
-        ]
+        ],
     });
-
-
-
-
 
     /// Product Page Banner Slider ///
     $('.product-banner').slick({
@@ -78,18 +75,17 @@
         centerPadding: "50px",
         arrows: false,
         slidesToScroll: 1,
-        responsive: [{
+        responsive: [
+            {
                 breakpoint: 567,
                 settings: {
-                    slidesToShow: 3,
-                    centerPadding: "25px",
+                    slidesToShow: 3, centerPadding: "25px",
                 },
             },
             {
                 breakpoint: 475,
                 settings: {
-                    slidesToShow: 2,
-                    centerPadding: "25px",
+                    slidesToShow: 2, centerPadding: "25px",
                 },
             },
         ],
@@ -112,7 +108,8 @@
             slidesToShow: 4,
             centerMode: true,
             centerPadding: "30px ",
-            responsive: [{
+            responsive: [
+                {
                     breakpoint: 1367,
                     settings: {
                         slidesToShow: 5,
@@ -132,8 +129,7 @@
                         slidesToShow: 5,
                         centerPadding: "30px ",
                     },
-                },
-            ]
+                },]
         });
     }
 

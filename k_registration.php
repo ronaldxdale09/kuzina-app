@@ -33,7 +33,6 @@
                 <input type="text" name="type" value="kitchen" hidden />
                 <!-- Tab 1: Personal Information -->
                 <div class="form-tab" id="tab-1">
-
                     <div class="profile-picture">
                         <label for="profilePhoto" class="profile-label">
                             <img id="profilePreview" src="assets/images/logo/default.png" alt="Profile Picture" />
@@ -44,6 +43,7 @@
                         <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" class="profile-input"
                             onchange="previewImage(event)" />
                     </div> <br>
+
                     <!-- Full Name Inputs Start -->
                     <div class="input-box">
                         <input type="text" name="fname" placeholder="First Name" required class="form-control"
@@ -63,23 +63,17 @@
                         <i data-feather="at-sign"></i>
                     </div>
 
-                    <!-- Phone Number Input Start -->
-
                     <!-- Next Button -->
                     <button type="button" class="btn-solid btn-next" onclick="nextTab()">Next</button>
                 </div>
 
                 <!-- Tab 2: Location, Password, and Profile Picture -->
                 <div class="form-tab" id="tab-2" style="display: none;">
-
-
-
                     <!-- Location Input Start -->
                     <div class="input-box">
                         <input type="text" id="location" name="location" placeholder="City, Barangay, Postal Code"
-                            required class="form-control" readonly />
-                        <button type="button" class="btn btn-location" id="getLocationBtn"> Use My Location
-                        </button>
+                            required class="form-control" />
+                        <button type="button" class="btn btn-location" id="getLocationBtn"> Use My Location </button>
                     </div>
 
                     <!-- Hidden Latitude and Longitude Inputs -->
@@ -91,10 +85,17 @@
                             autocomplete="off" />
                         <i class="iconly-Call icli"></i>
                     </div>
+
                     <!-- Password Input Start -->
                     <div class="input-box">
                         <input type="password" name="password" placeholder="Password" required class="form-control" />
                         <i class="iconly-Hide icli showHidePassword"></i>
+                    </div>
+
+                    <!-- Kitchen Description and Goals Textarea Start -->
+                    <div class="input-box">
+                        <textarea name="description" placeholder="Give your Kitchen Description and Goals" required
+                            class="form-control" rows="4"></textarea>
                     </div>
 
                     <!-- Navigation Buttons -->
@@ -112,6 +113,7 @@
         </section>
         <!-- Registration Section End -->
     </main>
+
 
     <script>
     // JavaScript to handle tab navigation
@@ -171,6 +173,10 @@
         </div>
     </div>
     <script>
+    document.getElementById("goToDashboard").addEventListener("click", function() {
+        window.location.href = "users/kitchen/homepage.php";
+    });
+
     document.getElementById('getLocationBtn').addEventListener('click', function() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -265,10 +271,6 @@
         document.getElementById('successModal').classList.remove('show'); // Remove 'show' class to hide it
     };
 
-    // Proceed to the assessment page
-    document.getElementById('goToAssessment').onclick = function() {
-        window.location.href = 'assessment.php';
-    };
 
     // Close the modal when clicking outside the modal content
     window.onclick = function(event) {
@@ -278,34 +280,58 @@
     };
 
     // Handle form submission and show modal on success
-    document.getElementById('submit-btn').addEventListener('click', function(e) {
-        e.preventDefault();
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.getElementById('registration-form');
 
-        // Show the loader and handle AJAX
-        document.getElementById('loading-spinner').style.visibility = 'visible';
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the default form submission
 
-        // Perform AJAX request
-        const formData = new FormData(document.getElementById('registration-form'));
+            // Check if all required fields are filled
+            const requiredFields = form.querySelectorAll('[required]');
+            let allFieldsFilled = true;
 
-        fetch('functions/registration.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('loading-spinner').style.visibility = 'hidden'; // Hide loader
-                if (data.success) {
-                    showSuccessModal(); // Show success modal
+            requiredFields.forEach(field => {
+                if (field.value.trim() === '') {
+                    allFieldsFilled = false;
+                    field.classList.add('input-error'); // Highlight empty fields
                 } else {
-                    showErrorModal(data.message); // Show error modal
+                    field.classList.remove(
+                        'input-error'); // Remove highlight if field is filled
                 }
-            })
-            .catch(error => {
-                document.getElementById('loading-spinner').style.visibility = 'hidden'; // Hide loader
-                console.error('Error:', error);
-                showErrorModal('An error occurred during registration. Please try again.');
             });
+
+            if (!allFieldsFilled) {
+                showErrorModal("Please fill in all required fields before submitting.");
+                return; // Stop form submission if there are empty fields
+            }
+
+            // Show the loader and handle AJAX if all fields are filled
+            document.getElementById('loading-spinner').style.visibility = 'visible';
+
+            // Perform AJAX request
+            const formData = new FormData(form);
+
+            fetch('functions/registration.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('loading-spinner').style.visibility = 'hidden';
+                    if (data.success) {
+                        showSuccessModal();
+                    } else {
+                        showErrorModal(data.message || 'Registration failed. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('loading-spinner').style.visibility = 'hidden';
+                    console.error('Error:', error);
+                    showErrorModal('An error occurred during registration. Please try again.');
+                });
+        });
     });
+
 
     // Show error modal with custom message
     function showErrorModal(message) {

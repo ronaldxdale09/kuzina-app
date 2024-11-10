@@ -1,6 +1,6 @@
 <footer class="footer-wrap">
     <ul class="footer">
-        <li class="footer-item active">
+        <li class="footer-item ">
             <a href="homepage.php" class="footer-link">
                 <i class="bx bx-home icli"></i>
                 <span>Home</span>
@@ -13,19 +13,19 @@
             </a>
         </li>
         <li class="footer-item">
-            <a href="search.html" class="footer-link">
+            <a href="order_list.php" class="footer-link">
                 <i class="bx bx-book icli"></i>
                 <span>Orders</span>
             </a>
         </li>
         <li class="footer-item">
-            <a href="journal.html" class="footer-link">
+            <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="footer-link">
                 <i class="bx bx-bell icli"></i>
                 <span>Notification</span>
             </a>
         </li>
         <li class="footer-item">
-            <a href="cart.html" class="footer-link">
+            <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="footer-link">
                 <i class="bx bx-message icli"></i>
                 <span>Messages</span>
             </a>

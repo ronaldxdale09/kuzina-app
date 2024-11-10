@@ -1,0 +1,301 @@
+/* Modal and Offcanvas Styles */
+
+.order-details-modal.offcanvas-bottom {
+    height: 80vh !important;
+    /* Makes the modal taller */
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Modal Header */
+
+.offcanvas-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e2e8f0;
+    position: relative;
+}
+
+.offcanvas-header h5 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+}
+
+
+/* Modal Body */
+
+.offcanvas-body {
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.offcanvas-body .order-details {
+    display: grid;
+    gap: 20px;
+}
+
+
+/* Customer Info Section */
+
+.customer-info {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.customer-info h6 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.customer-info p {
+    margin: 8px 0;
+    color: #475569;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+/* Order Items List */
+
+.order-items {
+    margin: 20px 0;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.item-details {
+    flex: 1;
+}
+
+.item-name {
+    font-weight: 500;
+    color: #0f172a;
+    margin-bottom: 4px;
+}
+
+.item-price {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.item-quantity {
+    background: #f1f5f9;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    color: #475569;
+}
+
+
+/* Order Summary */
+
+.order-summary {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 16px;
+    margin-top: 20px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    color: #475569;
+}
+
+.summary-row.total {
+    border-top: 2px solid #e2e8f0;
+    margin-top: 8px;
+    padding-top: 12px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+
+/* Modal Footer */
+
+.offcanvas-footer {
+    padding: 20px 24px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    gap: 12px;
+    background: white;
+}
+
+.offcanvas-footer button {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: none;
+    font-size: 1rem;
+}
+
+.btn-outline {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.btn-outline:hover {
+    background: #e2e8f0;
+}
+
+.btn-solid {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-solid:hover {
+    background: var(--primary-hover);
+}
+
+
+/* Success Modal */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1060;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    opacity: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 24px;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.modal-item-info {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.modal-item-info h2 {
+    font-size: 1.5rem;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.modal-item-info p {
+    color: #475569;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+.btn-confirm {
+    background: var(--primary-color);
+    color: white;
+    padding: 12px 32px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 500;
+    transition: background 0.2s ease;
+}
+
+.btn-confirm:hover {
+    background: var(--primary-hover);
+}
+
+
+/* Loading State */
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #64748b;
+}
+
+.loading::after {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 3px solid #e2e8f0;
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s linear infinite;
+    margin-left: 8px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* Error Message */
+
+.error-message {
+    color: #ef4444;
+    background: #fee2e2;
+    padding: 12px;
+    border-radius: 8px;
+    margin: 12px 0;
+}
+
+
+/* Order Card Header */
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}

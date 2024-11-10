@@ -49,7 +49,8 @@ function registerCustomerHandler($data, $conn) {
         if ($userId) {
             // Set user cookies
             setCustomerCookies($userId, $data['first_name'], $data['last_name'], $data['email']);
-            return ['success' => true, 'message' => 'Registration successful!'];
+            $userId = $conn->insert_id; // Get the last inserted ID for customer
+            return ['success' => true, 'user_id' => $userId];
         } else {
             return ['success' => false, 'message' => 'Error: Could not register user.'];
         }

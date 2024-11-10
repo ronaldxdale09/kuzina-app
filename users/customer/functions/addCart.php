@@ -8,7 +8,7 @@ $response = ['success' => false, 'message' => ''];
 if (isset($_POST['action']) && $_POST['action'] === 'add') {
     $food_id = $_POST['food_id'];
     $quantity = $_POST['quantity'] ?? 1;
-    $customer_id = $_SESSION['customer_id'] ?? 1; // Assuming you have customer_id stored in the session
+    $customer_id = $_COOKIE['user_id'];
 
     // Validate the food ID, quantity, and customer ID
     if ($food_id && $quantity > 0 && $customer_id) {

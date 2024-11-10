@@ -3,9 +3,9 @@
     <div class="wrap">
         <div class="user-panel">
             <div class="media">
-                <a href="account.html"> <img src="assets/images/logo/logo49.png" alt="avatar" /></a>
+                <a href="homepage.php"> <img src="assets/images/logo/logo49.png" alt="avatar" /></a>
                 <div class="media-body">
-                    <a href="account.html" class="title-color font-sm"><?php echo  $_COOKIE['user_fname']?>
+                    <a href="homepage.php" class="title-color font-sm"><?php echo  $_COOKIE['user_fname']?>
                         <span class="content-color font-xs"><?php echo  $_COOKIE['user_email']?></span>
                     </a>
                 </div>

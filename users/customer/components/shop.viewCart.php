@@ -6,3 +6,24 @@
         </li>
     </ul>
 </footer>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('functions/footer.cart.fetch.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update footer with cart data
+                document.querySelector('.footer-item .font-xs').textContent =
+                    `${data.item_count} Item${data.item_count !== 1 ? 's' : ''}`;
+                document.querySelector('.footer-item .font-sm').textContent = `PHP ${data.total_price}`;
+            } else {
+                console.error('Failed to fetch cart data:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching cart data:', error);
+        });
+});
+</script>

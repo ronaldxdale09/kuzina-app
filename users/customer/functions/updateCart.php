@@ -7,7 +7,7 @@ $response = ['success' => false, 'message' => '', 'new_price' => 0, 'new_bag_tot
 if (isset($_POST['food_id']) && isset($_POST['quantity'])) {
     $food_id = intval($_POST['food_id']);
     $quantity = intval($_POST['quantity']);
-    $customer_id = 1; // Assume customer ID is stored in session
+    $customer_id = $_COOKIE['user_id'];
 
     if ($food_id > 0 && $customer_id > 0) {
         if ($quantity > 0) {

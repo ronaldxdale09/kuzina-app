@@ -5,8 +5,8 @@
 
 // Fetch the customer's address from the database
 $sql = "SELECT address_id, label, street_address, apartment, city, state, zip_code, country, is_default 
-        FROM customer_addresses 
-        WHERE customer_id = ? and is_default = ?";
+        FROM user_addresses 
+        WHERE user_id = ? and is_default = ?";
 $isDefault= 1;
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ii", $customer_id, $isDefault);

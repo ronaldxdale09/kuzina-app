@@ -14,6 +14,14 @@
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+
+/* Use this class to show the modal */
+
+.modal.show {
+    display: flex;
+    /* Flex display to center content */
+}
+
 .modal-content {
     background-color: #fff;
     padding: 20px;
@@ -22,6 +30,7 @@
     max-width: 400px;
     text-align: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
 }
 
 .modal-item-info p {

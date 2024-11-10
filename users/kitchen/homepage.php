@@ -1,10 +1,10 @@
 <?php include 'includes/header.php'; 
 
 // Check if kitchen user is logged in and retrieve kitchen ID
-$kitchen_id = $_COOKIE['kitchen_user_id'] ?? null;
+$kitchen_id = $_COOKIE['kitchen_id'] ?? null;
 
 if (!$kitchen_id) {
-    header("Location: kitchen_login.php");
+    header("Location: ../../kitchen_login.php");
     exit();
 }
 
@@ -33,44 +33,23 @@ $stmt->close();
     <!-- Skeleton loader End -->
 
     <!-- Header Start -->
+    <!-- Header Start -->
     <?php include 'navbar/main.navbar.php'; ?>
 
     <!-- Header End -->
 
     <!-- Sidebar Start -->
-    <a href="javascript:void(0)" class="overlay-sidebar"></a>
-    <aside class="header-sidebar">
-        <div class="wrap">
-            <div class="user-panel">
-                <div class="media">
-                    <a href="account.html"> <img src="assets/images/avatar/avatar.jpg" alt="avatar" /></a>
-                    <div class="media-body">
-                        <a href="account.html" class="title-color font-sm">Andrea Joanne
-                            <span class="content-color font-xs">andreajoanne@gmail.com</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Navigation Start -->
-            <?php include 'includes/navbar.php'; ?>
-            <!-- Navigation End -->
-        </div>
+    <!-- Navigation Start -->
+    <?php include 'includes/sidebar.php'; ?>
+    <!-- Navigation End -->
 
-        <div class="contact-us">
-            <span class="title-color">Contact Support</span>
-            <p class="content-color font-xs">If you have any problem,queries or questions feel free to reach out</p>
-            <a href="javascript:void(0)" class="btn-solid"> Contact Us </a>
-        </div>
-    </aside>
-    <!-- Sidebar End -->
 
     <!-- Main Start -->
     <main class="main-wrap dashboard-page mb-xxl">
 
         <!-- Order Statistics Section -->
         <?php include 'components/statistic.homepage.php'; ?>
-
 
 
         <!-- Revenue Chart Section -->
@@ -90,36 +69,10 @@ $stmt->close();
         </section>
 
         <!-- Popular Items Section -->
-        <section class="popular-items-section">
-            <div class="section-header">
-                <h4>Popular Items This Week</h4>
-                <a href="#" class="see-all">See All</a>
-            </div>
-            <div class="popular-items">
-                <?php
-        // Query to fetch popular items (you can customize the logic for 'popular' as needed)
-        $sql = "SELECT food_name, photo1 FROM food_listings WHERE available = 1 LIMIT 5";
-        $result = $conn->query($sql);
+      
 
-        // Check if results are available
-        if ($result->num_rows > 0) {
-            // Output data for each row
-            while ($row = $result->fetch_assoc()) {
-                // Use the food name and image dynamically
-                echo '<div class="item-card">';
-                echo '<img src="../../uploads/' . htmlspecialchars($row['photo1']) . '" alt="' . htmlspecialchars($row['food_name']) . '">';
-                echo '<p class="item-name">' . htmlspecialchars($row['food_name']) . '</p>';
-                echo '</div>';
-            }
-        } else {
-            echo "<p>No popular items found.</p>";
-        }
 
-        // Close the connection
-        $conn->close();
-        ?>
-            </div>
-        </section>
+
         <!-- Delivery Performance Section -->
         <section class="delivery-performance-section">
             <div class="section-header">
@@ -134,10 +87,6 @@ $stmt->close();
                 <div class="metric-item">
                     <h3>10</h3>
                     <p>Orders In Transit</p>
-                </div>
-                <div class="metric-item">
-                    <h3>2</h3>
-                    <p>Canceled Orders</p>
                 </div>
             </div>
         </section>

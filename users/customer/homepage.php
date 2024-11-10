@@ -49,7 +49,7 @@
                     <h4 class="title-color">Everyday Essentials</h4>
                     <p class="content-color">Best price ever of all the time</p>
                 </div>
-                <a href="shop.html" class="font-theme">See More</a>
+                <a href="shop.php" class="font-theme">See More</a>
             </div>
 
             <div class="product-slider">
@@ -70,7 +70,7 @@
                     <h4 class="title-color">Peoples Favorite!</h4>
                     <p class="content-color">Pay less, Get More</p>
                 </div>
-                <a href="shop.html" class="font-theme">See More</a>
+                <a href="shop.php" class="font-theme">See More</a>
             </div>
 
             <div class="product-slider">

@@ -8,7 +8,9 @@
     <!-- Header Start -->
     <header class="header">
         <div class="logo-wrap">
-            <a href="homepage.php"><i class="iconly-Arrow-Left-Square icli"></i></a>
+            <a href="javascript:void(0);" onclick="window.history.back();">
+                <i class="iconly-Arrow-Left-Square icli"></i>
+            </a>
             <h1 class="title-color font-md">Select delivery address</h1>
         </div>
     </header>
@@ -21,9 +23,9 @@
             <button class="d-block btn-outline-grey" data-bs-toggle="offcanvas" data-bs-target="#add-address"
                 aria-controls="add-address">+ Add New Address</button>
 
-            <?php       
-            include 'fetch/address.select.php';
-            ?>
+            <div id="address-list">
+                <?php include 'fetch/address.select.php'; ?>
+            </div>
         </section>
         <!-- Address Section End -->
     </main>
@@ -31,15 +33,15 @@
 
     <!-- Footer Start -->
     <footer class="footer-wrap footer-button">
-    <a href="javascript:void(0);" id="confirm-address" class="font-md">Select Address</a>
-</footer>
+        <a href="javascript:void(0);" id="confirm-address" class="font-md">Select Address</a>
+    </footer>
     <!-- Footer End -->
 
     <!-- Add New Address Off Canvas Start -->
     <?php    include 'modal/modal.address.php'; ?>
 
 
-  
+
     <!-- Add New Address Off Canvas End -->
 
     <!-- jquery 3.6.0 -->

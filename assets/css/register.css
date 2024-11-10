@@ -296,3 +296,36 @@ p.font-sm {
     background-color: #5a1621;
     /* Darker shade for hover */
 }
+
+textarea.form-control {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    /* Adjust to match your theme color */
+    background-color: #f6f6f6;
+    /* Light background to blend with your theme */
+    border: 1px solid #d9d9d9;
+    /* Subtle border */
+    border-radius: 8px;
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+    /* Slight inner shadow for depth */
+    resize: none;
+    /* Disable resizing if not desired */
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+textarea.form-control:focus {
+    border-color: #b71c1c;
+    /* Highlight border on focus (matching the theme color) */
+    box-shadow: 0 0 0 3px rgba(183, 28, 28, 0.1);
+    /* Soft shadow to match theme */
+}
+
+textarea.form-control::placeholder {
+    color: #888888;
+    /* Light placeholder color */
+    font-style: italic;
+}

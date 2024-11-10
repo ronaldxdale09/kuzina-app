@@ -149,14 +149,7 @@
                 </div>
             </div>
 
-            <div class="prize-select">
-                <h5 class="title-color font-md">Price Range</h5>
-                <div class="filter-content">
-                    <div class="range-slider pricing-slider">
-                        <input type="text" class="js-range-slider" value="" />
-                    </div>
-                </div>
-            </div>
+          
         </div>
         <div class="offcanvas-footer">
             <div class="btn-box">

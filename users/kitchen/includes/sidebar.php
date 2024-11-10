@@ -3,10 +3,10 @@
     <div class="wrap">
         <div class="user-panel">
             <div class="media">
-                <a href="account.html"> <img src="assets/images/logo/logo49.png" alt="avatar" /></a>
+                <a href="homepage.php"> <img src="assets/images/logo/logo49.png" alt="avatar" /></a>
                 <div class="media-body">
-                    <a href="account.html" class="title-color font-sm"><?php echo  $_COOKIE['user_fname']?>
-                        <span class="content-color font-xs"><?php echo  $_COOKIE['user_email']?></span>
+                    <a href="accounthomepage.php" class="title-color font-sm"><?php echo  $_COOKIE['kitchen_fname']?>
+                        <span class="content-color font-xs"><?php echo  $_COOKIE['kitchen_user_email']?></span>
                     </a>
                 </div>
             </div>
@@ -30,13 +30,6 @@
             <a class="arrow" href="pages-list.html"><i data-feather="chevron-right"></i></a>
         </li> -->
 
-                <li>
-                    <a href="shop.php" class="nav-link title-color font-sm">
-                        <i class="iconly-Category icli"></i>
-                        <span>Shop by Category</span>
-                    </a>
-                    <a class="arrow" href="category-wide.html"><i data-feather="chevron-right"></i></a>
-                </li>
 
                 <li>
                     <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="nav-link title-color font-sm">

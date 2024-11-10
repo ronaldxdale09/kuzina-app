@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (password_verify($password, $hashed_password)) {
             // Set cookies for kitchen user details
-            setcookie('kitchen_user_id', $kitchen_id, time() + (86400 * 30), "/");
+            setcookie('kitchen_id', $kitchen_id, time() + (86400 * 30), "/");
             setcookie('kitchen_fname', $fname, time() + (86400 * 30), "/");
             setcookie('kitchen_lname', $lname, time() + (86400 * 30), "/");
 

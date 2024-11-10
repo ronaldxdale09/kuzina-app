@@ -1,7 +1,7 @@
 <?php
 
 // Assume $kitchen_id is set (replace this line if it's sourced differently)
-$kitchen_id = $_COOKIE['kitchen_user_id'] ?? null; 
+$kitchen_id = $_COOKIE['kitchen_id'] ?? null; 
 
 if ($kitchen_id) {
     // Query to count running orders specific to the kitchen

@@ -1,7 +1,7 @@
 <?php
 include '../../../connection/db.php'; // Include your DB connection
 
-$customer_id = 1; // Assuming customer_id is available in the session or hardcoded for now
+$customer_id = $_COOKIE['user_id'];
 
 $sql = "SELECT ci.quantity, fl.price 
         FROM cart_items ci

@@ -1,4 +1,5 @@
 <?php include 'includes/header.php';
+session_start();
 
 
 // Check if the 'user_id' cookie is set and not empty
@@ -6,6 +7,14 @@ if (isset($_COOKIE['user_id']) && !empty($_COOKIE['user_id'])) {
     // Proceed to customer homepage
     header("Location: users/customer/homepage.php"); // Replace 'customer_homepage.php' with the actual path to your customer homepage
     exit(); // Make sure to exit after redirection
+}
+
+
+// Check if the 'onboarding_seen' cookie is set
+if (!isset($_COOKIE['onboarding_seen'])) {
+    // Redirect the user to the onboarding page if the cookie is not set
+    header("Location: onboarding.php"); // Replace with the actual path to your onboarding file
+    exit();
 }
 
 ?>
@@ -58,7 +67,7 @@ if (isset($_COOKIE['user_id']) && !empty($_COOKIE['user_id'])) {
                 <!-- Buttons to switch to Kitchen or Rider Login -->
                 <div class="login-options">
                     <a href="kitchen_login.php" class="btn-outline">Login as Kitchen</a>
-                    <a href="rider_login.php" class="btn-outline">Login as Rider</a>
+                    <a href="#" class="btn-outline">Login as Rider</a>
                 </div>
             </form>
             <!-- Login Form End -->

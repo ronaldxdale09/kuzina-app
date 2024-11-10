@@ -10,35 +10,11 @@
     <!-- Skeleton loader End -->
 
     <!-- Header Start -->
-    <?php include 'includes/top_header.php'; ?>
+    <?php include 'navbar/shop.navbar.php'; ?>
     <!-- Header End -->
 
     <!-- Sidebar Start -->
-    <a href="javascript:void(0)" class="overlay-sidebar"></a>
-    <aside class="header-sidebar">
-        <div class="wrap">
-            <div class="user-panel">
-                <div class="media">
-                    <a href="account.html"> <img src="assets/images/avatar/avatar.jpg" alt="avatar" /></a>
-                    <div class="media-body">
-                        <a href="account.html" class="title-color font-sm">Andrea Joanne
-                            <span class="content-color font-xs">andreajoanne@gmail.com</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Navigation Start -->
-            <?php include 'includes/navbar.php'; ?>
-            <!-- Navigation End -->
-        </div>
-
-        <div class="contact-us">
-            <span class="title-color">Contact Support</span>
-            <p class="content-color font-xs">If you have any problem, queries, or questions feel free to reach out</p>
-            <a href="javascript:void(0)" class="btn-solid"> Contact Us </a>
-        </div>
-    </aside>
+   
     <!-- Sidebar End -->
 
     <!-- Main Start -->

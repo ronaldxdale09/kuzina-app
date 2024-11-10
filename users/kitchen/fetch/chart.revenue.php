@@ -1,7 +1,7 @@
 <?php
 include '../../connection/db.php';
 
-$kitchen_id = $_COOKIE['kitchen_user_id'] ?? null;
+$kitchen_id = $_COOKIE['kitchen_id'] ?? null;
 $duration = $_GET['duration'] ?? 'daily';
 $totalRevenue = 0;
 $chartData = [];

@@ -1,5 +1,5 @@
 <?php 
-$kitchen_id = $_COOKIE['kitchen_user_id'] ?? null;
+$kitchen_id = $_COOKIE['kitchen_id'] ?? null;
 
 if (!$kitchen_id) {
     echo "Kitchen ID not found. Please log in.";
@@ -55,7 +55,7 @@ function renderMenuItems($items) {
             <i class="bx bx-dots-horizontal-rounded"></i> <!-- Dots icon for menu -->
         </button>
         <div class="action-dropdown">
-            <a href="edit_item.php?id=<?= $item['food_id'] ?>" class="dropdown-option">Edit</a>
+            <a href="#" class="dropdown-option">Edit</a>
             <a href="javascript:void(0);" class="dropdown-option"
                 onclick="openRemoveModal('<?= $item['food_id'] ?>', '<?= htmlspecialchars($item['food_name']) ?>', '<?= number_format($item['price'], 2) ?>')">
                 Remove
@@ -68,6 +68,23 @@ function renderMenuItems($items) {
 <?php endforeach;
 } ?>
 
+
+
+<!-- Main End -->
+<div id="removeModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <h2>Confirm Removal</h2>
+        <p>Are you sure you want to remove the following item?</p>
+        <div class="modal-item-info">
+            <p><strong>Food ID:</strong> <span id="modalFoodId"></span></p>
+            <p><strong>Food Name:</strong> <span id="modalFoodName"></span></p>
+            <p><strong>Price:</strong> PHP <span id="modalFoodPrice"></span></p>
+        </div>
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-confirm" onclick="confirmRemoval()">Confirm</button>
+    </div>
+</div>
 
 <script>
 function toggleDropdown(button) {

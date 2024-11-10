@@ -76,7 +76,7 @@ $stmt->close();
             </div>
             <div class="code">
                 <span class="content-color">Use Code: </span>
-                <a href="javascript:void(0)">SCD450</a>
+                <a href="javascript:void(0)">KUZINA123</a>
             </div>
         </div>
         <div class="circle-5 left">

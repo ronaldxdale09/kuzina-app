@@ -7,8 +7,8 @@ session_unset(); // Unset all session variables
 session_destroy(); // Destroy the session itself
 
 // Clear cookies (if any user-related cookies are set)
-if (isset($_COOKIE['kitchen_user_id'])) {
-    setcookie('kitchen_user_id', '', time() - 3600, "/"); // Clear the user_id cookie
+if (isset($_COOKIE['kitchen_id'])) {
+    setcookie('kitchen_id', '', time() - 3600, "/"); // Clear the user_id cookie
 }
 
 if (isset($_COOKIE['kitchen_fname'])) {

@@ -1,15 +1,15 @@
 <section class="product-review pb-0">
     <div class="top-content">
-        <h3 class="title-color">Product Review(15)</h3>
+        <h3 class="title-color">Product Review(2)</h3>
         <a href="javascript:void(0)" data-bs-toggle="offcanvas" data-bs-target="#all-review" class="font-xs">See
             all</a>
     </div>
     <div class="review-wrap">
         <div class="review-box">
             <div class="media">
-                <img src="assets/images/avatar/avatar.jpg" alt="avatar" />
+                <img src="assets/images/avatar/avatar2.png" alt="avatar" />
                 <div class="media-body">
-                    <h4 class="font-sm title-color">Andrea Joanne</h4>
+                    <h4 class="font-sm title-color">Reeham Aranan Taladro</h4>
                     <div class="rating">
                         <i data-feather="star"></i>
                         <i data-feather="star"></i>
@@ -19,14 +19,13 @@
                     </div>
                 </div>
             </div>
-            <p class="font-sm content-color">It's a really cute skirt! I didn't expect to feel so good in a
-                polyester material. The print is slightly</p>
+            <p class="font-sm content-color">Taste good!</p>
         </div>
         <div class="review-box">
             <div class="media">
-                <img src="assets/images/avatar/avatar.jpg" alt="avatar" />
+                <img src="assets/images/avatar/avatar2.png" alt="avatar" />
                 <div class="media-body">
-                    <h4 class="font-sm title-color">Andrea Joanne</h4>
+                    <h4 class="font-sm title-color">Mikka Esparcia</h4>
                     <div class="rating">
                         <i data-feather="star"></i>
                         <i data-feather="star"></i>
@@ -36,8 +35,7 @@
                     </div>
                 </div>
             </div>
-            <p class="font-sm content-color">It's a really cute skirt! I didn't expect to feel so good in a
-                polyester material. The print is slightly</p>
+            <p class="font-sm content-color">Food yummy! Healthy Food!</p>
         </div>
     </div>
 </section>
@@ -72,7 +70,7 @@
         </div>
         <div class="review-box">
             <div class="media">
-                <img src="assets/images/avatar/avatar.jpg" alt="avatar" />
+                <img src="assets/images/avatar/avatar2.png" alt="avatar" />
                 <div class="media-body">
                     <h4 class="font-sm title-color">Andrea Joanne</h4>
                     <div class="rating">
@@ -89,7 +87,7 @@
         </div>
         <div class="review-box">
             <div class="media">
-                <img src="assets/images/avatar/avatar.jpg" alt="avatar" />
+                <img src="assets/images/avatar/avatar2.png" alt="avatar" />
                 <div class="media-body">
                     <h4 class="font-sm title-color">Andrea Joanne</h4>
                     <div class="rating">
@@ -106,7 +104,7 @@
         </div>
         <div class="review-box">
             <div class="media">
-                <img src="assets/images/avatar/avatar.jpg" alt="avatar" />
+                <img src="assets/images/avatar/avatar2.png" alt="avatar" />
                 <div class="media-body">
                     <h4 class="font-sm title-color">Andrea Joanne</h4>
                     <div class="rating">

@@ -6,7 +6,7 @@ $response = ['success' => false, 'message' => ''];
 // Check if the POST data exists
 if (isset($_POST['food_id'])) {
     $food_id = intval($_POST['food_id']);
-    $customer_id = 1; // Assume customer ID is stored in session
+    $customer_id = $_COOKIE['user_id'];
 
     if ($food_id > 0 && $customer_id > 0) {
         // Delete item from the cart

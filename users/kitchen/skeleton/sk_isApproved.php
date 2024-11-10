@@ -1,6 +1,6 @@
 <div class="skeleton-loader">
       <!-- Header Start -->
-      <?php include 'includes/top_header.php'; ?>
+      <?php include 'navbar/main.navbar.php'; ?>
 
       <!-- Header End -->
 

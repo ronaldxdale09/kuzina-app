@@ -1,4 +1,5 @@
 <?php include 'includes/header.php'; ?>
+<link rel="stylesheet" href="assets/boxicons/css/boxicons.min.css">
 
 <!-- Head End -->
 
@@ -34,10 +35,10 @@
         <section class="recent-search pb-0">
             <h1 class="font-md title-color fw-600 title-mb">Popular Search</h1>
             <ul class="custom-scroll-hidden">
-                <li class="font-sm title-color"><a href="shop.html"> Vegetables</a></li>
-                <li class="font-sm title-color"><a href="shop.html"> Fruits</a></li>
-                <li class="font-sm title-color"><a href="shop.html"> Beauty</a></li>
-                <li class="font-sm title-color"><a href="shop.html"> Fruits</a></li>
+                <li class="font-sm title-color"><a href="shop.php"> Vegetables</a></li>
+                <li class="font-sm title-color"><a href="shop.php"> Fruits</a></li>
+                <li class="font-sm title-color"><a href="shop.php"> Beauty</a></li>
+                <li class="font-sm title-color"><a href="shop.php"> Fruits</a></li>
             </ul>
         </section>
         <!-- Recent Search Section End -->

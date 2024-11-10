@@ -31,5 +31,11 @@
                 <span>Cart</span>
             </a>
         </li>
+        <li class="footer-item">
+            <a href="education.php" class="footer-link">
+            <i class='bx bx-chalkboard'></i>
+                <span>Learn</span>
+            </a>
+        </li>
     </ul>
 </footer>

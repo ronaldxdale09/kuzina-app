@@ -1,0 +1,566 @@
+/* ==========================================================================
+   1. Root Variables and Base Styles
+   ========================================================================== */
+
+ :root {
+    --primary-color: #8a0b10;
+    --primary-hover: #f97316;
+    --secondary-color: #f97316;
+    --secondary-hover: #ea580c;
+    --danger-color: #ef4444;
+    --danger-hover: #000000;
+    --background-color: #f8fafc;
+    --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --border-radius: 16px;
+}
+
+body {
+    background-color: var(--background-color);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+
+/* ==========================================================================
+   2. Layout & Containers
+   ========================================================================== */
+
+.main-wrap {
+    max-width: 768px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.order-list {
+    display: grid;
+    gap: 16px;
+    padding: 8px 4px;
+}
+
+.orderlist-page {
+    min-height: 100vh;
+    padding-bottom: 140px;
+    /* Increased to account for buttons + app bar */
+}
+
+
+/* ==========================================================================
+   3. Navigation Tabs
+   ========================================================================== */
+
+.nav-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background: white;
+    border-radius: var(--border-radius);
+    margin: 20px auto;
+    box-shadow: var(--card-shadow);
+    border: none;
+    max-width: 600px;
+    width: 100%;
+}
+
+.nav-tabs .nav-link {
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    color: #64748b;
+    font-weight: 500;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    border: none;
+    white-space: nowrap;
+    font-size: 0.9rem;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.nav-tabs .nav-link:hover:not(.active) {
+    background-color: #f1f5f9;
+}
+
+
+/* ==========================================================================
+   4. Order Cards
+   ========================================================================== */
+
+.order-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-card:active {
+    transform: scale(0.98);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.order-number {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0;
+}
+
+.order-info {
+    display: grid;
+    gap: 12px;
+}
+
+.order-info h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+}
+
+.order-info p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #475569;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.order-info strong {
+    color: #0f172a;
+    font-weight: 500;
+}
+
+
+/* ==========================================================================
+   5. Status Badges
+   ========================================================================== */
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.status-confirmed {
+    background-color: #dcfce7;
+    color: var(--primary-color);
+}
+
+.status-preparing {
+    background-color: #fef3c7;
+    color: #d97706;
+}
+
+.status-preparing {
+    background-color: #fef3c7;
+    color: #d97706;
+}
+
+.status-pickup {
+    background-color: #79001c;
+    color: #f7f7f7;
+}
+
+
+/* ==========================================================================
+   6. Buttons & Actions
+   ========================================================================== */
+
+.order-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+
+/* View/Process Buttons */
+
+.btn-view,
+.btn-process {
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 500;
+    text-align: center;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-view {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-view:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-process {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-process:hover {
+    background-color: var(--secondary-hover);
+}
+
+
+/* Details Button */
+
+.btn-details {
+    padding: 12px 20px;
+    border-radius: 12px;
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 500;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-details:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.btn-details i {
+    font-size: 1em;
+}
+
+
+/* Print/Ready Buttons */
+
+.btn-print {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-print:hover {
+    background-color: var(--secondary-color);
+}
+
+.btn-ready {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-ready:hover {
+    background-color: var(--secondary-color);
+}
+
+
+/* ==========================================================================
+   7. Product List & Items
+   ========================================================================== */
+
+.product-list {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+}
+
+.product-item {
+    display: flex;
+    gap: 12px;
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 12px;
+    transition: transform 0.2s ease;
+}
+
+.product-item:hover {
+    transform: translateY(-2px);
+}
+
+.product-image {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.food-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+
+/* Product Information */
+
+.product-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 8px 0;
+}
+
+.product-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.meta-label {
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.meta-value {
+    color: #0f172a;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+
+/* Product Totals */
+
+.product-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px dashed #e2e8f0;
+}
+
+.total-label {
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.total-value {
+    color: #0f172a;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+
+/* ==========================================================================
+   8. Order Details & Summary
+   ========================================================================== */
+
+.order-details {
+    padding: 16px;
+    background: white;
+    border-radius: 16px;
+}
+
+.order-summary {
+    background: #f1f5f9;
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 20px;
+}
+
+.order-summary h5 {
+    color: #0f172a;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    text-align: right;
+}
+
+
+/* ==========================================================================
+   9. Empty States
+   ========================================================================== */
+
+.no-orders-container {
+    text-align: center;
+    padding: 40px 20px;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+}
+
+.no-orders-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 16px;
+    opacity: 0.8;
+}
+
+.no-orders-message {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+.no-orders-subtext {
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #64748b;
+}
+
+
+/* ==========================================================================
+   10. Modal Components
+   ========================================================================== */
+
+.modal-footer-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 16px;
+    background: white;
+    border-top: 1px solid #e2e8f0;
+}
+
+
+/* ==========================================================================
+   11. Loading States
+   ========================================================================== */
+
+.loading-skeleton {
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 8px;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+
+/* ==========================================================================
+   12. Section Headers
+   ========================================================================== */
+
+.section-title {
+    color: #0f172a;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+
+/* ==========================================================================
+   13. Media Queries
+   ========================================================================== */
+
+@media (max-width: 640px) {
+    .main-wrap {
+        padding: 12px;
+    }
+    .nav-tabs {
+        padding: 6px;
+    }
+    .nav-tabs .nav-link {
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+    .order-card {
+        padding: 16px;
+    }
+    .order-number {
+        font-size: 1rem;
+    }
+    .order-info h5 {
+        font-size: 0.95rem;
+    }
+    .order-info p {
+        font-size: 0.85rem;
+    }
+    .btn-details {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+    .status-badge {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-item {
+        padding: 12px;
+    }
+    .product-image {
+        width: 48px;
+        height: 48px;
+    }
+    .product-name {
+        font-size: 0.95rem;
+    }
+    .meta-item {
+        font-size: 0.8rem;
+    }
+    .total-label,
+    .total-value {
+        font-size: 0.8rem;
+    }
+}
+
+
+/* ==========================================================================
+   14. Print Styles
+   ========================================================================== */
+
+@media print {
+    .product-item {
+        break-inside: avoid;
+        border: 1px solid #e2e8f0;
+        margin-bottom: 10px;
+    }
+    .product-image {
+        width: 48px;
+        height: 48px;
+    }
+}

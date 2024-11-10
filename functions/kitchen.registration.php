@@ -74,7 +74,9 @@ function registerKitchenHandler($data, $conn) {
         if ($userId) {
             // Set user cookies
             setKitchenCookies($userId, $data['fname'], $data['email']);
-            return ['success' => true, 'message' => 'Registration successful!'];
+          // After successful insertion
+            $kitchenId = $conn->insert_id; // Get the last inserted ID for kitchen
+            return ['success' => true, 'kitchen_id' => $kitchenId];
         } else {
             return ['success' => false, 'message' => 'Error: Could not register user.'];
         }

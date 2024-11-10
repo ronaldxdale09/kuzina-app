@@ -15,11 +15,11 @@
     <!-- Header Start -->
     <header class="header">
       <div class="logo-wrap">
-        <a href="homepage.php"><i class="iconly-Arrow-Left-Square icli"></i></a>
+        <a href="index.html"><i class="iconly-Arrow-Left-Square icli"></i></a>
         <h1 class="title-color font-md">My Cart <span class="font-sm content-color">(4 Items)</span></h1>
       </div>
       <div class="avatar-wrap">
-        <a href="homepage.php">
+        <a href="index.html">
           <i class="iconly-Home icli"></i>
         </a>
       </div>
