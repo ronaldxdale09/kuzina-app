@@ -16,39 +16,38 @@
 
             // Retrieve the product ID from the URL
             $productId = $_GET['prod'] ?? null;
-
-        if ($productId) {
-            // Prepare a statement to fetch the product details by food_id
-            $stmt = $conn->prepare("SELECT food_name, price, description, photo1, photo2, photo3, diet_type_suitable, allergens FROM food_listings WHERE food_id = ?");
+                $stmt = $conn->prepare("
+                SELECT f.*,k.kitchen_id, k.fname, k.lname, k.description as kitchen_desc, k.photo as kitchen_photo 
+                FROM food_listings f
+                JOIN kitchens k ON f.kitchen_id = k.kitchen_id 
+                WHERE f.food_id = ?
+            ");
             $stmt->bind_param("i", $productId);
             $stmt->execute();
             $result = $stmt->get_result();
-
-            // Check if the product exists
+            
             if ($result->num_rows > 0) {
-                // Fetch product data
                 $product = $result->fetch_assoc();
-
-                // Assign values to variables for use in the HTML
                 $foodName = htmlspecialchars($product['food_name']);
                 $price = number_format($product['price'], 2);
                 $description = htmlspecialchars($product['description']);
                 $photo1 = $product['photo1'];
-                $photo2 = $product['photo2'];
-                $photo3 = $product['photo3'];
                 $dietType = htmlspecialchars($product['diet_type_suitable']);
                 $allergens = htmlspecialchars($product['allergens']);
-            } else {
-                // Handle case where product is not found
-                echo "Product not found.";
-                exit;
+                
+                // Kitchen details
+                $kitchen_id = htmlspecialchars($product['kitchen_id']);
+
+                $kitchenName = htmlspecialchars($product['fname'] . ' ' . $product['lname']);
+                $kitchenDesc = htmlspecialchars($product['kitchen_desc']);
+                $kitchenPhoto = $product['kitchen_photo'];
+                
+                // Nutritional info
+                $protein = htmlspecialchars($product['protein']);
+                $carbs = htmlspecialchars($product['carbs']);
+                $fat = htmlspecialchars($product['fat']);
+                $calories = htmlspecialchars($product['calories']);
             }
-            $stmt->close();
-        } else {
-            // Handle case where prod is missing in the URL
-            echo "No product specified.";
-            exit;
-        }
         ?>
     <!-- Main Start -->
     <main class="main-wrap product-page mb-xxl">
@@ -82,18 +81,18 @@
         <?php include 'components/prod.review.php'; ?>
         <!-- Random Product Start -->
         <br>
-        <?php include 'components/random.product.php'; ?>
+        <?php include 'components/kitchen.product.php'; ?>
         <section class="recently-viewed">
             <div class="top-content">
                 <div>
-                    <h4 class="title-color">Lowest Price</h4>
+                    <h4 class="title-color">More From this Kitchen</h4>
                     <p class="font-xs content-color">Pay less, Get More</p>
                 </div>
-                <a href="shop.html" class="font-xs font-theme">See all</a>
+                <a href="shop.php" class="font-xs font-theme">See all</a>
             </div>
             <div class="product-slider">
                 <?php
-                fetch_and_render_random_products($conn); 
+           fetch_and_render_kitchen_products($conn, $kitchen_id);
                 ?>
             </div>
         </section>

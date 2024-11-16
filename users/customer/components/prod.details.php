@@ -10,19 +10,45 @@
     </div>
     <div class="price"><span>PHP <?php echo $price; ?></span></div>
 
+    <div class="nutritional-info">
+        <h4>Nutritional Information</h4>
+        <div class="nutrition-grid">
+            <div class="nutrition-item">
+                <span class="label">Calories</span>
+                <span class="value"><?php echo $calories; ?></span>
+            </div>
+            <div class="nutrition-item">
+                <span class="label">Protein</span>
+                <span class="value"><?php echo $protein; ?>g</span>
+            </div>
+            <div class="nutrition-item">
+                <span class="label">Carbs</span>
+                <span class="value"><?php echo $carbs; ?>g</span>
+            </div>
+            <div class="nutrition-item">
+                <span class="label">Fat</span>
+                <span class="value"><?php echo $fat; ?>g</span>
+            </div>
+        </div>
+    </div>
+    <div class="dietary-info">
+        <p class="content-color font-base">
+            <strong>Diet Type:</strong> <?php echo $dietType; ?><br>
+            <strong>Allergens:</strong> <?php echo $allergens; ?>
+        </p>
+    </div>
     <section class="kitchen-details">
         <div class="kitchen-profile">
             <div class="kitchen-img">
-                <img src="assets/images/avatar/avatar.jpg" alt="Kitchen Profile Picture">
+                <img src="../../uploads/profile/<?php echo htmlspecialchars($kitchenPhoto); ?>"
+                    alt="Kitchen Profile Picture">
             </div>
             <div class="kitchen-info">
-                <h3 class="kitchen-name">Chef Maria's Kitchen</h3>
-                <p class="kitchen-description">Known for authentic homemade recipes that bring the warmth of
-                    home-cooked meals to your table. Taste the difference with our specially crafted dishes.</p>
+                <h3 class="kitchen-name"><?php echo $kitchenName; ?>'s Kitchen</h3>
+                <p class="kitchen-description"><?php echo $kitchenDesc; ?></p>
             </div>
         </div>
     </section>
-
 
     <!-- Product Detail Start -->
     <div class="product-detail section-p-t">
@@ -33,26 +59,6 @@
 
         <!-- Product Detail Accordion Start -->
         <div class="accordion" id="accordionExample">
-
-            <!-- Product Disclaimer -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Product Disclaimer
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <p class="content-color font-base">
-                            Please consult with your healthcare provider for more information on potential
-                            allergens
-                            in this product.
-                        </p>
-                    </div>
-                </div>
-            </div>
 
             <!-- Features & Details -->
             <div class="accordion-item">
@@ -96,6 +102,4 @@ function getKitchenDetails(foodId) {
             console.error('Error fetching kitchen details:', error);
         });
 }
-
-
 </script>

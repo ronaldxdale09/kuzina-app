@@ -1,6 +1,4 @@
 <?php include 'includes/header.php'; 
-// Start the session if not already started
-session_start();
 
 // Check if the cookie is not set
 if (!isset($_COOKIE['onboarding_seen'])) {

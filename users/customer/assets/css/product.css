@@ -347,3 +347,39 @@
     color: #666;
     margin-top: 0.2rem;
 }
+
+.nutritional-info {
+    margin: 20px 0;
+}
+
+.nutrition-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.nutrition-item {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nutrition-item .label {
+    font-weight: 500;
+    color: #666;
+}
+
+.nutrition-item .value {
+    font-weight: 600;
+    color: #502121;
+}
+
+.dietary-info {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}

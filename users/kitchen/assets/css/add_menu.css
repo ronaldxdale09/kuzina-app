@@ -305,3 +305,73 @@ select {
     border-radius: 10px;
     text-align: center;
 }
+
+.details-section {
+    margin-bottom: 20px;
+}
+
+.details-section label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #4e0707;
+}
+
+.details-section textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 5px;
+    transition: border 0.3s ease;
+    resize: vertical;
+}
+
+.details-section textarea:focus {
+    border: 1px solid #d22701;
+    outline: none;
+}
+
+.nutrition-section {
+    margin-bottom: 20px;
+}
+
+.nutrition-section .nutrition-label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #4e0707;
+}
+
+.nutrition-section .nutrition-inputs {
+    display: flex;
+    gap: 10px;
+}
+
+.nutrition-section .nutrition-item {
+    flex-grow: 1;
+}
+
+.nutrition-section .nutrition-item label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #4e0707;
+}
+
+.nutrition-section .nutrition-item input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 5px;
+    transition: border 0.3s ease;
+}
+
+.nutrition-section .nutrition-item input:focus {
+    border: 1px solid #d22701;
+    outline: none;
+}

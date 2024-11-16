@@ -1,0 +1,451 @@
+:root {
+    --primary-color: #D22701;
+    --secondary-color: #4E0707;
+    --accent-color: #FF670E;
+    --background-color: #f8f9fa;
+    --card-background: #ffffff;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --border-radius: 16px;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.order-tracking-page {
+    min-height: 100vh;
+    background-color: var(--background-color);
+}
+
+.map-section {
+    height: 35vh;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.tracking-content {
+    position: relative;
+    margin-top: -20px;
+    z-index: 2;
+}
+
+.status-timeline {
+    background: var(--card-background);
+    margin: 0 16px;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    position: relative;
+}
+
+.status-step {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    padding: 8px 0;
+}
+
+.status-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-color);
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.status-icon.active {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 0 0 4px rgba(210, 39, 1, 0.2);
+}
+
+.status-line {
+    position: absolute;
+    left: 38px;
+    width: 2px;
+    height: 100%;
+    background: #e2e8f0;
+    z-index: 0;
+}
+
+.location-section {
+    padding: 20px 16px;
+    background: var(--background-color);
+}
+
+.delivery-status {
+    margin-bottom: 24px;
+}
+
+.time-box {
+    background: var(--card-background);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-shadow: var(--shadow-md);
+}
+
+.status-label {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.time-display {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.delivery-card {
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+.card-header {
+    padding: 16px;
+    background: var(--background-color);
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.card-content {
+    padding: 16px;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.profile-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-info h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.profile-info span {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.action-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.action-button:active {
+    background: var(--secondary-color);
+}
+
+.address-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 12px 0;
+}
+
+.address-item:not(:last-child) {
+    border-bottom: 1px solid var(--background-color);
+}
+
+.address-item i {
+    font-size: 1.25rem;
+    color: var(--primary-color);
+    margin-top: 4px;
+}
+
+.address-details h4 {
+    margin: 0 0 4px 0;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+}
+
+.address-details p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.view-details-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.view-details-btn:active {
+    background: var(--secondary-color);
+}
+
+@media (min-width: 768px) {
+    .tracking-content {
+        max-width: 600px;
+        margin: -20px auto 0;
+        padding: 0 16px;
+    }
+}
+
+
+/* Hide the routing instructions completely */
+
+.leaflet-routing-container {
+    display: none !important;
+}
+
+
+/* If you want to keep routing line but hide instructions */
+
+.leaflet-routing-alt {
+    display: none !important;
+}
+
+
+/* Hide the entire control but keep the route line */
+
+.leaflet-routing-container-hide {
+    display: none !important;
+}
+
+
+/* Additional options to ensure instructions are hidden */
+
+.leaflet-routing-geocoders {
+    display: none !important;
+}
+
+.leaflet-routing-instructions {
+    display: none !important;
+}
+
+
+/* Order Details Offcanvas Styles */
+
+.order-details.offcanvas-bottom {
+    height: auto;
+    max-height: 80vh;
+    border-radius: 20px 20px 0 0;
+}
+
+.order-details .offcanvas-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.order-details .offcanvas-body {
+    padding: 20px;
+}
+
+
+/* Order Items Styles */
+
+.order-items {
+    margin-bottom: 24px;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.order-item .item-details {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.order-item .quantity {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.order-item .item-name {
+    color: var(--text-primary);
+}
+
+.order-item .item-price {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+
+/* Summary Styles */
+
+.order-summary {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    color: var(--text-secondary);
+}
+
+.summary-item.total {
+    border-top: 1px solid #e2e8f0;
+    margin-top: 8px;
+    padding-top: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.total-amount {
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+
+/* Footer Styles */
+
+.order-details .offcanvas-footer {
+    padding: 16px 20px;
+    border-top: 1px solid #e2e8f0;
+    background-color: white;
+}
+
+.btn-box {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-box button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.btn-outline {
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    background: transparent;
+}
+
+.btn-solid {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+
+/* Animation */
+
+.order-details {
+    transition: transform 0.3s ease-out;
+}
+
+@media (max-width: 768px) {
+    .order-details.offcanvas-bottom {
+        height: 90vh;
+    }
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-item-info {
+    text-align: center;
+}
+
+.modal-item-info h2 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.modal-item-info p {
+    color: #666;
+    margin: 15px 0;
+    font-size: 16px;
+}
+
+.modal-actions {
+    margin-top: 20px;
+}
+
+.btn-confirm {
+    background: #16a34a;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-confirm:hover {
+    background: #15803d;
+}

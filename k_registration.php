@@ -58,9 +58,8 @@
 
                     <!-- Email Input Start -->
                     <div class="input-box">
-                        <input type="email" name="email" placeholder="Email Address" required class="form-control"
-                            autocomplete="off" />
-                        <i data-feather="at-sign"></i>
+                    <input type="email" name="email" placeholder="Email Address" class="form-control" required />
+                    <i data-feather="at-sign"></i>
                     </div>
 
                     <!-- Next Button -->
@@ -106,7 +105,7 @@
                 </div>
 
                 <span class="content-color font-sm d-block text-center fw-600">Already have an Account?
-                    <a href="kitchen_login.php" class="underline">Sign In</a>
+                    <a href="kitchen.php" class="underline">Sign In</a>
                 </span>
             </form>
             <!-- Registration Form End -->

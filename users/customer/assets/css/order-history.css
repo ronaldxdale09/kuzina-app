@@ -1,0 +1,192 @@
+/* Variables for color palette */
+
+:root {
+    --primary-dark: #4E0707;
+    /* Dark burgundy */
+    --primary-red: #4C0710;
+    /* Bright red */
+    --primary-orange: #FF670E;
+    /* Orange */
+    --light-beige: #FDE4CE;
+    /* Light beige */
+    --accent-green: #AAD15F;
+    /* Light green */
+    --background: #f8f9fa;
+    --text-dark: #1e293b;
+    --text-light: #64748b;
+}
+
+
+/* Header Styles */
+
+.order-history {
+    padding: 16px;
+    background-color: var(--background);
+    min-height: 100vh;
+}
+
+
+/* Tab Navigation Styles */
+
+.nav-tab {
+    display: flex;
+    background: #fff;
+    padding: 4px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.nav-tab::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-tab .nav-item {
+    flex: 1;
+    min-width: max-content;
+}
+
+.nav-tab .nav-link {
+    width: 100%;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    color: var(--text-light);
+    transition: all 0.3s ease;
+    border: none;
+    white-space: nowrap;
+}
+
+.nav-tab .nav-link.active {
+    background-color: var(--primary-red);
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(210, 39, 1, 0.25);
+}
+
+
+/* Order Box Styles */
+
+.order-box {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid var(--primary-orange);
+}
+
+
+/* Status Badge Styles */
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: 8px;
+}
+
+.status-badge.preparing {
+    background-color: var(--light-beige);
+    color: var(--primary-orange);
+}
+
+.status-badge.for-pickup {
+    background-color: var(--accent-green);
+    color: var(--primary-dark);
+}
+
+.status-badge.on-the-way {
+    background-color: var(--primary-orange);
+    color: #fff;
+}
+
+.status-badge.cancelled {
+    background-color: var(--primary-dark);
+    color: #fff;
+}
+
+
+/* Action Buttons */
+
+.order-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.btn-track-order {
+    background-color: var(--primary-orange);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-track-order:active {
+    background-color: var(--primary-red);
+}
+
+.btn-view-details {
+    background-color: var(--light-beige);
+    color: var(--primary-red);
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+}
+
+
+/* Price and Items Styling */
+
+.price-tag {
+    color: var(--primary-red);
+    font-weight: 600;
+}
+
+
+/* Empty State Styles */
+
+.no-orders-message {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-light);
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+
+/* Responsive Styles */
+
+@media (min-width: 768px) {
+    .order-history {
+        padding: 24px;
+        max-width: 768px;
+        margin: 0 auto;
+    }
+}
+
+
+/* Hover Effects for Desktop */
+
+@media (hover: hover) {
+    .btn-track-order:hover {
+        background-color: var(--primary-red);
+    }
+    .btn-view-details:hover {
+        background-color: var(--primary-dark);
+        color: #fff;
+    }
+}

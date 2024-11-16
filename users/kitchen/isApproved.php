@@ -60,7 +60,7 @@
                 scheduled appointment. We look forward to connecting with you!
             </p>
             <a href="homepage.php" class="btn-solid">
-                <i class='bx bx-refresh'></i> Reload
+                <i class='bx bx-refresh'></i> Check Status
             </a>
         </section>
 

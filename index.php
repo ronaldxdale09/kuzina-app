@@ -1,115 +1,128 @@
 <?php include 'includes/header.php';
-session_start();
-
-
-// Check if the 'user_id' cookie is set and not empty
-if (isset($_COOKIE['user_id']) && !empty($_COOKIE['user_id'])) {
-    // Proceed to customer homepage
-    header("Location: users/customer/homepage.php"); // Replace 'customer_homepage.php' with the actual path to your customer homepage
-    exit(); // Make sure to exit after redirection
-}
-
-
-// Check if the 'onboarding_seen' cookie is set
-if (!isset($_COOKIE['onboarding_seen'])) {
-    // Redirect the user to the onboarding page if the cookie is not set
-    header("Location: onboarding.php"); // Replace with the actual path to your onboarding file
-    exit();
-}
 
 ?>
 <!-- Body Start -->
 <link rel="stylesheet" href="assets/css/login.css">
+<link rel="stylesheet" href="assets/boxicons/css/boxicons.min.css">
 
 <body>
-    <div class="bg-pattern-wrap ratio2_1">
-        <!-- Background Image -->
-        <div class="bg-patter">
-            <img src="assets/images/banner/bg-pattern2.png" class="bg-img" alt="pattern" />
-        </div>
-    </div>
 
     <!-- Main Start -->
-    <main class="main-wrap login-page mb-xxl">
-        <div class="logo-container">
-            <img class="logo" src="assets/images/logo/logo-w2.png" alt="logo" />
+    <!-- Main Start -->
+    <main class="main-wrap login-page login mb-xxl">
+        <div class="header">
+            <img src="assets/images/banner/bg-pattern2.png" class="bg-img" alt="pattern" />
+            <br>
+            <div class="header-content">
+                <div class="badge">
+                    <i class='bx bx-restaurant'></i>
+                    <span>Customer Portal</span>
+                </div>
+            </div>
         </div>
-        <p class="font-sm content-color">Explore a wide range of nutritious, homemade recipes crafted by home cooks.
-            Enjoy wholesome, balanced meals made with fresh ingredients and love.</p>
 
         <section class="login-section p-0">
+            <div class="info-card">
+                <img class="logo" style="margin-bottom:20px" src="assets/images/logo/logo-w2.png" alt="logo" /> <br>
+
+                <h2>Welcome to Kuzina</h2>
+                <p class="font-sm content-color">Explore a wide range of nutritious, homemade recipes crafted by home
+                    cooks.
+                    Enjoy wholesome, balanced meals made with fresh ingredients and love.</p>
+            </div>
+
             <!-- Login Form Start -->
-            <form id="login-form" class="custom-form" method="POST">
-                <h1 class="font-md title-color fw-600">Login Account</h1>
+            <form id="login-form" class="custom-form form" method="POST">
 
-                <!-- Phone Number Input start -->
-                <div class="input-box">
-                    <input type="number" id="phone" name="phone" placeholder="Phone Number" required
-                        class="form-control" autocomplete="off" />
-                    <i class="iconly-Call icli"></i>
+                <!-- <div class="icon-wrapper">
+                    <i class='bx bx-store'></i>
+                </div> -->
+                <h1 class="font-md title-color fw-600">Customer Login</h1>
+
+                <div class="form-group-wrapper">
+                    <!-- Username Input -->
+                    <div class="input-box">
+                        <input type="number" id="phone" name="phone" placeholder="Phone Number" required
+                            class="form-control" autocomplete="off" />
+                        <i class="iconly-Call icli"></i>
+                    </div>
+                    <!-- Phone Number Input End -->
+
+                    <!-- Password Input start -->
+                    <div class="input-box">
+                        <input type="password" id="password" name="password" placeholder="Password" required
+                            class="form-control" />
+                        <i class="iconly-Hide icli showHidePassword"></i>
+                    </div>
                 </div>
-                <!-- Phone Number Input End -->
 
-                <!-- Password Input start -->
-                <div class="input-box">
-                    <input type="password" id="password" name="password" placeholder="Password" required
-                        class="form-control" />
-                    <i class="iconly-Hide icli showHidePassword"></i>
-                </div>
-                <!-- Password Input End -->
-
-                <button type="submit" id="login-submit" class="btn-solid">Sign in</button>
+                <button type="submit" id="login-submit" class="btn-solid btn">
+                    <i class='bx bx-lock-open-alt'></i>
+                    Sign In
+                </button>
 
                 <span class="content-color font-sm d-block text-center fw-600">
                     If you are new, <a href="register.php" class="underline">Create Now</a>
                 </span>
+                <!-- Help Links -->
+                <div class="help-links">
+                    <a href="#" class="help-link">
+                        <i class='bx bx-help-circle'></i>
+                        Forgot Password?
+                    </a>
+                    <a href="#" class="help-link">
+                        <i class='bx bx-support'></i>
+                        Support
+                    </a>
+                </div>
 
-                <!-- Buttons to switch to Kitchen or Rider Login -->
-                <div class="login-options">
-                    <a href="kitchen_login.php" class="btn-outline">Login as Kitchen</a>
-                    <a href="#" class="btn-outline">Login as Rider</a>
+                <!-- Portal Selection -->
+                <div class="portal-selection">
+                    <span>Looking for a different portal?</span>
+                    <div class="portal-buttons">
+                        <a href="kitchen.php" class="portal-btn customer">
+                            <i class='bx bx-user'></i>
+                            Kitchen Portal
+                        </a>
+                        <a href="rider.php" class="portal-btn rider">
+                            <i class='bx bx-cycling'></i>
+                            Rider Portal
+                        </a>
+                    </div>
                 </div>
             </form>
-            <!-- Login Form End -->
         </section>
+    </main>
     <!-- Main End -->
-     <br>
 
-    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev"
-        class="footer d-block text-center font-md title-color text-decoration-underline">Continue as
-        guest</a>
-
-
-    <div class="action action-confirmation offcanvas offcanvas-bottom" tabindex="-1" id="underDev"
-        aria-labelledby="confirmation">
-        <div class="offcanvas-body small">
-            <div class="confirmation-box">
-                <h2>Feature Under Development</h2>
-                <p class="font-sm content-color">We apologize for the inconvenience, but this feature or module is
-                    currently under development. Please check back soon for updates or contact support for further
-                    assistance.</p>
-                <div class="btn-box">
-                    <button class="btn-outline" data-bs-dismiss="offcanvas" aria-label="Close">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <!-- Main End -->
+    <!-- Loading Overlay -->
     <div id="loading-overlay" style="display: none;">
         <div id="loading-spinner">
             <img src="assets/loader/loader5.gif" alt="Loading...">
         </div>
     </div>
 
-
+    <!-- Error Modal -->
     <div id="errorModal" class="modal">
         <div class="modal-content">
             <span id="closeErrorModal" class="close">&times;</span>
             <h2>Error</h2>
             <p id="errorMessage"></p>
+        </div>
+    </div>
+
+    <!-- Under Development Modal -->
+    <div class="action action-confirmation offcanvas offcanvas-bottom" tabindex="-1" id="underDev"
+        aria-labelledby="confirmation">
+        <div class="offcanvas-body small">
+            <div class="confirmation-box">
+                <h2>Feature Under Development</h2>
+                <p class="font-sm content-color">We apologize for the inconvenience, but this feature is
+                    currently under development. Please check back soon for updates.</p>
+                <div class="btn-box">
+                    <button class="btn-outline" data-bs-dismiss="offcanvas" aria-label="Close">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -14,7 +14,7 @@
     <!-- Header End -->
 
     <!-- Sidebar Start -->
-   
+
     <!-- Sidebar End -->
 
     <!-- Main Start -->
@@ -182,12 +182,34 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Details -->
-            <div class="form-group">
+            <div class="details-section">
                 <label for="description">Details</label>
                 <textarea id="description" name="description" placeholder="About the meal" rows="4" required></textarea>
             </div>
+
+            <div class="nutrition-section">
+                <label class="nutrition-label">Nutritional Info</label>
+                <div class="nutrition-inputs">
+                    <div class="nutrition-item">
+                        <label for="protein">Protein (g)</label>
+                        <input type="number" id="protein" name="protein" placeholder="Protein" required />
+                    </div>
+                    <div class="nutrition-item">
+                        <label for="carbs">Carbs (g)</label>
+                        <input type="number" id="carbs" name="carbs" placeholder="Carbs" required />
+                    </div>
+                    <div class="nutrition-item">
+                        <label for="fat">Fat (g)</label>
+                        <input type="number" id="fat" name="fat" placeholder="Fat" required />
+                    </div>
+                </div>
+                <div class="nutrition-item">
+                    <label for="totalCalories">Total Calories</label>
+                    <input type="number" id="totalCalories" name="totalCalories" placeholder="Total Calories"
+                        required />
+                </div>
+            </div>
+
 
             <!-- Save Button -->
             <div class="form-group">
@@ -202,14 +224,14 @@
     </main>
     <!-- Main End -->
     <!-- Add this popup HTML somewhere in your document, outside of any forms -->
-<!-- Add this popup HTML somewhere in your document -->
-<div id="custom-popup" class="popup">
-    <div class="popup-content">
-        <h2>Success!</h2>
-        <p>Your item has been added successfully.</p>
-        <a href="menu_list.php" id="confirm-btn" class="btn">OK</a>
+    <!-- Add this popup HTML somewhere in your document -->
+    <div id="custom-popup" class="popup">
+        <div class="popup-content">
+            <h2>Success!</h2>
+            <p>Your item has been added successfully.</p>
+            <a href="menu_list.php" id="confirm-btn" class="btn">OK</a>
+        </div>
     </div>
-</div>
 
 
     <!-- Footer Start -->

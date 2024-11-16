@@ -1,0 +1,483 @@
+/* Base Styles and Variables */
+
+:root {
+    --primary-color: #ff5722;
+    --primary-light: #fff3f0;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --info-color: #5f0000;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-600: #6c757d;
+    --gray-800: #343a40;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+}
+
+
+/* Header Styles */
+
+.orders-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+    padding: var(--spacing-md);
+    padding-top: var(--spacing-lg);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.orders-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin-bottom: var(--spacing-md);
+}
+
+.filter-section {
+    position: relative;
+    width: 100%;
+}
+
+.custom-select {
+    width: 100%;
+    padding: 12px var(--spacing-md);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    background: var(--gray-100);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--gray-800);
+    appearance: none;
+    transition: all 0.2s ease;
+}
+
+.custom-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.1);
+}
+
+
+/* Container and Card Styles */
+
+.orders-container {
+    padding: var(--spacing-md);
+    padding-bottom: 80px;
+    /* Space for bottom nav */
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.order-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--gray-200);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-card:active {
+    transform: scale(0.98);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.order-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.order-id {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--gray-800);
+}
+
+.order-amount {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+
+/* Status Badge Styles */
+
+.status-badge {
+    padding: 6px var(--spacing-md);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.for-pickup {
+    background: var(--warning-color);
+    color: #000;
+}
+
+.status-badge.on-the-way {
+    background: var(--info-color);
+    color: #fff;
+}
+
+.status-badge.delivered {
+    background: var(--success-color);
+    color: #fff;
+}
+
+
+/* Location Info Styles */
+
+.location-info {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) 0;
+    position: relative;
+}
+
+.location-info:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gray-200);
+}
+
+.location-info i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    opacity: 0.9;
+}
+
+.location-text h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin-bottom: var(--spacing-xs);
+}
+
+.location-text p {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.location-info.customer a {
+    color: var(--info-color);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-weight: 500;
+}
+
+
+/* Button Styles */
+
+.order-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--gray-200);
+}
+
+.btn-primary,
+.btn-view {
+    padding: var(--spacing-md);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.btn-primary:active {
+    background: #f4511e;
+    transform: scale(0.98);
+}
+
+.btn-view {
+    background: var(--gray-100);
+    color: var(--gray-800);
+    border: 1px solid var(--gray-300);
+}
+
+.btn-view:active {
+    background: var(--gray-200);
+    transform: scale(0.98);
+}
+
+
+/* Empty State Styles */
+
+.no-orders {
+    text-align: center;
+    padding: var(--spacing-lg);
+    background: white;
+    border-radius: var(--radius-lg);
+    margin: var(--spacing-lg);
+}
+
+.no-orders i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-md);
+}
+
+.no-orders h2 {
+    font-size: 1.25rem;
+    color: var(--gray-800);
+    margin-bottom: var(--spacing-sm);
+}
+
+.no-orders p {
+    color: var(--gray-600);
+    margin-bottom: var(--spacing-lg);
+}
+
+.no-orders .btn-primary {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+}
+
+
+/* Responsive Adjustments */
+
+@media (max-width: 480px) {
+     :root {
+        --spacing-lg: 20px;
+        --spacing-md: 12px;
+    }
+    .order-card {
+        padding: var(--spacing-md);
+    }
+    .order-actions {
+        grid-template-columns: 1fr;
+    }
+    .orders-header {
+        padding: var(--spacing-md);
+    }
+}
+
+
+/* Loading State */
+
+.orders-container.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+
+/* Animations */
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.order-card {
+    animation: slideIn 0.3s ease;
+}
+
+#map-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    padding: 20px;
+}
+
+#delivery-map {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+}
+
+.map-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
+    display: flex;
+    gap: 8px;
+}
+
+.map-button {
+    background: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.close-map {
+    background: #ff5722;
+    color: white;
+}
+
+
+/* Add to your info-card styles */
+
+.view-map-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary-color);
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+
+/* Status Badge Styles */
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+
+/* For Pickup status */
+
+.status-badge.for.pickup {
+    background-color: #FEF3C7;
+    /* Light yellow background */
+    color: #D97706;
+    /* Amber/Orange text */
+}
+
+
+/* On the Way status */
+
+.status-badge.on.the.way {
+    background-color: #DBEAFE;
+    /* Light blue background */
+    color: #5e0008;
+    /* Blue text */
+}
+
+
+/* Delivered status */
+
+.status-badge.delivered {
+    background-color: #DEF7EC;
+    /* Light green background */
+    color: #059669;
+    /* Green text */
+}
+
+
+/* Order card border colors based on status */
+
+.order-card {
+    border-left: 4px solid transparent;
+}
+
+.order-card.for.pickup {
+    border-left-color: #D97706;
+    /* Amber/Orange border */
+}
+
+.order-card.on.the.way {
+    border-left-color: #5e0008;
+    /* Blue border */
+}
+
+.order-card.delivered {
+    border-left-color: #059669;
+    /* Green border */
+}
+
+
+/* Button styles for different statuses */
+
+.btn-primary {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+
+/* For Pickup button */
+
+.order-card.for.pickup .btn-primary {
+    background-color: #D97706;
+}
+
+.order-card.for.pickup .btn-primary:hover {
+    background-color: #B45309;
+}
+
+
+/* On the Way button */
+
+.order-card.on.the.way .btn-primary {
+    background-color: #5e0008;
+}
+
+.order-card.on.the.way .btn-primary:hover {
+    background-color: #7e2129;
+}

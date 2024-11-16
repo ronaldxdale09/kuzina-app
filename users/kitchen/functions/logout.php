@@ -16,6 +16,6 @@ if (isset($_COOKIE['kitchen_fname'])) {
 }
 
 // Redirect to login page or homepage
-header("Location: ../../../kitchen_login.php"); // Replace with the actual path to your login or homepage
+header("Location: ../../../kitchen.php"); // Replace with the actual path to your login or homepage
 exit();
 ?>

@@ -1,26 +1,25 @@
 <?php include 'includes/header.php'; 
+// Place this at the very top of your first PHP file (e.g., index.php or config.php)
+error_reporting(0); // Disable all error reporting
+// OR
+error_reporting(E_ERROR | E_PARSE); // Show only fatal errors and parse errors
+// OR
+ini_set('display_errors', 0); // Hide all errors from display
 
-// Check if kitchen user is logged in and retrieve kitchen ID
-$kitchen_id = $_COOKIE['kitchen_id'] ?? null;
+// Get kitchen ID from cookie name 'kitchen_user_id'
+$kitchen_id = $_COOKIE['kitchen_id'] ?? $_SESSION['kitchen_id'] ?? null;
 
-if (!$kitchen_id) {
-    header("Location: ../../kitchen_login.php");
-    exit();
-}
-
-// Query to check if the kitchen is approved
-$stmt = $conn->prepare("SELECT isApproved FROM kitchens WHERE kitchen_id = ? AND isApproved = 1");
+// Simple approval check
+$stmt = $conn->prepare("SELECT isApproved FROM kitchens WHERE kitchen_id = ?");
 $stmt->bind_param("i", $kitchen_id);
 $stmt->execute();
-$stmt->store_result();
+$result = $stmt->get_result();
+$kitchen = $result->fetch_assoc();
 
-// Redirect if the kitchen is not approved
-if ($stmt->num_rows === 0) {
+if (!$kitchen || $kitchen['isApproved'] != 1) {
     header("Location: isApproved.php");
     exit();
 }
-
-// Close the statement and connection
 $stmt->close();
 ?>
 <link rel="stylesheet" type="text/css" href="assets/css/homepage.css" />
@@ -73,23 +72,7 @@ $stmt->close();
 
 
 
-        <!-- Delivery Performance Section -->
-        <section class="delivery-performance-section">
-            <div class="section-header">
-                <h4>Delivery Performance</h4>
-                <a href="#" class="see-all">See Details</a>
-            </div>
-            <div class="performance-metrics">
-                <div class="metric-item">
-                    <h3>30 </h3>
-                    <p> (Minutes) Average Delivery Time</p>
-                </div>
-                <div class="metric-item">
-                    <h3>10</h3>
-                    <p>Orders In Transit</p>
-                </div>
-            </div>
-        </section>
+    
 
 
         <!-- Bottom Navigation (if needed) -->

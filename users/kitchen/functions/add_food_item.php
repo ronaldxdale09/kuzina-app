@@ -16,6 +16,12 @@ try {
     $healthGoal = $_POST['healthGoal'] ?? 'All';
     $allergens = $_POST['allergens'] ?? 'None';
 
+    $protein = filter_var($_POST['protein'] ?? 0, FILTER_VALIDATE_FLOAT);
+    $carbs = filter_var($_POST['carbs'] ?? 0, FILTER_VALIDATE_FLOAT);
+    $fat = filter_var($_POST['fat'] ?? 0, FILTER_VALIDATE_FLOAT);
+    $totalCalories = filter_var($_POST['totalCalories'] ?? 0, FILTER_VALIDATE_FLOAT);
+
+
     // Check for required fields
     if (empty($itemName) || !$price || empty($description)) {
         $response['message'] = 'Item name, price, and description are required.';
@@ -87,9 +93,11 @@ try {
     }
 
     // Insert into the database, saving photo1, photo2, and photo3 into separate columns
-    $stmt = $conn->prepare("INSERT INTO food_listings (kitchen_id,food_name,meal_type, price, description, category, photo1, photo2, photo3, diet_type_suitable, health_goal_suitable, allergens) VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO food_listings 
+    (kitchen_id,food_name,meal_type, price, description, category, photo1, photo2, photo3, diet_type_suitable, health_goal_suitable, allergens,protein,carbs,fat,calories) 
+    VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     if ($stmt) {
-        $stmt->bind_param("sssdssssssss",$kitchen_id,  $itemName,  $mealType, $price, $description, $pickupDelivery, $photo1, $photo2, $photo3, $dietType, $healthGoal, $allergens);
+        $stmt->bind_param("sssdssssssssssss",$kitchen_id,  $itemName,  $mealType, $price, $description, $pickupDelivery, $photo1, $photo2, $photo3, $dietType, $healthGoal, $allergens, $protein,$carbs,$fat,$totalCalories);
 
         if ($stmt->execute()) {
             $response['success'] = true;

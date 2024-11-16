@@ -59,9 +59,15 @@ function registerKitchen($data, $conn) {
 }
 
 function setKitchenCookies($userId, $fname, $email) {
-    setcookie('kitchen_user_id', $userId, time() + (86400 * 30), "/");
+    setcookie('kitchen_id', $userId, time() + (86400 * 30), "/");
     setcookie('kitchen_user_name', $fname, time() + (86400 * 30), "/");
     setcookie('kitchen_user_email', $email, time() + (86400 * 30), "/");
+
+      
+    // Add session variables
+    $_SESSION['kitchen_id'] = $userId;
+    $_SESSION['kitchen_name'] = $fname;
+    $_SESSION['kitchen_email'] = $email;
 }
 
 function registerKitchenHandler($data, $conn) {
@@ -76,9 +82,13 @@ function registerKitchenHandler($data, $conn) {
             setKitchenCookies($userId, $data['fname'], $data['email']);
           // After successful insertion
             $kitchenId = $conn->insert_id; // Get the last inserted ID for kitchen
+           
+
             return ['success' => true, 'kitchen_id' => $kitchenId];
         } else {
             return ['success' => false, 'message' => 'Error: Could not register user.'];
         }
     }
 }
+
+?>

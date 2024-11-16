@@ -8,7 +8,7 @@ $customer_id = $_COOKIE['user_id'];
 $payment_method = $input['payment_method'] ?? null;
 $payment_token = $input['payment_token'] ?? null;
 $is_cod = $input['is_cod'] ?? false;
-
+$delivery_fee = 50;
 try {
     if (!$payment_method) {
         throw new Exception("Payment method is missing.");
@@ -74,10 +74,10 @@ try {
     }
 
     // Step 1: Create the order record with payment_id if it's available
-    $sql_order = "INSERT INTO orders (customer_id, kitchen_id, address_id, total_amount, final_total_amount, order_status, payment_id)
-                  VALUES (?, ?, ?, ?, ?, 'Confirmed', ?)";
+    $sql_order = "INSERT INTO orders (customer_id, kitchen_id, address_id, total_amount, final_total_amount, order_status, payment_id,delivery_fee)
+                  VALUES (?, ?, ?, ?, ?, 'Confirmed', ?, ?)";
     $stmt_order = $conn->prepare($sql_order);
-    $stmt_order->bind_param("iiiddi", $customer_id, $kitchen_id, $address_id, $total_amount, $final_total_amount, $payment_id);
+    $stmt_order->bind_param("iiiddii", $customer_id, $kitchen_id, $address_id, $total_amount, $final_total_amount, $payment_id, $delivery_fee);
 
     if (!$stmt_order->execute()) {
         throw new Exception('Error creating order.');

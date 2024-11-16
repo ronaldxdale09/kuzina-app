@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             setcookie('kitchen_lname', $lname, time() + (86400 * 30), "/");
 
             setcookie('kitchen_user_email', $email, time() + (86400 * 30), "/");
-
+            $_SESSION['kitchen_id'] = $kitchen_id;
             echo json_encode(['success' => true]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Invalid password']);

@@ -1,0 +1,296 @@
+.main-wrap {
+    padding: 20px;
+    background-color: #f7f7f7;
+}
+
+
+/* Statistics Section */
+
+.statistics-box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 16px;
+}
+
+.stat-item {
+    background: white;
+    padding: 16px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-icon i {
+    font-size: 24px;
+}
+
+.stat-info h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.stat-info p {
+    font-size: 12px;
+    color: #666;
+}
+
+
+/* Icon Colors */
+
+.stat-icon.active {
+    background: rgba(25, 135, 84, 0.1);
+    color: #198754;
+}
+
+.stat-icon.earnings {
+    background: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+}
+
+.stat-icon.completed {
+    background: rgba(102, 16, 242, 0.1);
+    color: #6610f2;
+}
+
+.stat-icon.time {
+    background: rgba(214, 51, 132, 0.1);
+    color: #d63384;
+}
+
+
+/* Earnings Section - New Styles */
+
+.earnings-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.earnings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.earnings-header h4 {
+    font-size: 1.5em;
+    color: #333333;
+    margin: 0;
+}
+
+.earnings-filter {
+    position: relative;
+}
+
+.earnings-filter::after {
+    content: "\25BC";
+    font-size: 12px;
+    color: #333;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.earnings-total {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.earnings-total h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.trend-indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(40, 167, 69, 0.1);
+}
+
+.trend-indicator.positive {
+    color: #28a745;
+    background: rgba(40, 167, 69, 0.1);
+}
+
+.trend-indicator.negative {
+    color: #dc3545;
+    background: rgba(220, 53, 69, 0.1);
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin-top: 20px;
+}
+
+
+/* Custom Select Styling */
+
+.custom-select {
+    padding: 8px 32px 8px 12px;
+    font-size: 14px;
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    appearance: none;
+    outline: none;
+    color: #333;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.custom-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.1);
+}
+
+
+/* Stats Icons */
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-icon i {
+    font-size: 24px;
+}
+
+.stat-icon.active {
+    background: rgba(25, 135, 84, 0.1);
+    color: #198754;
+}
+
+.stat-icon.earnings {
+    background: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+}
+
+.stat-icon.completed {
+    background: rgba(102, 16, 242, 0.1);
+    color: #6610f2;
+}
+
+.stat-icon.time {
+    background: rgba(214, 51, 132, 0.1);
+    color: #d63384;
+}
+
+
+/* Reviews Section Update */
+
+.reviews-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.review-score {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.review-score .star {
+    font-size: 24px;
+    color: #ffc107;
+    margin-right: 8px;
+}
+
+.review-score h4 {
+    font-size: 24px;
+    color: #28a745;
+    margin: 0;
+}
+
+
+/* Animation for Chart Loading */
+
+@keyframes chartFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chart-container {
+    animation: chartFadeIn 0.5s ease-out;
+}
+
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+    .statistics-box {
+        grid-template-columns: 1fr 1fr;
+        padding: 12px;
+    }
+    .chart-container {
+        height: 250px;
+    }
+    .earnings-header {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .statistics-box {
+        grid-template-columns: 1fr;
+        padding: 12px;
+    }
+    .stat-item {
+        padding: 12px;
+    }
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+    }
+    .stat-icon i {
+        font-size: 20px;
+    }
+    .stat-info h3 {
+        font-size: 16px;
+    }
+    .stat-info p {
+        font-size: 11px;
+    }
+}
