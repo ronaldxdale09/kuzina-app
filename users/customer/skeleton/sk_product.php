@@ -1,17 +1,7 @@
 <div class="skeleton-loader">
         <!-- Header Start -->
-        <header class="header bg-theme-sk-grey">
-            <div class="logo-wrap">
-                <a href="javascript:history.back()">
-                    <i class="iconly-Arrow-Left-Square icli"></i>
-                </a>
-            </div>
+        <?php include 'navbar/secondary.navbar.php'; ?>
 
-
-            <div class="avatar-wrap">
-                <a href="javascript:void(0)"><i data-feather="share-2"></i></a>
-            </div>
-        </header>
         <!-- Header End -->
 
         <!--Main Start -->

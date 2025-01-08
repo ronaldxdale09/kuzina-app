@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const unitPrice = parseFloat(priceDisplay.getAttribute('data-price')) || 0;
 
             const itemTotal = unitPrice * quantity;
-            priceDisplay.innerText = itemTotal.toFixed(2); // Update item total display
+            priceDisplay.innerText = itemTotal.toFixed(2);
 
             return total + itemTotal;
         }, 0);
@@ -25,7 +25,44 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('total-amount').innerText = totalAmount;
     }
 
+    function removeCartItem(foodId) {
+        fetch('functions/deleteCart.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    food_id: foodId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Remove the item's HTML element
+                    const itemElement = document.querySelector(`.swipe-to-show[data-food-id="${foodId}"]`);
+                    if (itemElement) {
+                        itemElement.remove();
+                    }
+                    calculateTotals();
+
+                    // Check if cart is empty
+                    const remainingItems = document.querySelectorAll('.swipe-to-show');
+                    if (remainingItems.length === 0) {
+                        document.querySelector('.cart-items').innerHTML = "<p>Your cart is empty.</p>";
+                    }
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error removing item:', error));
+    }
+
     function updateCartQuantity(foodId, newQuantity) {
+        if (newQuantity <= 0) {
+            removeCartItem(foodId);
+            return;
+        }
+
         fetch('functions/updateCart.php', {
                 method: 'POST',
                 headers: {
@@ -47,26 +84,37 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => console.error('Error updating quantity:', error));
     }
 
+    // Plus-minus button handlers
     document.querySelectorAll('.plus-minus i').forEach(button => {
         button.addEventListener('click', function() {
             const foodId = this.getAttribute('data-food-id');
             const quantityInput = this.closest('.plus-minus').querySelector('.quantity-input');
             let currentQuantity = parseInt(quantityInput.value);
 
-            // Update quantity based on the button clicked
             if (this.classList.contains('add') && currentQuantity < 10) {
                 currentQuantity++;
-            } else if (this.classList.contains('sub') && currentQuantity > 1) {
+            } else if (this.classList.contains('sub') && currentQuantity > 0) {
                 currentQuantity--;
             }
 
-            // Set the new quantity and update the server
             quantityInput.value = currentQuantity;
             updateCartQuantity(foodId, currentQuantity);
         });
     });
 
-    document.getElementById('apply-coupon-btn').addEventListener('click', () => {
+    // Delete button handlers
+    document.querySelectorAll('.delete-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const foodId = this.closest('.swipe-to-show').querySelector('.plus-minus i')
+                .getAttribute('data-food-id');
+            if (confirm('Are you sure you want to remove this item?')) {
+                removeCartItem(foodId);
+            }
+        });
+    });
+
+    // Coupon handler
+    document.getElementById('apply-coupon-btn')?.addEventListener('click', () => {
         const couponCode = document.getElementById('coupon-code').value.trim();
         if (couponCode === 'DISCOUNT10') {
             couponDiscount = parseFloat(document.getElementById('bag-total').innerText) * 0.1;
@@ -76,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         calculateTotals();
     });
 
-    // Initial calculation on page load
+    // Initial calculation
     calculateTotals();
 });
 </script>

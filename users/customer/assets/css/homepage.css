@@ -84,3 +84,142 @@
     position: relative;
     bottom: 0;
 }
+
+
+/* HOMEPAGE KITCHEN LISTING */
+
+
+/* Kitchen Slider Container */
+
+.kitchen-slider {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 20px 0;
+    scroll-snap-type: x mandatory;
+}
+
+.kitchen-slider::-webkit-scrollbar {
+    height: 8px;
+}
+
+.kitchen-slider::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+}
+
+.kitchen-slider::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+
+/* Kitchen Profile (Clickable Card) */
+
+.kitchen-profile {
+    flex: 0 0 300px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    scroll-snap-align: start;
+    text-decoration: none;
+    /* Remove underline */
+    color: inherit;
+    /* Inherit text color */
+    display: block;
+    /* Make the entire card clickable */
+}
+
+.kitchen-profile:hover {
+    transform: translateY(-5px);
+    /* Add hover effect */
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    /* Enhance shadow on hover */
+}
+
+
+/* Kitchen Header */
+
+.kitchen-header {
+    display: flex;
+    align-items: center;
+}
+
+.kitchen-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.kitchen-info h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.kitchen-info p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+
+/* Rating */
+
+.rating {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.stars {
+    color: #ffc107;
+    font-size: 1rem;
+}
+
+.rating-value {
+    margin-left: 5px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+
+/* Food Badge */
+
+.food-badge {
+    margin-top: 10px;
+}
+
+.food-badge span {
+    display: inline-block;
+    background-color: #f0f0f0;
+    color: #666;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 12px;
+}
+
+
+/* HOMEPAGE KITCHEN LISTING END */
+
+.rating {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.stars {
+    color: #ffc107;
+    /* Gold color for stars */
+    font-size: 0.9rem;
+}
+
+.review-count {
+    margin-left: 5px;
+    font-size: 0.8rem;
+    color: #666;
+}

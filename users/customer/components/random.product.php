@@ -1,10 +1,15 @@
 <?php
-// Optimized function to fetch and render random products
+// Optimized function to fetch and render random products with reviews
 function fetch_and_render_random_products($conn, $limit = 5) {
-    $sql = "SELECT food_id, food_name, photo1, price, diet_type_suitable 
-            FROM food_listings 
-            WHERE available = 1 
-            ORDER BY RAND() 
+    // Fetch random products with reviews (average rating and review count)
+    $sql = "SELECT fl.food_id, fl.food_name, fl.photo1, fl.price, fl.diet_type_suitable, fl.kitchen_id,
+                   COALESCE(AVG(r.rating), 0) AS avg_rating,
+                   COUNT(r.review_id) AS review_count
+            FROM food_listings fl
+                        LEFT JOIN reviews r ON fl.food_id = r.food_id
+            WHERE fl.available = 1
+            GROUP BY fl.food_id
+            ORDER BY RAND()
             LIMIT ?";  // Order by RAND() for random products
 
     // Prepare the statement for better performance
@@ -23,10 +28,10 @@ function fetch_and_render_random_products($conn, $limit = 5) {
             $food_name = htmlspecialchars($row['food_name'], ENT_QUOTES, 'UTF-8');
             $photo1 = htmlspecialchars($row['photo1'], ENT_QUOTES, 'UTF-8');
             $price = htmlspecialchars($row['price'], ENT_QUOTES, 'UTF-8');
-
-            // Limit diet type to the first one if there are multiple
             $diet_types = explode(',', htmlspecialchars($row['diet_type_suitable'], ENT_QUOTES, 'UTF-8'));
             $diet_type = trim($diet_types[0]);  // Get the first diet type
+            $avg_rating = floatval($row['avg_rating']);  // Average rating
+            $review_count = intval($row['review_count']);  // Number of reviews
 
             // Render the product card
             ?>
@@ -34,11 +39,21 @@ function fetch_and_render_random_products($conn, $limit = 5) {
     <div class="product-card">
         <div class="img-wrap">
             <a href="product.php?prod=<?= $food_id ?>">
-            <img src="../../uploads/<?= $photo1 ?>" class="img-fluid" alt="<?= $food_name ?>" loading="lazy" />
+                <!-- Lazy loading for images -->
+                <img src="../../uploads/<?= $photo1 ?>" class="img-fluid" alt="<?= $food_name ?>" loading="lazy" />
             </a>
         </div>
         <div class="content-wrap">
-            <a href="product.php?prod=<?= $food_id ?>" class="font-sm title-color"><?= $food_name ?></a>
+            <a href="product.php?prod=<?= $food_id ?>" class="font-sm title-color truncate-text">
+                <?= $food_name ?>
+            </a>
+            <!-- Display star rating and review count -->
+            <div class="rating">
+                <span class="stars">
+                    <?= str_repeat('★', round($avg_rating)) ?><?= str_repeat('☆', 5 - round($avg_rating)) ?>
+                </span>
+                <span class="review-count">(<?= $review_count ?>)</span>
+            </div>
         </div>
         <!-- Display diet type inside a badge -->
         <span class="badge"><?= $diet_type ?></span>
@@ -56,5 +71,6 @@ function fetch_and_render_random_products($conn, $limit = 5) {
         // If no items are found, display a message
         echo "<p>No random products found.</p>";
     }
+    $stmt->close();  // Close the statement
 }
 ?>

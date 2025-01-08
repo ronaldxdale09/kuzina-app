@@ -526,3 +526,138 @@ input:-webkit-autofill {
         margin-top: -1rem;
     }
 }
+
+.splash-logo-container {
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.splash-logo-container img {
+    max-width: 200px;
+    height: auto;
+}
+
+.splash-animation-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.splash-animation-container img {
+    max-width: 300px;
+    height: auto;
+}
+
+.splash-progress-container {
+    position: absolute;
+    bottom: 20%;
+    width: 80%;
+    max-width: 300px;
+}
+
+.splash-progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.splash-progress {
+    width: 0%;
+    height: 100%;
+    background: #007bff;
+    transition: width 0.3s ease;
+}
+
+.splash-progress-text {
+    text-align: center;
+    margin-top: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #666;
+}
+
+#main-content {
+    display: none;
+}
+
+
+/* Loading Overlay Styles */
+
+#login-loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+#login-loading-spinner img {
+    width: 50px;
+    height: 50px;
+}
+
+
+/* Error Modal Styles */
+
+.error-modal {
+    display: none;
+    position: fixed;
+    z-index: 100000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.error-modal.show {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 400px;
+    position: relative;
+    text-align: center;
+}
+
+.error-close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.error-modal h2 {
+    margin-top: 0;
+    color: #dc3545;
+    font-size: 1.5rem;
+}
+
+.error-modal p {
+    margin: 15px 0;
+    color: #666;
+}
+
+@media (max-height: 600px) {
+    .splash-logo-container {
+        margin-top: 20px;
+    }
+    .splash-progress-container {
+        bottom: 15%;
+    }
+}

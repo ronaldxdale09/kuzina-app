@@ -5,18 +5,26 @@
                 <h4 class="title-color">Recommendation</h4>
                 <p class="content-color">Based on your nutritional assessment</p>
             </div>
-            <a href="javascript(0)" class="font-xs font-theme">See all</a>
+            <a href="javascript:void(0)" class="font-xs font-theme">See all</a>
         </div>
 
         <div class="offer-wrap">
             <?php
-            // Function to fetch recommended products
+            // Function to fetch recommended products with kitchen reviews
             function fetchRecommendations($conn, $limit = 3) {
-                $stmt = $conn->prepare("SELECT food_id, food_name, price, photo1, health_goal_suitable, meal_type FROM food_listings WHERE available = 1 LIMIT ?");
+                $sql = "SELECT fl.food_id, fl.food_name, fl.price, fl.photo1, fl.health_goal_suitable, fl.meal_type, fl.kitchen_id,
+                               COALESCE(AVG(r.rating), 0) AS avg_rating,
+                               COUNT(r.review_id) AS review_count
+                        FROM food_listings fl
+                        LEFT JOIN reviews r ON fl.food_id = r.food_id
+                        WHERE fl.available = 1
+                        GROUP BY fl.food_id
+                        LIMIT ?";
+                $stmt = $conn->prepare($sql);
                 $stmt->bind_param("i", $limit);
                 $stmt->execute();
                 $result = $stmt->get_result();
-                $products = $result->fetch_all(MYSQLI_ASSOC);  // Fetch all results at once
+                $products = $result->fetch_all(MYSQLI_ASSOC); // Fetch all results at once
                 $stmt->close();
                 return $products;
             }
@@ -27,40 +35,53 @@
             // Check if products are available
             if (!empty($recommendations)) {
                 foreach ($recommendations as $product) {
-                    // Use heredoc to output HTML with embedded PHP
-                    $food_id = htmlspecialchars($product['food_id']); // Get the food_id for the product link
+                    $food_id = htmlspecialchars($product['food_id'], ENT_QUOTES, 'UTF-8');
+                    $food_name = htmlspecialchars($product['food_name'], ENT_QUOTES, 'UTF-8');
+                    $photo1 = htmlspecialchars($product['photo1'], ENT_QUOTES, 'UTF-8');
+                    $price = number_format($product['price'], 2);
+                    $health_goal = htmlspecialchars($product['health_goal_suitable'], ENT_QUOTES, 'UTF-8');
+                    $meal_type = htmlspecialchars($product['meal_type'], ENT_QUOTES, 'UTF-8');
+                    $avg_rating = floatval($product['avg_rating']); // Average rating
+                    $review_count = intval($product['review_count']); // Number of reviews
                     ?>
-            <div class="product-list media">
-                <!-- Link the product card to product.php?prod=food_id -->
-                <a href="product.php?prod=<?php echo $food_id; ?>">
-                    <img src="../../uploads/<?php echo htmlspecialchars($product['photo1']); ?>"
-                        alt="<?php echo htmlspecialchars($product['food_name']); ?>" />
-                </a>
-                <div class="media-body">
-                    <!-- Link the product name to product.php?prod=food_id -->
-                    <a href="product.php?prod=<?php echo $food_id; ?>"
-                        class="font-sm"><?php echo htmlspecialchars($product['food_name']); ?></a>
-                    <span
-                        class="content-color font-xs"><?php echo htmlspecialchars($product['health_goal_suitable']); ?></span>
-                    <span class="title-color font-sm">₱ <?php echo number_format($product['price'], 2); ?>
-                        <span
-                            class="badges-round bg-theme-theme font-xs"><?php echo htmlspecialchars($product['meal_type']); ?>
-                        </span>
-                    </span>
-                    <div class="plus-minus d-xs-none">
-                        <button class="cart-btn" onclick="addToCart()">
-                            <i class="iconly-Bag-2 icli"></i>
-                        </button>
+                    <div class="product-list media">
+                        <!-- Link the product card to product.php?prod=food_id -->
+                        <a href="product.php?prod=<?= $food_id ?>">
+                            <img src="../../uploads/<?= $photo1 ?>" 
+                                 alt="<?= $food_name ?>" 
+                                loading="lazy" 
+                                 class="img-fluid" />
+                        </a>
+                        <div class="media-body">
+                            <!-- Link the product name to product.php?prod=food_id -->
+                            <a href="product.php?prod=<?= $food_id ?>" 
+                               class="font-sm truncate-text">
+                                <?= $food_name ?>
+                            </a>
+                            <!-- Display star rating and review count -->
+                            <div class="rating">
+                                <span class="stars">
+                                    <?= str_repeat('★', round($avg_rating)) ?><?= str_repeat('☆', 5 - round($avg_rating)) ?>
+                                </span>
+                                <span class="review-count">(<?= $review_count ?> reviews)</span>
+                            </div>
+                            <span class="content-color font-xs"><?= $health_goal ?></span>
+                            <span class="title-color font-sm">₱ <?= $price ?>
+                                <span class="badges-round bg-theme-theme font-xs"><?= $meal_type ?></span>
+                            </span>
+                            <div class="plus-minus d-xs-none">
+                                <button class="cart-btn" onclick="addToCart(<?= $food_id ?>)">
+                                    <i class="iconly-Bag-2 icli"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <?php
+                    <?php
                 }
             } else {
                 // Display a fallback message if no products are available
                 echo "<p>No recommendations available at the moment.</p>";
             }
-
             ?>
         </div>
     </div>

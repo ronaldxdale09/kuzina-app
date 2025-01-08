@@ -37,7 +37,6 @@
 
         <!-- Shop By Category End -->
 
-        <?php include 'components/random.product.php'; ?>
         <?php include 'components/recommendation.php'; ?>
 
 
@@ -52,10 +51,8 @@
                 <a href="shop.php" class="font-theme">See More</a>
             </div>
 
-            <div class="product-slider">
-                <?php include 'fetch/homepage.fetch.php'; ?>
+                <?php include 'components/homepage.kitchenListing.php'; ?>
 
-            </div>
 
         </section>
 
@@ -74,6 +71,8 @@
             </div>
 
             <div class="product-slider">
+            <?php include 'components/random.product.php'; ?>
+
                 <?php
                
                fetch_and_render_random_products($conn)

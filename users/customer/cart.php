@@ -18,7 +18,7 @@
             <a href="javascript:void(0);" onclick="window.history.back();">
                 <i class="iconly-Arrow-Left-Square icli"></i>
             </a>
-            <h1 class="title-color font-md">My Cart <span class="font-sm content-color">(4 Items)</span></h1>
+            <h1 class="title-color font-md">My Cart <span class="font-sm content-color"></span></h1>
         </div>
         <div class="avatar-wrap">
             <a href="homepage.php">

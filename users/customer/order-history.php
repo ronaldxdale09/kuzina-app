@@ -28,7 +28,7 @@ function getOrdersByStatus($conn, $customer_id, $statuses) {
   LEFT JOIN order_items oi ON o.order_id = oi.order_id
   LEFT JOIN user_addresses ua ON o.address_id = ua.address_id
   LEFT JOIN kitchens k ON o.kitchen_id = k.kitchen_id
-  LEFT JOIN reviews r ON k.kitchen_id = r.kitchen_id AND r.customer_id = o.customer_id
+  LEFT JOIN reviews r ON o.order_id = r.order_id AND r.customer_id = o.customer_id
   WHERE o.customer_id = ? 
   AND o.order_status IN ($statusPlaceholders)
   GROUP BY o.order_id
@@ -159,11 +159,11 @@ function getOrdersByStatus($conn, $customer_id, $statuses) {
             <!-- Completed Orders Tab -->
             <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
                 <?php
-            $completedOrders = getOrdersByStatus($conn, $customer_id, ['Delivered']);
-            
-            if ($completedOrders->num_rows > 0) {
-                while ($order = $completedOrders->fetch_assoc()) {
-                    ?>
+    $completedOrders = getOrdersByStatus($conn, $customer_id, ['Delivered']);
+    
+    if ($completedOrders->num_rows > 0) {
+        while ($order = $completedOrders->fetch_assoc()) {
+    ?>
                 <div class="order-box">
                     <div class="media">
                         <a href="order-tracking.php?id=<?php echo $order['order_id']; ?>" class="content-box">
@@ -187,31 +187,26 @@ function getOrdersByStatus($conn, $customer_id, $statuses) {
                             Order Again
                         </a>
                         <?php if ($order['rating'] == 0): ?>
-                        <button class="give-rating content-color font-sm"
-                            onclick="showRatingModal(<?php echo $order['order_id']; ?>)">
+                        <a href="order-review.php?order=<?php echo $order['order_id']; ?>"
+                            class="btn-review content-color font-sm">
+                            <i class='bx bx-star'></i>
                             Rate & Review Order
-                        </button>
+                        </a>
                         <?php else: ?>
-                        <div class="rating">
-                            <?php
-                                    for ($i = 1; $i <= 5; $i++) {
-                                        if ($i <= $order['rating']) {
-                                            echo '<i class="feather-star filled"></i>';
-                                        } else {
-                                            echo '<i class="feather-star"></i>';
-                                        }
-                                    }
-                                    ?>
-                        </div>
+                        <a href="order-review.php?order=<?php echo $order['order_id']; ?>"
+                            class="btn-view-review content-color font-sm">
+                            <i class='bx bx-comment-detail'></i>
+                            View my Review
+                        </a>
                         <?php endif; ?>
                     </div>
                 </div>
                 <?php
+                    }
+                } else {
+                    echo '<div class="no-orders-message">No completed orders found.</div>';
                 }
-            } else {
-                echo '<div class="no-orders-message">No completed orders found.</div>';
-            }
-            ?>
+                ?>
             </div>
 
             <!-- Cancelled Orders Tab -->

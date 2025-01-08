@@ -1,14 +1,21 @@
 <section class="product-section">
     <h1 class="font-md"><?php echo $foodName; ?></h1>
+    <!-- Dynamic Star Rating and Review Count -->
     <div class="rating">
-        <i data-feather="star"></i>
-        <i data-feather="star"></i>
-        <i data-feather="star"></i>
-        <i data-feather="star"></i>
-        <i data-feather="star"></i>
-        <span class="font-xs content-color">(150 Ratings)</span>
+        <?php
+            // Display filled stars based on the average rating
+            for ($i = 1; $i <= 5; $i++) {
+                if ($i <= round($avg_rating)) {
+                    echo '<i data-feather="star" class="filled"></i>';
+                } else {
+                    echo '<i data-feather="star" class="empty"></i>';
+                }
+            }
+            ?>
+        <span class="font-xs content-color">(<?php echo $review_count; ?> Ratings)</span>
     </div>
     <div class="price"><span>PHP <?php echo $price; ?></span></div>
+
 
     <div class="nutritional-info">
         <h4>Nutritional Information</h4>
@@ -38,17 +45,23 @@
         </p>
     </div>
     <section class="kitchen-details">
+    <a href="kitchen.php?id=<?php echo $kitchen_id; ?>" class="kitchen-profile-link">
         <div class="kitchen-profile">
             <div class="kitchen-img">
                 <img src="../../uploads/profile/<?php echo htmlspecialchars($kitchenPhoto); ?>"
-                    alt="Kitchen Profile Picture">
+                    alt="<?php echo $kitchenName; ?>'s Kitchen">
             </div>
             <div class="kitchen-info">
                 <h3 class="kitchen-name"><?php echo $kitchenName; ?>'s Kitchen</h3>
                 <p class="kitchen-description"><?php echo $kitchenDesc; ?></p>
+                <span class="view-kitchen">
+                    <i class='bx bx-right-arrow-alt'></i>
+                    Explore the Kitchen
+                </span>
             </div>
         </div>
-    </section>
+    </a>
+</section>
 
     <!-- Product Detail Start -->
     <div class="product-detail section-p-t">

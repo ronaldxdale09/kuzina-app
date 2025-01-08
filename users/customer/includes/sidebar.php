@@ -107,10 +107,10 @@
         </nav>
 
     </div>
-
+<!-- 
     <div class="contact-us">
         <span class="title-color">Contact Support</span>
         <p class="content-color font-xs">If you have any problem,queries or questions feel free to reach out</p>
         <a href="javascript:void(0)" class="btn-solid"> Contact Us </a>
-    </div>
+    </div> -->
 </aside>

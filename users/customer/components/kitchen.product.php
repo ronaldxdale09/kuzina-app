@@ -1,13 +1,16 @@
 <?php
 function fetch_and_render_kitchen_products($conn, $kitchen_id) {
+    // Limit the number of results to improve performance
+    $limit = 5;
     $sql = "SELECT food_id, food_name, photo1, price, diet_type_suitable 
             FROM food_listings 
             WHERE available = 1 
             AND kitchen_id = ? 
-            AND isApproved = 0";
+            AND isApproved = 0
+            LIMIT ?";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $kitchen_id);
+    $stmt->bind_param("ii", $kitchen_id, $limit);
     $stmt->execute();
     $result = $stmt->get_result();
     
@@ -28,7 +31,9 @@ function fetch_and_render_kitchen_products($conn, $kitchen_id) {
                         </a>
                     </div>
                     <div class="content-wrap">
-                        <a href="product.php?prod=<?= $food_id ?>" class="font-sm title-color"><?= $food_name ?></a>
+                        <a href="product.php?prod=<?= $food_id ?>" class="font-sm title-color" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            <?= $food_name ?>
+                        </a>
                     </div>
                     <span class="badge"><?= $diet_type ?></span>
                     <div class="price-cart-wrap">
@@ -44,6 +49,9 @@ function fetch_and_render_kitchen_products($conn, $kitchen_id) {
     } else {
         echo "<p>No products found for this kitchen.</p>";
     }
+    $stmt->close();
 }
 
+// Example usage
 // fetch_and_render_kitchen_products($conn, $kitchen_id);
+?>

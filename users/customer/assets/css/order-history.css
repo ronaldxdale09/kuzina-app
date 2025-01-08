@@ -190,3 +190,38 @@
         color: #fff;
     }
 }
+
+.btn-review,
+.btn-view-review {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-review {
+    background-color: var(--primary-orange);
+    color: white !important;
+}
+
+.btn-review:hover {
+    background-color: var(--primary-orange);
+}
+
+.btn-view-review {
+    background-color: #f8f9fa;
+    color: #6c757d !important;
+    border: 1px solid #dee2e6;
+}
+
+.btn-view-review:hover {
+    background-color: #e9ecef;
+}
+
+.btn-review i,
+.btn-view-review i {
+    font-size: 18px;
+}

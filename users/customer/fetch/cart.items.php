@@ -1,4 +1,38 @@
 <?php
+// Fetch kitchen details based on the first cart item
+$sqlKitchen = "SELECT k.kitchen_id, k.fname, k.lname, k.photo, k.description 
+               FROM kitchens k
+               JOIN food_listings fl ON k.kitchen_id = fl.kitchen_id
+               JOIN cart_items ci ON fl.food_id = ci.food_id
+               WHERE ci.customer_id = ?
+               LIMIT 1";
+
+$stmtKitchen = $conn->prepare($sqlKitchen);
+$stmtKitchen->bind_param("i", $customer_id);
+$stmtKitchen->execute();
+$resultKitchen = $stmtKitchen->get_result();
+
+// Display kitchen details if found
+if ($resultKitchen && $resultKitchen->num_rows > 0) {
+    $kitchen = $resultKitchen->fetch_assoc();
+    $kitchen_id = htmlspecialchars($kitchen['kitchen_id'], ENT_QUOTES, 'UTF-8');
+    $kitchen_name = htmlspecialchars($kitchen['fname'] . ' ' . $kitchen['lname'], ENT_QUOTES, 'UTF-8');
+    $kitchen_photo = htmlspecialchars($kitchen['photo'], ENT_QUOTES, 'UTF-8');
+    $kitchen_description = htmlspecialchars($kitchen['description'], ENT_QUOTES, 'UTF-8');
+    ?>
+    <a href="kitchen.php?id=<?= $kitchen_id ?>" class="kitchen-details">
+        <div class="kitchen-header">
+            <img src="../../uploads/profile/<?= $kitchen_photo ?>" class="kitchen-img" alt="<?= $kitchen_name ?>" loading="lazy" />
+            <div class="kitchen-info">
+                <h3><?= $kitchen_name ?></h3>
+                <p><?= $kitchen_description ?></p>
+            </div>
+        </div>
+    </a>
+    <?php
+}
+$stmtKitchen->close();
+
 // Fetch cart items and calculate initial bag total
 $sql = "SELECT ci.quantity, fl.food_id, fl.food_name, fl.photo1, fl.price 
         FROM cart_items ci
@@ -12,7 +46,7 @@ $result = $stmt->get_result();
 
 $bagTotal = 0;
 $deliveryFee = 50.00;
-$couponDiscount = 0.00; // Initial value before applying any discount
+$couponDiscount = 0.00;
 
 // Display cart items
 if ($result && $result->num_rows > 0) {
@@ -24,37 +58,33 @@ if ($result && $result->num_rows > 0) {
         $price = floatval($row['price']);
         $quantity = intval($row['quantity']);
         $itemTotal = $price * $quantity;
-        $bagTotal += $itemTotal; // Add item total to bag total
+        $bagTotal += $itemTotal;
         ?>
-    <div class="swipe-to-show ">
-        <div class="product-list media">
-            <a href="product.php?prod=<?= $food_id ?>">
-                <img src="../../uploads/<?= $photo1 ?>" class="img-fluid" alt="<?= $food_name ?>" loading="lazy" />
-            </a>
-            <div class="media-body">
-                <a href="product.php?prod=<?= $food_id ?>" class="font-sm title-color"><?= $food_name ?></a>
-                <span class="content-color font-xs">Quantity: <span class="quantity-display"><?= $quantity ?></span></span>
-                <span class="title-color font-sm">₱<span class="price-display" data-price="<?= $price ?>"
-                        data-food-id="<?= $food_id ?>"><?= number_format($itemTotal, 2) ?></span></span>
+        <div class="swipe-to-show" data-food-id="<?= $food_id ?>">
+            <div class="product-list media">
+                <a href="product.php?prod=<?= $food_id ?>">
+                    <img src="../../uploads/<?= $photo1 ?>" class="img-fluid" alt="<?= $food_name ?>" loading="lazy" />
+                </a>
+                <div class="media-body">
+                    <a href="product.php?prod=<?= $food_id ?>" class="font-sm title-color"><?= $food_name ?></a>
+                    <span class="content-color font-xs">Quantity: <span class="quantity-display"><?= $quantity ?></span></span>
+                    <span class="title-color font-sm">₱<span class="price-display" data-price="<?= $price ?>" data-food-id="<?= $food_id ?>"><?= number_format($itemTotal, 2) ?></span></span>
+                </div>
+                <div class="plus-minus">
+                    <i class="sub" data-food-id="<?= $food_id ?>">-</i>
+                    <input type="number" class="quantity-input" value="<?= $quantity ?>" min="0" max="10" data-food-id="<?= $food_id ?>" readonly />
+                    <i class="add" data-food-id="<?= $food_id ?>">+</i>
+                </div>
             </div>
-            <div class="plus-minus">
-                <i class="sub" data-food-id="<?= $food_id ?>">-</i>
-                <input type="number" class="quantity-input" value="<?= $quantity ?>" min="1" max="10"
-                    data-food-id="<?= $food_id ?>" readonly />
-                <i class="add" data-food-id="<?= $food_id ?>">+</i>
+            <div class="delete-button" data-food-id="<?= $food_id ?>">
+                <i class="bx bx-trash"></i>
             </div>
-
         </div>
-        <div class="delete-button" data-bs-toggle="offcanvas" data-bs-target="#confirmation" aria-controls="confirmation">
-            <i data-feather="trash"></i>
-        </div>
-    </div>
-<?php
+        <?php
     }
-    echo '</div>
-    ';
+    echo '</div>';
 } else {
-    echo "<p>Your cart is empty.</p>";
+    echo '<div class="cart-items"><p>Your cart is empty.</p></div>';
 }
 $stmt->close();
 ?>
@@ -91,39 +121,29 @@ $stmt->close();
 </section>
 <!-- Coupons Section End  -->
 
-
 <!-- Order Details Section (Only Displayed Once) -->
 <section class="order-detail pt-1">
     <h3 class="title-2">Order Details</h3>
-
-    <!-- Detail list Start -->
     <ul>
         <li>
             <span>Bag total</span>
             <span>₱<span id="bag-total"><?= number_format($bagTotal, 2) ?></span></span>
         </li>
-
         <li class="coupon-row">
             <span>Coupon Discount</span>
             <div class="coupon-section">
                 <input type="text" id="coupon-code" placeholder="Enter coupon code">
                 <button id="apply-coupon-btn">Apply</button>
-                <span class="discount-amount">₱<span
-                        id="coupon-discount"><?= number_format($couponDiscount, 2) ?></span></span>
+                <span class="discount-amount">₱<span id="coupon-discount"><?= number_format($couponDiscount, 2) ?></span></span>
             </div>
         </li>
-
-
         <li>
             <span>Delivery</span>
             <span>₱<span id="delivery-fee"><?= number_format($deliveryFee, 2) ?></span></span>
         </li>
-
         <li>
             <span>Total Amount</span>
-            <span>₱<span
-                    id="total-amount"><?= number_format($bagTotal + $deliveryFee - $couponDiscount, 2) ?></span></span>
+            <span>₱<span id="total-amount"><?= number_format($bagTotal + $deliveryFee - $couponDiscount, 2) ?></span></span>
         </li>
     </ul>
-    <!-- Detail list End -->
 </section>
