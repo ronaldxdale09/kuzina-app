@@ -567,7 +567,7 @@ input:-webkit-autofill {
 .splash-progress {
     width: 0%;
     height: 100%;
-    background: #007bff;
+    background: #ff4d00;
     transition: width 0.3s ease;
 }
 
