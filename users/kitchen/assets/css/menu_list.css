@@ -192,3 +192,51 @@
      .add-new-btn i {
          font-size: 20px;
      }
+     
+     .item-bottom {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         margin-top: 1rem;
+     }
+     
+     .action-buttons {
+         display: flex;
+         gap: 0.25rem;
+     }
+     
+     .action-btn {
+         display: inline-flex;
+         align-items: center;
+         gap: 0.25rem;
+         padding: 0.35rem 0.75rem;
+         border-radius: 4px;
+         border: none;
+         font-size: 0.75rem;
+         cursor: pointer;
+         transition: all 0.2s ease;
+     }
+     
+     .action-btn.edit {
+         background-color: #768f43;
+         color: white;
+     }
+     
+     .action-btn.remove {
+         background-color: #dc3545;
+         color: white;
+     }
+     
+     .action-btn.availability.available {
+         background-color: #198754;
+         color: white;
+     }
+     
+     .action-btn.availability.unavailable {
+         background-color: #6c757d;
+         color: white;
+     }
+     
+     .action-btn:hover {
+         opacity: 0.9;
+     }

@@ -129,22 +129,27 @@ if ($result->num_rows > 0) {
         <i class='bx bx-box'></i> <!-- Icon for the item -->
     </div>
 
+    <!-- Updated Footer HTML -->
     <footer class="footer-wrap shop">
-        <ul class="footer">
-            <li class="footer-item">
-                <a href="#" class="add-to-cart-btn">
-                    <i class='bx bx-cart'></i> Add to Cart
-                </a>
-            </li>
-            <li class="footer-item">
-                <a href="cart.php" class="view-cart-btn">
-                    <i class='bx bx-cart' id="cart-icon"></i> View Cart
-                    ( <span id="cart-item-count" class="cart-count-badge">0</span>) <!-- Cart item count -->
-                </a>
-            </li>
-        </ul>
-    </footer>
-
+    <ul class="footer">
+    <li class="footer-item footer-item-chat">
+            <a href="messenger.php?kitchen_id=<?php echo $kitchen_id; ?>" class="chat-btn">
+                <i class='bx bx-message-rounded-dots'></i> Chat
+            </a>
+        </li>
+        <li class="footer-item footer-item-cart">
+            <a href="cart.php" class="view-cart-btn">
+                <i class='bx bx-cart' id="cart-icon"></i> View Cart
+                (<span id="cart-item-count" class="cart-count-badge">0</span>)
+            </a>
+        </li>
+        <li class="footer-item footer-item-add">
+            <a href="#" class="add-to-cart-btn">
+                <i class='bx bx-cart'></i> Add to Cart
+            </a>
+        </li>
+    </ul>
+</footer>
     <!-- Action Share Grid Start -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -174,7 +179,7 @@ if ($result->num_rows > 0) {
             e.preventDefault(); // Prevent default behavior
 
             const foodId =
-            <?php echo json_encode($productId); ?>; // Dynamically get the product ID from PHP
+                <?php echo json_encode($productId); ?>; // Dynamically get the product ID from PHP
             const quantity = 1; // Set the default quantity
 
             const flyItem = document.getElementById('fly-item');
@@ -243,7 +248,7 @@ if ($result->num_rows > 0) {
                     flyItem.style.opacity = '0'; // Fade out the fly item
                     flyItem.style.visibility = 'hidden'; // Make sure it's hidden
                     flyItem.style.transform =
-                    'translate(0, 0)'; // Reset the transform to original position
+                        'translate(0, 0)'; // Reset the transform to original position
                 }, 100); // Delay slightly to ensure smooth transition
             }
 

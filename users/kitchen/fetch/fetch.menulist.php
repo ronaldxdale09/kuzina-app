@@ -5,12 +5,28 @@ if (!$kitchen_id) {
     echo "Kitchen ID not found. Please log in.";
     exit();
 }
+// Fetch all menu items for the kitchen with extended details
+$query = "SELECT 
+    food_id, 
+    food_name, 
+    description, 
+    price, 
+    meal_type, 
+    photo1,
+    diet_type_suitable,
+    health_goal_suitable,
+    allergens,
+    protein,
+    carbs,
+    fat,
+    calories,
+    category,
+    status,
+    available
+FROM food_listings 
+WHERE available = 1 AND kitchen_id = ?
+ORDER BY created_at DESC";
 
-
-// Fetch all menu items for the kitchen
-$query = "SELECT food_id, food_name, description, price, meal_type, photo1 
-          FROM food_listings 
-          WHERE available = 1 AND kitchen_id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $kitchen_id);
 $stmt->execute();
@@ -20,20 +36,43 @@ $menuItems = [
     'all' => [],
     'breakfast' => [],
     'lunch' => [],
-    'dinner' => []
+    'dinner' => [],
+    'snacks' => []  // Added snacks category
 ];
 
 while ($row = $result->fetch_assoc()) {
-    $mealType = strtolower($row['meal_type']);
+    // Process the data before storing
+    $row['diet_types'] = !empty($row['diet_type_suitable']) ? 
+        array_map('trim', explode(',', $row['diet_type_suitable'])) : [];
+    
+    $row['health_goals'] = !empty($row['health_goal_suitable']) ? 
+        array_map('trim', explode(',', $row['health_goal_suitable'])) : [];
+    
+    $row['allergen_list'] = !empty($row['allergens']) && $row['allergens'] !== 'None' ? 
+        array_map('trim', explode(',', $row['allergens'])) : [];
+
+    // Convert numerical values to appropriate format
+    $row['price'] = number_format($row['price'], 2);
+    $row['protein'] = is_numeric($row['protein']) ? $row['protein'] . 'g' : $row['protein'];
+    $row['carbs'] = is_numeric($row['carbs']) ? $row['carbs'] . 'g' : $row['carbs'];
+    $row['fat'] = is_numeric($row['fat']) ? $row['fat'] . 'g' : $row['fat'];
+
+    // Add to all items
     $menuItems['all'][] = $row;
+
+    // Add to specific meal type category
+    $mealType = strtolower($row['meal_type']);
     if (isset($menuItems[$mealType])) {
-        $menuItems[$mealType][] = $row; // Group items by category (e.g., breakfast, lunch)
+        $menuItems[$mealType][] = $row;
     }
 }
 
+// Add total counts for each category
+$menuCounts = array_map('count', $menuItems);
+
+// Clean up resources
 $stmt->close();
 $conn->close();
-
 // Function to render menu items for a specific category
 function renderMenuItems($items) {
     if (empty($items)) {
@@ -47,21 +86,43 @@ function renderMenuItems($items) {
         alt="<?= htmlspecialchars($item['food_name']) ?>" />
     <div class="menu-info">
         <h5><?= htmlspecialchars($item['food_name']) ?></h5>
-        <span class="badge"><?= htmlspecialchars($item['meal_type']) ?></span>
-        <div class="price">PHP <?= number_format($item['price'], 2) ?></div>
-    </div>
-    <div class="action-icons">
-        <button class="menu-button" onclick="toggleDropdown(this)">
-            <i class="bx bx-dots-horizontal-rounded"></i> <!-- Dots icon for menu -->
-        </button>
-        <div class="action-dropdown">
-            <a href="#" class="dropdown-option">Edit</a>
-            <a href="javascript:void(0);" class="dropdown-option"
-                onclick="openRemoveModal('<?= $item['food_id'] ?>', '<?= htmlspecialchars($item['food_name']) ?>', '<?= number_format($item['price'], 2) ?>')">
-                Remove
-            </a>
+        
+        <div class="menu-badges">
+            <span class="badge meal-type"><?= htmlspecialchars($item['meal_type']) ?></span>
+            <span class="badge category"><?= htmlspecialchars($item['category']) ?></span>
+        </div>
+        
+        <!-- Description -->
+        <p class="description">
+            <?= nl2br(htmlspecialchars(substr($item['description'], 0, 100) . (strlen($item['description']) > 100 ? '...' : ''))); ?>
+        </p>
+        
+        <!-- Nutritional Summary -->
+        <div class="nutrition-summary">
+            <span class="nutrition-item">
+                <i class='bx bx-bowl-hot'></i> <?= htmlspecialchars($item['calories']) ?> cal
+            </span>
+            <span class="nutrition-item">
+                <i class='bx bx-donate-heart'></i> <?= htmlspecialchars($item['protein']) ?>g protein
+            </span>
         </div>
 
+        <div class="item-bottom">
+            <div class="price">PHP <?= number_format($item['price'], 2) ?></div>
+            <div class="action-buttons">
+                <button class="action-btn edit" onclick="window.location.href='add_menu.php?food_id=<?= $item['food_id'] ?>'">
+                    <i class='bx bx-edit'></i> Edit
+                </button>
+                <button class="action-btn remove" onclick="openRemoveModal('<?= $item['food_id'] ?>', '<?= htmlspecialchars($item['food_name']) ?>', '<?= number_format($item['price'], 2) ?>')">
+                    <i class='bx bx-trash'></i> Remove
+                </button>
+                <button class="action-btn availability <?= $item['status'] ? 'available' : 'unavailable' ?>" 
+                        onclick="toggleAvailability(<?= $item['food_id'] ?>, '<?= htmlspecialchars($item['food_name']) ?>', <?= $item['status'] ?>)">
+                    <i class='bx <?= $item['status'] ? 'bx-check-circle' : 'bx-x-circle' ?>'></i>
+                    <?= $item['status'] ? 'Available' : 'Unavailable' ?>
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 

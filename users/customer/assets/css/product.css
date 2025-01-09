@@ -101,7 +101,6 @@
     box-shadow: none;
     display: flex;
     justify-content: center;
-    /* Center the buttons horizontally */
     z-index: 800;
     position: fixed;
     bottom: 0;
@@ -114,48 +113,57 @@
 .footer {
     display: flex;
     justify-content: space-between;
-    /* Space out the two buttons */
     width: 100%;
-    max-width: 1000px;
-    /* Limit the max width */
+    max-width: 1200px;
     list-style-type: none;
     padding: 0;
     margin: 0;
+    gap: 8px;
 }
 
 .footer-item {
-    flex: 1;
-    /* Allow items to grow and shrink as needed */
     display: flex;
     justify-content: center;
 }
 
+.footer-item-chat {
+    flex: 0 0 auto;
+    margin-right: 5px;
+}
 
-/* Add to Cart Button Styling (Wider) */
+.footer-item-cart {
+    flex: 1;
+    max-width: 35%;
+}
 
-.add-to-cart-btn {
+.footer-item-add {
+    flex: 1;
+    max-width: 45%;
+}
+
+
+/* Chat Button Styling */
+
+.chat-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #502121;
+    background-color: #4A90E2;
     color: white;
     padding: 15px 20px;
     font-size: 18px;
     font-weight: bold;
     border-radius: 50px;
     text-decoration: none;
-    width: 100%;
-    max-width: 65%;
-    /* Set max-width to 65% to make it wider */
+    width: 100px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
     white-space: nowrap;
-    /* Ensure text stays on one line */
     text-align: center;
 }
 
 
-/* View Cart Button Styling (Narrower) */
+/* View Cart Button Styling */
 
 .view-cart-btn {
     display: flex;
@@ -169,47 +177,88 @@
     border-radius: 50px;
     text-decoration: none;
     width: 100%;
-    max-width: 30%;
-    /* Set max-width to 30% to make it narrower */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
     white-space: nowrap;
-    /* Ensure text stays on one line */
     text-align: center;
 }
 
 
-/* Hover effects for both buttons */
+/* Add to Cart Button Styling */
 
-.add-to-cart-btn:hover {
-    background-color: #e65a5a;
-    /* Darker red on hover */
+.add-to-cart-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #502121;
+    color: white;
+    padding: 15px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 50px;
+    text-decoration: none;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+    text-align: center;
+}
+
+
+/* Hover effects */
+
+.chat-btn:hover {
+    background-color: #357ABD;
 }
 
 .view-cart-btn:hover {
     background-color: #558b2f;
-    /* Darker green on hover */
+}
+
+.add-to-cart-btn:hover {
+    background-color: #e65a5a;
 }
 
 
-/* Responsive adjustments for smaller screens */
+/* Responsive adjustments */
 
-.footer {
-    align-items: center;
+@media (max-width: 768px) {
+    .footer {
+        padding: 0 10px;
+        gap: 6px;
+    }
+    .chat-btn {
+        width: 90px;
+        font-size: 16px;
+        padding: 12px 15px;
+    }
+    .view-cart-btn,
+    .add-to-cart-btn {
+        font-size: 16px;
+        padding: 12px 15px;
+    }
+    .footer-item-chat {
+        margin-right: 3px;
+    }
 }
 
-.footer-item {
-    padding-right: 10px;
-    /* Space between buttons */
-    width: 100%;
-}
-
-.add-to-cart-btn,
-.view-cart-btn {
-    font-size: 16px;
-    padding: 12px 20px;
-    max-width: 100%;
-    /* Full width on mobile */
+@media (max-width: 480px) {
+    .footer {
+        gap: 4px;
+    }
+    .chat-btn {
+        width: 80px;
+        font-size: 14px;
+        padding: 10px;
+    }
+    .view-cart-btn,
+    .add-to-cart-btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+    .footer-item-chat {
+        margin-right: 2px;
+    }
 }
 
 

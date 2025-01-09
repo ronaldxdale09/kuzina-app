@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </a>
         </li>
         <li class="footer-item">
-            <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="footer-link">
+            <a href="messenger.chats.php" class="footer-link">
                 <i class="bx bx-message icli"></i>
                 <span>Messages</span>
             </a>
