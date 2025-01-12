@@ -5,7 +5,7 @@
             href="homepage.php"> <img class="logo" src="assets/images/logo/logo-w2.png" alt="logo" /></a>
     </div>
     <div class="avatar-wrap">
-        <span class="font-sm"><?php echo 'Kitchen' //$_COOKIE['user_fname']?></span>
+        <span class="font-sm"><?php echo 'Rider' //$_COOKIE['user_fname']?></span>
         <a href="account.php"> <img class="avatar" src="assets/images/logo/logo49.png" alt="avatar" /></a>
     </div>
 </header>

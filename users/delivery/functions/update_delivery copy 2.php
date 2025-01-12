@@ -135,30 +135,10 @@ try {
     // Handle earnings when order is delivered
     if ($new_status === 'Delivered') {
         // Calculate earnings
-        $kitchen_amount = $order['final_total_amount'];
+        $kitchen_amount = $order['final_total_amount'] * 0.80; // 80% to kitchen
         $rider_amount = $order['delivery_fee']; // Full delivery fee to rider
 
-        // Update kitchen balance
-        $kitchen_update_sql = "UPDATE kitchens 
-                             SET balance = balance + ? 
-                             WHERE kitchen_id = ?";
-        $stmt = $conn->prepare($kitchen_update_sql);
-        $stmt->bind_param("di", $kitchen_amount, $order['kitchen_id']);
-        if (!$stmt->execute()) {
-            throw new Exception('Failed to update kitchen balance');
-        }
-
-        // Update rider balance
-        $rider_update_sql = "UPDATE delivery_riders 
-                           SET balance = balance + ? 
-                           WHERE rider_id = ?";
-        $stmt = $conn->prepare($rider_update_sql);
-        $stmt->bind_param("di", $rider_amount, $rider_id);
-        if (!$stmt->execute()) {
-            throw new Exception('Failed to update rider balance');
-        }
-
-        // Insert kitchen earnings record
+        // Insert kitchen earnings
         $kitchen_earnings_sql = "INSERT INTO kitchen_earnings (kitchen_id, order_id, amount) 
                                 VALUES (?, ?, ?)";
         $stmt = $conn->prepare($kitchen_earnings_sql);
@@ -171,7 +151,7 @@ try {
             throw new Exception('Failed to insert kitchen earnings');
         }
 
-        // Insert rider earnings record
+        // Insert rider earnings
         $rider_earnings_sql = "INSERT INTO rider_earnings (rider_id, order_id, amount) 
                              VALUES (?, ?, ?)";
         $stmt = $conn->prepare($rider_earnings_sql);
@@ -184,11 +164,9 @@ try {
             throw new Exception('Failed to insert rider earnings');
         }
 
-        debug_log("Earnings recorded and balances updated", [
+        debug_log("Earnings recorded", [
             'kitchen_amount' => $kitchen_amount,
-            'rider_amount' => $rider_amount,
-            'kitchen_id' => $order['kitchen_id'],
-            'rider_id' => $rider_id
+            'rider_amount' => $rider_amount
         ]);
     }
 

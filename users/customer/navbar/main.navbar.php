@@ -7,5 +7,7 @@
     <div class="avatar-wrap">
         <span class="font-sm"><?php echo  $_COOKIE['user_fname']?></span>
         <a href="account.php"> <img class="avatar" src="assets/images/logo/logo49.png" alt="avatar" /></a>
+
     </div>
+
 </header>

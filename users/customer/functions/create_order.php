@@ -8,7 +8,7 @@ $customer_id = $_COOKIE['user_id'];
 $payment_method = $input['payment_method'] ?? null;
 $payment_token = $input['payment_token'] ?? null;
 $is_cod = $input['is_cod'] ?? false;
-$delivery_fee = 50;
+
 try {
     if (!$payment_method) {
         throw new Exception("Payment method is missing.");
@@ -18,6 +18,7 @@ try {
     $conn->begin_transaction();
 
     $total_amount = 0.0;
+    $total_items = 0;
 
     // Retrieve cart items and calculate total amount
     $cart_items_sql = "SELECT ci.food_id, ci.quantity, fl.price, fl.kitchen_id 
@@ -32,9 +33,17 @@ try {
     $kitchen_id = null;
     while ($item = $cart_items->fetch_assoc()) {
         $total_amount += $item['quantity'] * $item['price'];
+        $total_items += $item['quantity'];
         $kitchen_id = $item['kitchen_id'];
     }
     $stmt_cart->close();
+
+    // Calculate delivery fee
+    $delivery_fee = 50; // Base fee
+    if($total_items > 1) {
+        $delivery_fee += ($total_items - 1) * 10; // Add ₱10 for each additional item
+    }
+    $delivery_fee = min($delivery_fee, 150); // Cap at ₱150
 
     // Retrieve the customer's default address
     $address_sql = "SELECT address_id FROM user_addresses WHERE user_id = ? AND is_default = 1 LIMIT 1";
@@ -49,14 +58,13 @@ try {
     }
     $address_id = $address['address_id'];
 
-    // Calculate final total amount (apply discount if needed)
+    // Calculate final total amount
     $discount_amount = 0.00;
-    $final_total_amount = $total_amount - $discount_amount;
+    $final_total_amount = $total_amount + $delivery_fee - $discount_amount;
 
-    // Step 4: Handle payment record first for non-COD orders
+    // Handle payment record for non-COD orders
     $payment_id = null;
     if (!$is_cod) {
-        // Logging payment token for debug
         error_log("Checking payment record for token: " . $payment_token);
         
         $payment_sql = "SELECT payment_id FROM payments WHERE payment_token = ? AND payment_status = 'Completed'";
@@ -73,8 +81,8 @@ try {
         $payment_id = $payment['payment_id'];
     }
 
-    // Step 1: Create the order record with payment_id if it's available
-    $sql_order = "INSERT INTO orders (customer_id, kitchen_id, address_id, total_amount, final_total_amount, order_status, payment_id,delivery_fee)
+    // Create the order record
+    $sql_order = "INSERT INTO orders (customer_id, kitchen_id, address_id, total_amount, final_total_amount, order_status, payment_id, delivery_fee)
                   VALUES (?, ?, ?, ?, ?, 'Confirmed', ?, ?)";
     $stmt_order = $conn->prepare($sql_order);
     $stmt_order->bind_param("iiiddii", $customer_id, $kitchen_id, $address_id, $total_amount, $final_total_amount, $payment_id, $delivery_fee);
@@ -86,7 +94,7 @@ try {
     $order_id = $stmt_order->insert_id;
     $stmt_order->close();
 
-    // Step 2: Insert items into order_items
+    // Insert items into order_items
     $stmt_order_item = $conn->prepare("INSERT INTO order_items (order_id, food_id, quantity, price) VALUES (?, ?, ?, ?)");
     $cart_items->data_seek(0);  // Reset pointer
 
@@ -96,17 +104,17 @@ try {
     }
     $stmt_order_item->close();
 
-    // Step 3: Clear cart items
+    // Clear cart items
     $clear_cart_sql = "DELETE FROM cart_items WHERE customer_id = ?";
     $stmt_clear_cart = $conn->prepare($clear_cart_sql);
     $stmt_clear_cart->bind_param("i", $customer_id);
     $stmt_clear_cart->execute();
     $stmt_clear_cart->close();
 
-    // Step 5: Handle payment record for COD (create a new payment entry with 'Pending' status)
+    // Handle COD payment record
     if ($is_cod) {
         $cod_payment_sql = "INSERT INTO payments (order_id, customer_id, payment_method, payment_status, amount)
-                            VALUES (?, ?, 'COD', 'Pending', ?)";
+                           VALUES (?, ?, 'COD', 'Pending', ?)";
         $stmt_cod_payment = $conn->prepare($cod_payment_sql);
         $stmt_cod_payment->bind_param("iid", $order_id, $customer_id, $final_total_amount);
         
@@ -116,7 +124,7 @@ try {
         
         $stmt_cod_payment->close();
     } else {
-        // Update payment record to link it to the order if it’s not COD
+        // Update existing payment record
         $update_payment_sql = "UPDATE payments SET order_id = ? WHERE payment_id = ?";
         $stmt_update_payment = $conn->prepare($update_payment_sql);
         $stmt_update_payment->bind_param("ii", $order_id, $payment_id);
@@ -127,9 +135,21 @@ try {
     // Commit transaction
     $conn->commit();
 
-    echo json_encode(['success' => true, 'order_id' => $order_id, 'message' => 'Order created successfully.']);
+    echo json_encode([
+        'success' => true, 
+        'order_id' => $order_id,
+        'delivery_fee' => $delivery_fee,
+        'final_total' => $final_total_amount,
+        'message' => 'Order created successfully.'
+    ]);
+
 } catch (Exception $e) {
     $conn->rollback();
-    echo json_encode(['success' => false, 'message' => 'An error occurred while creating the order: ' . $e->getMessage()]);
+    echo json_encode([
+        'success' => false, 
+        'message' => 'An error occurred while creating the order: ' . $e->getMessage()
+    ]);
 }
+
 $conn->close();
+?>

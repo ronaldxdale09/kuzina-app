@@ -13,13 +13,15 @@
             // Function to fetch recommended products with kitchen reviews
             function fetchRecommendations($conn, $limit = 3) {
                 $sql = "SELECT fl.food_id, fl.food_name, fl.price, fl.photo1, fl.health_goal_suitable, fl.meal_type, fl.kitchen_id,
-                               COALESCE(AVG(r.rating), 0) AS avg_rating,
-                               COUNT(r.review_id) AS review_count
-                        FROM food_listings fl
-                        LEFT JOIN reviews r ON fl.food_id = r.food_id
-                        WHERE fl.available = 1
-                        GROUP BY fl.food_id
-                        LIMIT ?";
+       COALESCE(AVG(r.rating), 0) AS avg_rating,
+       COUNT(r.review_id) AS review_count
+FROM food_listings fl
+LEFT JOIN reviews r ON fl.food_id = r.food_id
+WHERE fl.available = 1 
+AND fl.listed = 1
+AND fl.isApproved = 0
+GROUP BY fl.food_id
+LIMIT ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("i", $limit);
                 $stmt->execute();

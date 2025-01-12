@@ -55,6 +55,7 @@ $rider_id = checkRiderAuth();
     <main class="main-wrap dashboard-page mb-xxl">
         <!-- Delivery Statistics Section -->
             <?php include 'components/delivery.statistic.php'; ?>
+            <?php include 'components/rider.balance.php'; ?>
 
         <!-- Earnings Chart Section -->
             <?php include 'components/earnings_chart.php'; ?>

@@ -50,22 +50,15 @@ $stmt->close();
         <!-- Order Statistics Section -->
         <?php include 'components/statistic.homepage.php'; ?>
 
+        <?php include 'components/kitchen.balance.php'; ?>
 
         <!-- Revenue Chart Section -->
         <?php include 'components/chart.homepage.php'; ?>
 
 
         <!-- Reviews Section -->
-        <section class="reviews-section">
-            <div class="reviews-summary">
-                <div class="review-score">
-                    <span class="star">★</span>
-                    <h4>4.9</h4>
-                </div>
-                <p class="total-reviews">Total 20 Reviews</p>
-                <a href="#" class="review-link">See All Reviews</a>
-            </div>
-        </section>
+        <?php include 'components/homepage.review.php'; ?>
+
 
         <!-- Popular Items Section -->
       
@@ -89,26 +82,7 @@ $stmt->close();
     <!-- Footer Start -->
 
     <?php include 'includes/appbar.php'; ?>
-    <!-- Footer End -->
-
-    <!-- Action Language Start -->
-    <div class="action action-language offcanvas offcanvas-bottom" tabindex="-1" id="language"
-        aria-labelledby="language">
-        <div class="offcanvas-body small">
-            <h2 class="m-b-title1 font-md">Select Language</h2>
-
-            <ul class="list">
-                <li>
-                    <a href="javascript:void(0)" data-bs-dismiss="offcanvas" aria-label="Close"> <img
-                            src="assets/icons/flag/us.svg" alt="us" /> English </a>
-                </li>
-
-            </ul>
-        </div>
-    </div>
-    <!-- Action Language End -->
-
-    <!-- Pwa Install App Popup Start -->
+  
 
     <?php include 'includes/scripts.php'; ?>
 

@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </a>
         </li>
         <li class="footer-item <?php echo ($current_page === 'users.php') ? 'active' : ''; ?>">
-            <a href="#" class="footer-link">
+            <a href="users.php" class="footer-link">
                 <i class="bx bx-group icli"></i>
                 <span>Users</span>
             </a>
@@ -131,6 +131,12 @@ document.addEventListener('DOMContentLoaded', function() {
             <a href="#" class="footer-link">
                 <i class="bx bx-line-chart icli"></i>
                 <span>Reports</span>
+            </a>
+        </li>
+        <li class="footer-item">
+            <a href="withdrawal.php" class="footer-link">
+                <i class="bx bx-money icli"></i>
+                <span>Withdrawal</span>
             </a>
         </li>
         <li class="footer-item">

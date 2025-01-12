@@ -48,9 +48,9 @@
             </a>
         </li>
         <li class="footer-item <?php echo ($current_page === 'education.php') ? 'active' : ''; ?>">
-            <a href="education.php" class="footer-link">
-                <i class="bx bx-line-chart icli"></i>
-                <span>Learn</span>
+            <a href="messenger.chats.php" class="footer-link">
+                <i class="bx bx-chat icli"></i>
+                <span>Chat</span>
             </a>
         </li>
   

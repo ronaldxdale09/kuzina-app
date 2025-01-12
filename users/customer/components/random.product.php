@@ -3,14 +3,16 @@
 function fetch_and_render_random_products($conn, $limit = 5) {
     // Fetch random products with reviews (average rating and review count)
     $sql = "SELECT fl.food_id, fl.food_name, fl.photo1, fl.price, fl.diet_type_suitable, fl.kitchen_id,
-                   COALESCE(AVG(r.rating), 0) AS avg_rating,
-                   COUNT(r.review_id) AS review_count
-            FROM food_listings fl
-                        LEFT JOIN reviews r ON fl.food_id = r.food_id
-            WHERE fl.available = 1
-            GROUP BY fl.food_id
-            ORDER BY RAND()
-            LIMIT ?";  // Order by RAND() for random products
+       COALESCE(AVG(r.rating), 0) AS avg_rating,
+       COUNT(r.review_id) AS review_count
+FROM food_listings fl
+LEFT JOIN reviews r ON fl.food_id = r.food_id
+WHERE fl.available = 1 
+AND fl.listed = 1 
+AND fl.isApproved = 0
+GROUP BY fl.food_id
+ORDER BY RAND()
+LIMIT ?";  // Order by RAND() for random products
 
     // Prepare the statement for better performance
     $stmt = $conn->prepare($sql);

@@ -1,12 +1,23 @@
 <?php
     $limit = 5;
-    $sql = "SELECT k.kitchen_id, k.fname, k.lname, k.photo, k.description, 
-                   COALESCE(AVG(r.rating), 0) AS avg_rating,
-                   COUNT(r.review_id) AS review_count,
-                   SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT f.category SEPARATOR ', '), ',', 1) AS main_food_category
+    $sql = "SELECT 
+                k.kitchen_id, 
+                k.fname, 
+                k.lname, 
+                k.photo, 
+                k.description,
+                COALESCE(AVG(r.rating), 0) AS avg_rating,
+                COUNT(r.review_id) AS review_count,
+                SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT f.category SEPARATOR ', '), ',', 1) AS main_food_category
             FROM kitchens k
             LEFT JOIN reviews r ON k.kitchen_id = r.kitchen_id
-            LEFT JOIN food_listings f ON k.kitchen_id = f.kitchen_id
+            LEFT JOIN food_listings f ON k.kitchen_id = f.kitchen_id AND f.listed = 1
+            WHERE EXISTS (
+                SELECT 1 
+                FROM food_listings fl 
+                WHERE fl.kitchen_id = k.kitchen_id 
+                AND fl.listed = 1
+            )
             GROUP BY k.kitchen_id
             ORDER BY avg_rating DESC
             LIMIT ?";
@@ -39,25 +50,26 @@
 
             // Render the kitchen profile
             ?>
-            <a href="kitchen.php?id=<?= $kitchen_id ?>" class="kitchen-profile">
-                <div class="kitchen-header">
-                    <img src="../../uploads/profile/<?= $kitchen_photo ?>" class="kitchen-img" alt="<?= $kitchen_name ?>" loading="lazy" />
-                    <div class="kitchen-info">
-                        <h3><?= $kitchen_name ?></h3>
-                        <p><?= $short_description ?></p>
-                        <div class="rating">
-                            <span class="stars"><?= str_repeat('★', round($avg_rating)) ?></span>
-                            <span class="rating-value"><?= number_format($avg_rating, 1) ?> (<?= $review_count ?> reviews)</span>
-                        </div>
-                        <?php if (!empty($main_food_category)): ?>
-                            <div class="food-badge">
-                                <span><?= $main_food_category ?></span>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </a>
-            <?php
+<a href="kitchen.php?id=<?= $kitchen_id ?>" class="kitchen-profile">
+    <div class="kitchen-header">
+        <img src="../../uploads/profile/<?= $kitchen_photo ?>" class="kitchen-img" alt="<?= $kitchen_name ?>"
+            loading="lazy" />
+        <div class="kitchen-info">
+            <h3><?= $kitchen_name ?></h3>
+            <p><?= $short_description ?></p>
+            <div class="rating">
+                <span class="stars"><?= str_repeat('★', round($avg_rating)) ?></span>
+                <span class="rating-value"><?= number_format($avg_rating, 1) ?> (<?= $review_count ?> reviews)</span>
+            </div>
+            <?php if (!empty($main_food_category)): ?>
+            <div class="food-badge">
+                <span><?= $main_food_category ?></span>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</a>
+<?php
         }
         
         // End slider container

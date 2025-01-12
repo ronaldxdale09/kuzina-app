@@ -3,11 +3,12 @@ function fetch_and_render_kitchen_products($conn, $kitchen_id) {
     // Limit the number of results to improve performance
     $limit = 5;
     $sql = "SELECT food_id, food_name, photo1, price, diet_type_suitable 
-            FROM food_listings 
-            WHERE available = 1 
-            AND kitchen_id = ? 
-            AND isApproved = 0
-            LIMIT ?";
+FROM food_listings 
+WHERE available = 1 
+AND kitchen_id = ? 
+AND isApproved = 0
+AND listed = 1
+LIMIT ?";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ii", $kitchen_id, $limit);

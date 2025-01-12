@@ -128,16 +128,16 @@ document.addEventListener('DOMContentLoaded', function() {
             </a>
         </li>
         <li class="footer-item">
-            <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="footer-link">
+            <a href="notification.php"class="footer-link">
                 <i class="bx bx-bell icli"></i>
                 <span>Notification</span>
             </a>
         </li>
-        <li class="footer-item">
+        <!-- <li class="footer-item">
             <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="footer-link">
                 <i class="bx bx-message icli"></i>
                 <span>Messages</span>
             </a>
-        </li>
+        </li> -->
     </ul>
 </footer>

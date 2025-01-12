@@ -45,7 +45,6 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 $bagTotal = 0;
-$deliveryFee = 50.00;
 $couponDiscount = 0.00;
 
 // Display cart items
@@ -139,7 +138,7 @@ $stmt->close();
         </li>
         <li>
             <span>Delivery</span>
-            <span>₱<span id="delivery-fee"><?= number_format($deliveryFee, 2) ?></span></span>
+            <span>₱<span id="delivery-fee"></span></span>
         </li>
         <li>
             <span>Total Amount</span>

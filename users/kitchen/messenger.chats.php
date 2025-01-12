@@ -1,8 +1,8 @@
 <?php
 include 'includes/header.php';
 
-$kitchen_id = 3; // Current kitchen's ID
 
+$kitchen_id = $_COOKIE['kitchen_id'];
 $stmt = $conn->prepare("
   SELECT DISTINCT
       c.customer_id,
@@ -109,6 +109,8 @@ $chats = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 </div>
 
 
+<?php include 'includes/appbar.php'; ?>
+<?php include 'includes/scripts.php'; ?>
 <style>
 .chat-list-page {
    background: #f8f9fa;

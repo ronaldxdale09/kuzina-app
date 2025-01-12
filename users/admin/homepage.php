@@ -20,7 +20,6 @@ if (!$admin_id) {
     <!-- Skeleton loader End -->
 
     <!-- Header Start -->
-    <!-- Header Start -->
     <?php include 'navbar/main.navbar.php'; ?>
 
     <!-- Header End -->

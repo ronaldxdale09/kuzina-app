@@ -21,7 +21,7 @@ $query = "SELECT
     fat,
     calories,
     category,
-    status,
+    listed,
     available
 FROM food_listings 
 WHERE available = 1 AND kitchen_id = ?
@@ -86,17 +86,17 @@ function renderMenuItems($items) {
         alt="<?= htmlspecialchars($item['food_name']) ?>" />
     <div class="menu-info">
         <h5><?= htmlspecialchars($item['food_name']) ?></h5>
-        
+
         <div class="menu-badges">
             <span class="badge meal-type"><?= htmlspecialchars($item['meal_type']) ?></span>
             <span class="badge category"><?= htmlspecialchars($item['category']) ?></span>
         </div>
-        
+
         <!-- Description -->
         <p class="description">
             <?= nl2br(htmlspecialchars(substr($item['description'], 0, 100) . (strlen($item['description']) > 100 ? '...' : ''))); ?>
         </p>
-        
+
         <!-- Nutritional Summary -->
         <div class="nutrition-summary">
             <span class="nutrition-item">
@@ -110,16 +110,18 @@ function renderMenuItems($items) {
         <div class="item-bottom">
             <div class="price">PHP <?= number_format($item['price'], 2) ?></div>
             <div class="action-buttons">
-                <button class="action-btn edit" onclick="window.location.href='add_menu.php?food_id=<?= $item['food_id'] ?>'">
+                <button class="action-btn edit"
+                    onclick="window.location.href='add_menu.php?food_id=<?= $item['food_id'] ?>'">
                     <i class='bx bx-edit'></i> Edit
                 </button>
-                <button class="action-btn remove" onclick="openRemoveModal('<?= $item['food_id'] ?>', '<?= htmlspecialchars($item['food_name']) ?>', '<?= number_format($item['price'], 2) ?>')">
+                <button class="action-btn remove"
+                    onclick="openRemoveModal('<?= $item['food_id'] ?>', '<?= htmlspecialchars($item['food_name']) ?>', '<?= number_format($item['price'], 2) ?>')">
                     <i class='bx bx-trash'></i> Remove
                 </button>
-                <button class="action-btn availability <?= $item['status'] ? 'available' : 'unavailable' ?>" 
-                        onclick="toggleAvailability(<?= $item['food_id'] ?>, '<?= htmlspecialchars($item['food_name']) ?>', <?= $item['status'] ?>)">
-                    <i class='bx <?= $item['status'] ? 'bx-check-circle' : 'bx-x-circle' ?>'></i>
-                    <?= $item['status'] ? 'Available' : 'Unavailable' ?>
+                <button class="action-btn availability <?= $item['listed'] ? 'available' : 'unavailable' ?>"
+                    onclick="toggleAvailability(<?= $item['food_id'] ?>, '<?= htmlspecialchars($item['food_name']) ?>', <?= $item['listed'] ?>)">
+                    <i class='bx <?= $item['listed'] ? 'bx-check-circle' : 'bx-x-circle' ?>'></i>
+                    <?= $item['listed'] ? 'Listed' : 'Unlisted' ?>
                 </button>
             </div>
         </div>
@@ -129,7 +131,104 @@ function renderMenuItems($items) {
 <?php endforeach;
 } ?>
 
+<style>
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
 
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #666;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+.modal h2 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.modal-item-info {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+.modal-item-info p {
+    margin: 8px 0;
+    color: #333;
+}
+
+.modal-item-info strong {
+    display: inline-block;
+    width: 120px;
+    color: #666;
+}
+
+.btn-cancel, .btn-confirm {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+.btn-cancel {
+    background-color: #e9ecef;
+    color: #333;
+    margin-right: 10px;
+}
+
+.btn-confirm {
+    background-color: #502121;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #dee2e6;
+}
+
+.btn-confirm:hover {
+    background-color: #3c1818;
+}
+
+/* Loading state */
+.loading-spinner {
+    text-align: center;
+    padding: 20px;
+}
+
+.loading-spinner i {
+    font-size: 40px;
+    color: #502121;
+}
+</style>
 
 <!-- Main End -->
 <div id="removeModal" class="modal">
@@ -144,6 +243,22 @@ function renderMenuItems($items) {
         </div>
         <button class="btn-cancel" onclick="closeModal()">Cancel</button>
         <button class="btn-confirm" onclick="confirmRemoval()">Confirm</button>
+    </div>
+</div>
+
+<!-- Listing Status Modal -->
+<div id="listingStatusModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeListingModal()">&times;</span>
+        <h2>Update Listing Status</h2>
+        <p>Are you sure you want to update the following item?</p>
+        <div class="modal-item-info">
+            <p><strong>Food Name:</strong> <span id="modalFoodName"></span></p>
+            <p><strong>Current Status:</strong> <span id="modalCurrentStatus"></span></p>
+            <p><strong>New Status:</strong> <span id="modalNewStatus"></span></p>
+        </div>
+        <button class="btn-cancel" onclick="closeListingModal()">Cancel</button>
+        <button class="btn-confirm" onclick="confirmListingUpdate()">Confirm</button>
     </div>
 </div>
 
@@ -212,5 +327,84 @@ function confirmRemoval() {
             console.error('Error:', error);
             alert('An error occurred while removing the item.');
         });
+}
+
+
+let updateData = null;
+
+function toggleAvailability(foodId, foodName, currentStatus) {
+    updateData = {
+        foodId: foodId,
+        newStatus: currentStatus ? 0 : 1
+    };
+
+    // Update modal content
+    document.getElementById('modalFoodName').textContent = foodName;
+    document.getElementById('modalCurrentStatus').textContent = currentStatus ? 'Listed' : 'Unlisted';
+    document.getElementById('modalNewStatus').textContent = updateData.newStatus ? 'Listed' : 'Unlisted';
+
+    // Show modal
+    document.getElementById('listingStatusModal').style.display = 'block';
+}
+
+function closeListingModal() {
+    document.getElementById('listingStatusModal').style.display = 'none';
+}
+
+function confirmListingUpdate() {
+    const modalContent = document.querySelector('.modal-content');
+    const originalContent = modalContent.innerHTML;
+
+    // Show loading state
+    modalContent.innerHTML = `
+        <div class="loading-spinner">
+            <i class='bx bx-loader-alt bx-spin'></i>
+            <p>Updating status...</p>
+        </div>
+    `;
+
+    fetch('functions/update_Foodlisting.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `food_id=${updateData.foodId}&listed=${updateData.newStatus}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            modalContent.innerHTML = `
+                <div class="loading-spinner">
+                    <i class='bx bx-check-circle' style="color: #28a745;"></i>
+                    <p>Status updated successfully!</p>
+                </div>
+            `;
+            setTimeout(() => {
+                closeListingModal();
+                location.reload();
+            }, 1500);
+        } else {
+            throw new Error(data.error || 'Failed to update listing status');
+        }
+    })
+    .catch(error => {
+        modalContent.innerHTML = `
+            <div class="loading-spinner">
+                <i class='bx bx-error-circle' style="color: #dc3545;"></i>
+                <p>Error updating status</p>
+                <p style="color: #dc3545; font-size: 0.9em;">${error.message}</p>
+                <button class="btn-cancel" onclick="closeListingModal()">Close</button>
+                <button class="btn-confirm" onclick="confirmListingUpdate()">Retry</button>
+            </div>
+        `;
+    });
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('listingStatusModal');
+    if (event.target == modal) {
+        closeListingModal();
+    }
 }
 </script>

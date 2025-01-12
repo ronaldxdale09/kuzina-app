@@ -9,7 +9,12 @@ $category = isset($_POST['category']) ? $_POST['category'] : '';
 
 try {
     // Query to fetch all food items if no category is specified, otherwise fetch based on category
-    $query = "SELECT food_id,meal_type,category,description, food_name, diet_type_suitable, health_goal_suitable, price, photo1 FROM food_listings WHERE available = 1";
+    $query = "SELECT food_id, meal_type, category, description, food_name, diet_type_suitable, 
+       health_goal_suitable, price, photo1 
+FROM food_listings 
+WHERE available = 1 
+AND listed = 1 
+AND isApproved = 0";
     
     if (!empty($category)) {
         $query .= " AND category = ?";
