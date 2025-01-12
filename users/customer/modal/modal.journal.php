@@ -178,125 +178,140 @@
 }
 </style>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
+<script>document.addEventListener('DOMContentLoaded', function() {
+    // Initialize constants and variables
     const foodSelectionModal = new bootstrap.Offcanvas(document.getElementById('foodSelectionModal'));
     let selectedFoodId = null;
     let currentMealType = '';
 
-    // Function to show error modal
+    // Modal control functions
     window.showErrorModal = function(message) {
-        document.getElementById('errorMessage').textContent = message;
-        document.getElementById('errorModal').classList.add('show');
-    }
+        const modal = document.getElementById('errorModal');
+        if (modal) {
+            document.getElementById('errorMessage').textContent = message;
+            modal.classList.add('show');
+            setTimeout(() => closeErrorModal(), 3000);
+        }
+    };
 
-    // Function to close error modal
     window.closeErrorModal = function() {
-        document.getElementById('errorModal').classList.remove('show');
+        const modal = document.getElementById('errorModal');
+        if (modal) modal.classList.remove('show');
+    };
+
+    function showSuccessModal() {
+        const modal = document.getElementById('successNotificationModal');
+        if (modal) {
+            modal.classList.add('show');
+            setTimeout(() => closeSuccessModal(), 2000);
+        }
     }
 
-    // Function to open food selection modal
+    function closeSuccessModal() {
+        const modal = document.getElementById('successNotificationModal');
+        if (modal) modal.classList.remove('show');
+    }
+
+    // Fetch and update daily summary
+    function fetchDailySummary() {
+        fetch('functions/journal/get_daily_summary.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                date: '<?= $selected_date ?>'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateMacroSummary(data.totals, data.goals);
+            } else {
+                console.error('Error fetching summary:', data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // Food selection functions
     window.openMealSelector = function(mealType) {
         currentMealType = mealType;
-        document.getElementById('selectedMealType').textContent =
-            mealType.charAt(0).toUpperCase() + mealType.slice(1);
+        const mealTypeDisplay = document.getElementById('selectedMealType');
+        if (mealTypeDisplay) {
+            mealTypeDisplay.textContent = mealType.charAt(0).toUpperCase() + mealType.slice(1);
+        }
         foodSelectionModal.show();
-    }
+    };
 
-    // Function to select food item
     window.selectFood = function(element) {
         document.querySelectorAll('.food-select-item').forEach(item => {
             item.classList.remove('selected');
         });
         element.classList.add('selected');
         selectedFoodId = element.dataset.foodId;
-    }
+    };
 
-    // Function to filter food items
     window.filterFoodItems = function() {
         const searchText = document.getElementById('foodSearch').value.toLowerCase();
         document.querySelectorAll('.food-select-item').forEach(item => {
-            const foodName = item.querySelector('h6').textContent.toLowerCase();
+            const foodName = item.querySelector('h4').textContent.toLowerCase();
             item.style.display = foodName.includes(searchText) ? 'flex' : 'none';
         });
-    }
+    };
 
-    // Function to create food card HTML
-    function createFoodCardHTML(food) {
-        return `
-            <div class="food-card" data-journal-id="${food.journal_id}">
-                <div class="food-card-inner">
-                    <div class="food-image-wrapper">
-                        <img src="../../uploads/${food.photo1 || ''}" 
-                             alt="${food.food_name}" 
-                             class="food-image"
-                             onerror="this.src='assets/img/placeholder.jpg'">
-                        <button class="delete-entry" onclick="deleteJournalEntry(${food.journal_id})">
-                            <i class='bx bx-trash'></i>
-                        </button>
-                    </div>
-                    <div class="food-content">
-                        <div class="food-header">
-                            <div class="food-title">
-                                <h4>${food.food_name}</h4>
-                                <p class="kitchen-name">by ${food.kitchen_name || 'Unknown Kitchen'}</p>
-                            </div>
-                            <span class="portion-badge">×${food.portion}</span>
-                        </div>
-                        <div class="macro-tags">
-                            <span class="tag-item calories">
-                                <i class='bx bx-flame'></i>
-                                ${food.calories} kcal
-                            </span>
-                            <span class="tag-item protein">
-                                <i class='bx bx-bowl-hot'></i>
-                                ${food.protein}g
-                            </span>
-                            <span class="tag-item carbs">
-                                <i class='bx bx-baguette'></i>
-                                ${food.carbs}g
-                            </span>
-                            <span class="tag-item fat">
-                                <i class='bx bx-droplet'></i>
-                                ${food.fat}g
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-
-    // Function to update macro summary
-    function updateMacroSummary(totals) {
-        document.querySelector('.circle-progress text.percentage').textContent =
-            Math.round(totals.total_calories);
-
-        document.querySelector('.circle-progress path').setAttribute(
-            'stroke-dasharray',
-            `${Math.min((totals.total_calories / 2000) * 100, 100)}, 100`
-        );
+    // Update macro summary display
+    function updateMacroSummary(totals, goals) {
+        // Update calories circle
+        const caloriesCircle = document.querySelector('.circle-progress text.percentage');
+        const caloriesPath = document.querySelector('.circle-progress path');
+        if (caloriesCircle && caloriesPath) {
+            caloriesCircle.textContent = Math.round(totals.total_calories);
+            const caloriesPercentage = goals.daily_calories > 0 ? 
+                Math.min((totals.total_calories / goals.daily_calories) * 100, 100) : 0;
+            caloriesPath.setAttribute('stroke-dasharray', `${caloriesPercentage}, 100`);
+        }
 
         // Update protein
-        document.querySelector('.macro-item .protein-bg + .macro-info .macro-value').textContent =
-            `${Math.round(totals.total_protein)}g`;
-        document.querySelector('.progress.protein').style.width =
-            `${Math.min((totals.total_protein / 50) * 100, 100)}%`;
+        updateMacroElement(
+            'protein',
+            totals.total_protein,
+            goals.daily_protein,
+            '.macro-item .protein-bg + .macro-info .macro-value',
+            '.progress.protein'
+        );
 
         // Update carbs
-        document.querySelector('.macro-item .carbs-bg + .macro-info .macro-value').textContent =
-            `${Math.round(totals.total_carbs)}g`;
-        document.querySelector('.progress.carbs').style.width =
-            `${Math.min((totals.total_carbs / 300) * 100, 100)}%`;
+        updateMacroElement(
+            'carbs',
+            totals.total_carbs,
+            goals.daily_carbs,
+            '.macro-item .carbs-bg + .macro-info .macro-value',
+            '.progress.carbs'
+        );
 
         // Update fat
-        document.querySelector('.macro-item .fat-bg + .macro-info .macro-value').textContent =
-            `${Math.round(totals.total_fat)}g`;
-        document.querySelector('.progress.fat').style.width =
-            `${Math.min((totals.total_fat / 65) * 100, 100)}%`;
+        updateMacroElement(
+            'fat',
+            totals.total_fat,
+            goals.daily_fat,
+            '.macro-item .fat-bg + .macro-info .macro-value',
+            '.progress.fat'
+        );
     }
 
-    // Function to add to journal
+    function updateMacroElement(type, value, goal, valueSelector, progressSelector) {
+        const valueElement = document.querySelector(valueSelector);
+        const progressElement = document.querySelector(progressSelector);
+        
+        if (valueElement && progressElement) {
+            valueElement.textContent = `${Math.round(value)}g`;
+            const percentage = goal > 0 ? Math.min((value / goal) * 100, 100) : 0;
+            progressElement.style.width = `${percentage}%`;
+        }
+    }
+
+    // Journal entry management
     window.addToJournal = function() {
         if (!selectedFoodId) {
             showErrorModal('Please select a food item');
@@ -304,71 +319,65 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         fetch('functions/journal/add_to_journal.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                food_id: selectedFoodId,
+                meal_type: currentMealType,
+                date: '<?= $selected_date ?>'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateMealSection(data.food);
+                resetFoodSelection();
+                fetchDailySummary();
+                showSuccessModal();
+            } else {
+                showErrorModal(data.message || 'Error adding food to journal');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showErrorModal('Error adding food to journal');
+        });
+    };
+
+    window.deleteJournalEntry = function(journalId) {
+        if (confirm('Are you sure you want to remove this entry?')) {
+            fetch('functions/journal/delete_journal_entry.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    food_id: selectedFoodId,
-                    meal_type: currentMealType,
-                    date: '<?= $selected_date ?>'
-                })
+                body: JSON.stringify({ journal_id: journalId })
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Response:', data); // Debug log
                 if (data.success) {
-                    // Get the meal section
-                    const mealSection = document.querySelector(
-                        `.meal-section.${currentMealType.toLowerCase()} .meal-items`
-                    );
-
-                    // Check if mealSection exists
-                    if (!mealSection) {
-                        console.error('Meal section not found:', currentMealType);
-                        return;
+                    const entry = document.querySelector(`[data-journal-id="${journalId}"]`);
+                    if (entry) {
+                        entry.remove();
+                        checkEmptyMealSection(entry.closest('.meal-items'));
                     }
-
-                    // Remove empty state if it exists
-                    const emptyState = mealSection.querySelector('.empty-meal');
-                    if (emptyState) {
-                        emptyState.remove();
-                    }
-
-                    // Add the new food card
-                    if (data.food) {
-                        const newFoodCard = createFoodCardHTML(data.food);
-                        mealSection.insertAdjacentHTML('afterbegin', newFoodCard);
-                    }
-
-                    // Update macro summary if totals are provided
-                    if (data.totals) {
-                        updateMacroSummary(data.totals);
-                    }
-
-                    // Close modals
-                    foodSelectionModal.hide();
-                    // Reset selection
-                    selectedFoodId = null;
-                    document.querySelectorAll('.food-select-item').forEach(item => {
-                        item.classList.remove('selected');
-                    });
-
-                    // Show success message
+                    fetchDailySummary();
                     showSuccessModal();
                 } else {
-                    showErrorModal(data.message || 'Error adding food to journal');
+                    showErrorModal(data.message || 'Error deleting entry');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                showErrorModal('Error adding food to journal. Please try again.');
+                showErrorModal('Error deleting entry');
             });
-    }
+        }
+    };
 
-    // Function to create food card HTML
+    // Helper functions
     function createFoodCardHTML(food) {
-        // Add null checks and default values
         const safeFood = {
             journal_id: food.journal_id || 0,
             food_name: food.food_name || 'Unknown Food',
@@ -382,65 +391,85 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         return `
-        <div class="food-card" data-journal-id="${safeFood.journal_id}">
-            <div class="food-card-inner">
-                <div class="food-image-wrapper">
-                    <img src="../../uploads/${safeFood.photo1}" 
-                         alt="${safeFood.food_name}" 
-                         class="food-image">
-                    <button class="delete-entry" onclick="deleteJournalEntry(${safeFood.journal_id})">
-                        <i class='bx bx-trash'></i>
-                    </button>
-                </div>
-                <div class="food-content">
-                    <div class="food-header">
-                        <div class="food-title">
-                            <h4>${safeFood.food_name}</h4>
-                            <p class="kitchen-name">by ${safeFood.kitchen_name}</p>
-                        </div>
-                        <span class="portion-badge">×${safeFood.portion}</span>
+            <div class="food-card" data-journal-id="${safeFood.journal_id}">
+                <div class="food-card-inner">
+                    <div class="food-image-wrapper">
+                        <img src="../../uploads/${safeFood.photo1}" 
+                             alt="${safeFood.food_name}" 
+                             class="food-image"
+                             onerror="this.src='assets/img/placeholder.jpg'">
+                        <button class="delete-entry" onclick="deleteJournalEntry(${safeFood.journal_id})">
+                            <i class='bx bx-trash'></i>
+                        </button>
                     </div>
-                    <div class="macro-tags">
-                        <span class="tag-item calories">
-                            <i class='bx bx-flame'></i>
-                            ${safeFood.calories} kcal
-                        </span>
-                        <span class="tag-item protein">
-                            <i class='bx bx-bowl-hot'></i>
-                            ${safeFood.protein}g
-                        </span>
-                        <span class="tag-item carbs">
-                            <i class='bx bx-baguette'></i>
-                            ${safeFood.carbs}g
-                        </span>
-                        <span class="tag-item fat">
-                            <i class='bx bx-droplet'></i>
-                            ${safeFood.fat}g
-                        </span>
+                    <div class="food-content">
+                        <div class="food-header">
+                            <div class="food-title">
+                                <h4>${safeFood.food_name}</h4>
+                                <p class="kitchen-name">by ${safeFood.kitchen_name}</p>
+                            </div>
+                            <span class="portion-badge">×${safeFood.portion}</span>
+                        </div>
+                        <div class="macro-tags">
+                            <span class="tag-item calories">
+                                <i class='bx bx-flame'></i>
+                                ${safeFood.calories} kcal
+                            </span>
+                            <span class="tag-item protein">
+                                <i class='bx bx-bowl-hot'></i>
+                                ${safeFood.protein}g
+                            </span>
+                            <span class="tag-item carbs">
+                                <i class='bx bx-baguette'></i>
+                                ${safeFood.carbs}g
+                            </span>
+                            <span class="tag-item fat">
+                                <i class='bx bx-droplet'></i>
+                                ${safeFood.fat}g
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    `;
+        `;
     }
 
-    // Success modal functions
-    function showSuccessModal() {
-        const modal = document.getElementById('successNotificationModal');
-        if (modal) {
-            modal.classList.add('show');
-            // Auto close after 2 seconds
-            setTimeout(() => {
-                closeSuccessModal();
-            }, 2000);
+    function updateMealSection(food) {
+        const mealSection = document.querySelector(
+            `.meal-section.${currentMealType.toLowerCase()} .meal-items`
+        );
+        
+        if (mealSection) {
+            const emptyState = mealSection.querySelector('.empty-meal');
+            if (emptyState) emptyState.remove();
+            
+            mealSection.insertAdjacentHTML('afterbegin', createFoodCardHTML(food));
         }
     }
 
-    function closeSuccessModal() {
-        const modal = document.getElementById('successNotificationModal');
-        if (modal) {
-            modal.classList.remove('show');
+    function checkEmptyMealSection(mealItems) {
+        if (mealItems && !mealItems.querySelector('.food-card')) {
+            mealItems.innerHTML = `
+                <div class="empty-meal">
+                    <i class='bx bx-dish'></i>
+                    <p>No meals logged</p>
+                    <button class="add-meal-btn" onclick="openMealSelector('${currentMealType}')">
+                        Add Food
+                    </button>
+                </div>
+            `;
         }
     }
+
+    function resetFoodSelection() {
+        selectedFoodId = null;
+        document.querySelectorAll('.food-select-item').forEach(item => {
+            item.classList.remove('selected');
+        });
+        foodSelectionModal.hide();
+    }
+
+    // Initialize
+    fetchDailySummary();
 });
 </script>

@@ -1,87 +1,142 @@
 <?php 
 include 'includes/header.php';
+
+// Check for onboarding
 if (empty($_COOKIE['onboarding_journal'])) {
     header("Location: ob.journal.php");
     exit();
 }
 
-// Define meal types array at the beginning
-$meal_types = array(
-    array(
+// Define meal types with their properties
+$meal_types = [
+    [
         'name' => 'Breakfast',
         'icon' => 'bx-coffee',
         'time' => '6:00 AM - 10:00 AM'
-    ),
-    array(
+    ],
+    [
         'name' => 'Lunch',
         'icon' => 'bx-bowl-rice',
         'time' => '11:00 AM - 2:00 PM'
-    ),
-    array(
+    ],
+    [
         'name' => 'Dinner',
         'icon' => 'bx-restaurant',
         'time' => '6:00 PM - 9:00 PM'
-    ),
-    array(
+    ],
+    [
         'name' => 'Snacks',
         'icon' => 'bx-cookie',
         'time' => 'Any Time'
-    )
-);
-$selected_date = $_GET['date'] ?? date('Y-m-d');
+    ]
+];
+
+// Get selected date with validation
+$selected_date = filter_input(INPUT_GET, 'date') ?? date('Y-m-d');
+if (!validateDate($selected_date)) {
+    $selected_date = date('Y-m-d');
+}
+
+// Default nutritional goals
+$default_goals = [
+    'daily_calories' => 2000,
+    'daily_protein' => 50,
+    'daily_carbs' => 300,
+    'daily_fat' => 65
+];
+
+// Initialize daily totals
+$daily_totals = [
+    'total_calories' => 0,
+    'total_protein' => 0,
+    'total_carbs' => 0,
+    'total_fat' => 0
+];
 
 try {
-    // Fetch customer's active nutritional goals
-    $goals_query = "SELECT daily_calories, daily_protein, daily_carbs, daily_fat 
-                    FROM journal_goals
-                    WHERE customer_id = ? AND is_active = 1
-                    ORDER BY created_at DESC
-                    LIMIT 1";
+    // Start transaction for consistency
+    $conn->begin_transaction();
+
+    // Fetch active nutritional goals
+    $goals_query = "SELECT 
+        COALESCE(daily_calories, ?) as daily_calories,
+        COALESCE(daily_protein, ?) as daily_protein,
+        COALESCE(daily_carbs, ?) as daily_carbs,
+        COALESCE(daily_fat, ?) as daily_fat
+    FROM journal_goals
+    WHERE customer_id = ? AND is_active = 1
+    ORDER BY created_at DESC
+    LIMIT 1";
+    
     $stmt = $conn->prepare($goals_query);
-    $stmt->bind_param("i", $customer_id);
+    $stmt->bind_param("iiiii", 
+        $default_goals['daily_calories'],
+        $default_goals['daily_protein'],
+        $default_goals['daily_carbs'],
+        $default_goals['daily_fat'],
+        $customer_id
+    );
     $stmt->execute();
-    $current_goals = $stmt->get_result()->fetch_assoc();
+    $current_goals = $stmt->get_result()->fetch_assoc() ?? $default_goals;
 
-    // Set default goals if none exist
-    $default_goals = [
-        'daily_calories' => 2000,
-        'daily_protein' => 50,
-        'daily_carbs' => 300,
-        'daily_fat' => 65
-    ];
-    $current_goals = $current_goals ?? $default_goals;
-
-    // Fetch daily totals from the food_journal table
+    // Fetch daily totals with proper NULL and zero handling
     $daily_totals_query = "SELECT
-                    COALESCE(SUM(calories * portion), 0) AS total_calories,
-                    COALESCE(SUM(protein * portion), 0) AS total_protein,
-                    COALESCE(SUM(carbs * portion), 0) AS total_carbs,
-                    COALESCE(SUM(fat * portion), 0) AS total_fat
-                FROM food_journal
-                WHERE customer_id = ? 
-                AND entry_date = ?
-                ORDER BY created_at DESC";
+        ROUND(COALESCE(SUM(NULLIF(calories * portion, 0)), 0), 2) AS total_calories,
+        ROUND(COALESCE(SUM(NULLIF(protein * portion, 0)), 0), 2) AS total_protein,
+        ROUND(COALESCE(SUM(NULLIF(carbs * portion, 0)), 0), 2) AS total_carbs,
+        ROUND(COALESCE(SUM(NULLIF(fat * portion, 0)), 0), 2) AS total_fat
+    FROM food_journal
+    WHERE customer_id = ? 
+    AND entry_date = ?
+    AND calories IS NOT NULL";
+    
     $stmt = $conn->prepare($daily_totals_query);
     $stmt->bind_param("is", $customer_id, $selected_date);
     $stmt->execute();
-    $daily_totals = $stmt->get_result()->fetch_assoc();
+    $result = $stmt->get_result();
+    
+    if ($row = $result->fetch_assoc()) {
+        $daily_totals = array_map('floatval', $row);
+    }
+
+    $conn->commit();
+
 } catch (Exception $e) {
-    error_log("Error fetching food journal data: " . $e->getMessage());
-    $daily_totals = [
-        'total_calories' => 0,
-        'total_protein' => 0,
-        'total_carbs' => 0,
-        'total_fat' => 0
-    ];
+    $conn->rollback();
+    error_log("Error in journal.php: " . $e->getMessage());
+    // Keep using default values set above
 }
 
-// Macro percentages calculation
-$calories_percentage = min(($daily_totals['total_calories'] / $current_goals['daily_calories']) * 100, 100);
-$protein_percentage = min(($daily_totals['total_protein'] / $current_goals['daily_protein']) * 100, 100);
-$carbs_percentage = min(($daily_totals['total_carbs'] / $current_goals['daily_carbs']) * 100, 100);
-$fat_percentage = min(($daily_totals['total_fat'] / $current_goals['daily_fat']) * 100, 100);
-?>
+// Safe calculation functions
+function validateDate($date, $format = 'Y-m-d') {
+    $d = DateTime::createFromFormat($format, $date);
+    return $d && $d->format($format) === $date;
+}
 
+function calculatePercentage($value, $goal) {
+    if ($goal <= 0 || !is_numeric($value)) return 0;
+    $percentage = min(($value / $goal) * 100, 100);
+    return is_finite($percentage) ? round($percentage, 1) : 0;
+}
+
+// Calculate percentages
+$calories_percentage = calculatePercentage($daily_totals['total_calories'], $current_goals['daily_calories']);
+$protein_percentage = calculatePercentage($daily_totals['total_protein'], $current_goals['daily_protein']);
+$carbs_percentage = calculatePercentage($daily_totals['total_carbs'], $current_goals['daily_carbs']);
+$fat_percentage = calculatePercentage($daily_totals['total_fat'], $current_goals['daily_fat']);
+
+// Ensure all values are properly formatted for display
+$display_totals = array_map(function($value) {
+    return number_format(floatval($value), 1);
+}, $daily_totals);
+
+$display_percentages = [
+    'calories' => number_format($calories_percentage, 1),
+    'protein' => number_format($protein_percentage, 1),
+    'carbs' => number_format($carbs_percentage, 1),
+    'fat' => number_format($fat_percentage, 1)
+];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -374,6 +429,33 @@ $fat_percentage = min(($daily_totals['total_fat'] / $current_goals['daily_fat'])
     function openMealSelector(mealType) {
         // Implement your meal selection logic
         window.location.href = `add_food.php?meal_type=${mealType}&date=${<?= json_encode($selected_date) ?>}`;
+    }
+
+    function deleteJournalEntry(journalId) {
+        if (confirm('Are you sure you want to remove this food entry?')) {
+            fetch('functions/delete_journal_entry.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        journal_id: journalId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Reload current page to refresh stats
+                        window.location.reload();
+                    } else {
+                        alert(data.message || 'Failed to delete entry');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the entry');
+                });
+        }
     }
     </script>
 

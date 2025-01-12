@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.saveGoals = function() {
         const formData = new FormData(document.getElementById('goalsForm'));
 
-        fetch('functions/update_goals.php', {
+        fetch('functions/journal/update_goals.php', {
                 method: 'POST',
                 body: formData
             })
