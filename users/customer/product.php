@@ -130,26 +130,22 @@ if ($result->num_rows > 0) {
     </div>
 
     <!-- Updated Footer HTML -->
-    <footer class="footer-wrap shop">
-    <ul class="footer">
-    <li class="footer-item footer-item-chat">
-            <a href="messenger.php?kitchen_id=<?php echo $kitchen_id; ?>" class="chat-btn">
-                <i class='bx bx-message-rounded-dots'></i> Chat
+    <footer class="footer-wrap">
+        <div class="footer-container">
+            <a href="messenger.php?kitchen_id=<?php echo $kitchen_id; ?>" class="footer-btn chat-btn">
+                <i class='bx bx-message-rounded-dots'></i>
             </a>
-        </li>
-        <li class="footer-item footer-item-cart">
-            <a href="cart.php" class="view-cart-btn">
-                <i class='bx bx-cart' id="cart-icon"></i> View Cart
-                (<span id="cart-item-count" class="cart-count-badge">0</span>)
+            <a href="cart.php" class="footer-btn view-cart-btn">
+                <i class='bx bx-cart'></i>
+                <span class="btn-text">Cart</span>
+                <span class="cart-badge" id="cart-item-count">0</span>
             </a>
-        </li>
-        <li class="footer-item footer-item-add">
-            <a href="#" class="add-to-cart-btn">
-                <i class='bx bx-cart'></i> Add to Cart
+            <a href="#" class="footer-btn add-cart-btn">
+                <i class='bx bx-cart-add'></i>
+                <span class="btn-text">Add to Cart</span>
             </a>
-        </li>
-    </ul>
-</footer>
+        </div>
+    </footer>
     <!-- Action Share Grid Start -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {

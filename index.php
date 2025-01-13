@@ -180,7 +180,8 @@ if (!isset($_SESSION['splash_shown'])) {
             'assets/css/vendors/slick-theme.css',
             'assets/css/style.css',
             'assets/css/login.css',
-
+            'assets/boxicons/css/boxicons.min.css',
+            
             // JavaScript files
             'assets/js/jquery-3.6.0.min.js',
             'assets/js/bootstrap.bundle.min.js',

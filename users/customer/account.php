@@ -1,4 +1,5 @@
 <?php include 'includes/header.php'; ?>
+<link rel="stylesheet" href="assets/boxicons/css/boxicons.min.css">
 
 <!-- Head End -->
 
