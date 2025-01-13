@@ -91,9 +91,6 @@
 
 /* Footer container */
 
-
-/* Footer container */
-
 .footer-wrap {
     position: fixed;
     bottom: 0;
@@ -122,26 +119,40 @@
     padding: 12px;
     border-radius: 8px;
     text-decoration: none;
-    color: #fff;
+    color: #fff !important;
+    /* Force white text */
     font-weight: 500;
     font-size: 14px;
     transition: all 0.2s ease;
+    white-space: nowrap;
+    /* Prevent text wrapping */
+}
+
+.footer-btn:hover,
+.footer-btn:active,
+.footer-btn:focus {
+    color: #fff !important;
+    /* Keep text white on all states */
+    opacity: 0.9;
 }
 
 .chat-btn {
     background: #ff5722;
     padding: 12px;
     flex: 0 0 auto;
+    min-width: 45px;
 }
 
 .view-cart-btn {
     background: #4caf50;
     flex: 1;
+    min-width: 110px;
 }
 
 .add-cart-btn {
     background: #502121;
     flex: 1.2;
+    min-width: 120px;
 }
 
 .footer-btn i {
@@ -155,23 +166,34 @@
     border-radius: 12px;
     font-size: 12px;
     font-weight: bold;
+    min-width: 20px;
+    text-align: center;
 }
 
-@media (max-width: 360px) {
+@media (max-width: 400px) {
     .footer-container {
-        gap: 6px;
-    }
-    .btn-text {
-        display: none;
+        gap: 5px;
     }
     .footer-btn {
-        padding: 10px;
-    }
-    .chat-btn {
-        padding: 10px;
+        padding: 10px 8px;
+        font-size: 13px;
+        gap: 4px;
     }
     .footer-btn i {
         font-size: 18px;
+    }
+}
+
+@media (max-width: 320px) {
+    .footer-wrap {
+        padding: 8px 12px;
+    }
+    .footer-btn {
+        padding: 8px 6px;
+        font-size: 12px;
+    }
+    .footer-btn i {
+        font-size: 16px;
     }
 }
 

@@ -136,11 +136,11 @@ if ($result->num_rows > 0) {
                 <i class='bx bx-message-rounded-dots'></i>
             </a>
             <a href="cart.php" class="footer-btn view-cart-btn">
-                <i class='bx bx-cart'></i>
-                <span class="btn-text">Cart</span>
+                <i class='bx bx-cart' id="cart-icon"></i>
+                <span class="btn-text"> Cart</span>
                 <span class="cart-badge" id="cart-item-count">0</span>
             </a>
-            <a href="#" class="footer-btn add-cart-btn">
+            <a href="#" class="footer-btn add-cart-btn add-to-cart-btn">
                 <i class='bx bx-cart-add'></i>
                 <span class="btn-text">Add to Cart</span>
             </a>
