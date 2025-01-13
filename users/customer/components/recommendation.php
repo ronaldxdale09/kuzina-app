@@ -11,28 +11,73 @@
         <div class="offer-wrap">
             <?php
             // Function to fetch recommended products with kitchen reviews
-            function fetchRecommendations($conn, $limit = 3) {
-                $sql = "SELECT fl.food_id, fl.food_name, fl.price, fl.photo1, fl.health_goal_suitable, fl.meal_type, fl.kitchen_id,
-       COALESCE(AVG(r.rating), 0) AS avg_rating,
-       COUNT(r.review_id) AS review_count
-FROM food_listings fl
-LEFT JOIN reviews r ON fl.food_id = r.food_id
-WHERE fl.available = 1 
-AND fl.listed = 1
-AND fl.isApproved = 0
-GROUP BY fl.food_id
-LIMIT ?";
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $limit);
+            function fetchRecommendations($conn, $customer_id, $limit = 3) {
+                // First get the user's latest assessment
+                $assessment_sql = "SELECT diet_type, health_goal 
+                                  FROM nutritional_assessments 
+                                  WHERE customer_id = ? 
+                                  ORDER BY created_at DESC 
+                                  LIMIT 1";
+                                  
+                $assessment_stmt = $conn->prepare($assessment_sql);
+                $assessment_stmt->bind_param("i", $customer_id);
+                $assessment_stmt->execute();
+                $assessment_result = $assessment_stmt->get_result();
+                
+                // If user has an assessment, use it for recommendations
+                if ($assessment = $assessment_result->fetch_assoc()) {
+                    $sql = "SELECT fl.food_id, fl.food_name, fl.price, fl.photo1, 
+                                   fl.health_goal_suitable, fl.meal_type, fl.kitchen_id,
+                                   COALESCE(AVG(r.rating), 0) AS avg_rating,
+                                   COUNT(r.review_id) AS review_count
+                            FROM food_listings fl
+                            LEFT JOIN reviews r ON fl.food_id = r.food_id
+                            WHERE fl.available = 1 
+                            AND fl.listed = 1
+                            AND fl.isApproved = 0
+                            AND (
+                                FIND_IN_SET(?, fl.diet_type_suitable) > 0
+                                OR FIND_IN_SET(?, fl.health_goal_suitable) > 0
+                            )
+                            GROUP BY fl.food_id
+                            LIMIT ?";
+                            
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("ssi", $assessment['diet_type'], 
+                                           $assessment['health_goal'], 
+                                           $limit);
+                } else {
+                    // Fallback query if no assessment found
+                    $sql = "SELECT fl.food_id, fl.food_name, fl.price, fl.photo1, 
+                                   fl.health_goal_suitable, fl.meal_type, fl.kitchen_id,
+                                   COALESCE(AVG(r.rating), 0) AS avg_rating,
+                                   COUNT(r.review_id) AS review_count
+                            FROM food_listings fl
+                            LEFT JOIN reviews r ON fl.food_id = r.food_id
+                            WHERE fl.available = 1 
+                            AND fl.listed = 1
+                            AND fl.isApproved = 0
+                            GROUP BY fl.food_id
+                            LIMIT ?";
+                            
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("i", $limit);
+                }
+                
                 $stmt->execute();
                 $result = $stmt->get_result();
-                $products = $result->fetch_all(MYSQLI_ASSOC); // Fetch all results at once
+                $products = $result->fetch_all(MYSQLI_ASSOC);
+                
                 $stmt->close();
+                $assessment_stmt->close();
+                
                 return $products;
             }
-
-            // Fetch recommended products
-            $recommendations = fetchRecommendations($conn);
+            
+            // Usage:
+            $customer_id = $_COOKIE['user_id'] ?? null;
+            $recommendations = $customer_id ? fetchRecommendations($conn, $customer_id) : [];
+            ;
 
             // Check if products are available
             if (!empty($recommendations)) {
