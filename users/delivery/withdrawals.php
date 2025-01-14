@@ -25,7 +25,7 @@ $current_balance = $balance_data['balance'] ?? 0;
     <!-- Balance Card -->
     <div class="card mb-4">
         <div class="card-body">
-            <h5 class="card-title">Available Balance</h5>
+            <h5 class="card-title">Available Balane</h5>
             <h2 class="balance-amount">₱<?php echo number_format($current_balance, 2); ?></h2>
         </div>
     </div>
