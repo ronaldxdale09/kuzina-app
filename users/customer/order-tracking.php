@@ -758,7 +758,7 @@ function calculateDistance($lat1, $lon1, $lat2, $lon2) {
                     <i class='bx bx-check-circle' style="color: #16a34a; font-size: 48px;"></i>
                     <p>Your order has been delivered successfully.</p>
                     <div class="modal-actions">
-                        <button onclick="window.location.href='homepage.php?order_id=${this.orderId}'" class="btn-confirm">
+                        <button onclick="window.location.href='order-review.php?order=${this.orderId}'" class="btn-confirm">
                             Rate Your Experience
                         </button>
                     </div>

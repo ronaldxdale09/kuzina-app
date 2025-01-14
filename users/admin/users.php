@@ -75,9 +75,8 @@ $stats = [
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo ($tab == '1') ? 'active' : ''; ?>" id="rider-tab" 
-                        data-bs-toggle="tab" href="#rider" role="tab" 
-                        aria-selected="<?php echo ($tab == '1') ? 'true' : 'false'; ?>">
+                    <a class="nav-link <?php echo ($tab == '1') ? 'active' : ''; ?>" id="rider-tab" data-bs-toggle="tab"
+                        href="#rider" role="tab" aria-selected="<?php echo ($tab == '1') ? 'true' : 'false'; ?>">
                         <i class='bx bx-cycling'></i>
                         <span>Delivery Riders</span>
                     </a>
@@ -94,8 +93,8 @@ $stats = [
 
             <div class="tab-content container">
                 <!-- Kitchen Partners Tab -->
-                <div class="tab-pane fade <?php echo ($tab == '') ? 'show active' : ''; ?>" 
-                    id="kitchen" role="tabpanel" aria-labelledby="kitchen-tab">
+                <div class="tab-pane fade <?php echo ($tab == '') ? 'show active' : ''; ?>" id="kitchen"
+                    role="tabpanel">
                     <div class="table-header">
                         <div class="table-title">
                             <i class='bx bx-store'></i>
@@ -115,16 +114,16 @@ $stats = [
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="table">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Phone</th>
-                                    <th>Address</th>
+                                    <th>Location</th>
                                     <th>Status</th>
                                     <th>Joined Date</th>
                                     <th>Actions</th>
@@ -132,43 +131,43 @@ $stats = [
                             </thead>
                             <tbody>
                                 <?php
-                                $query = "SELECT * FROM kitchens ORDER BY created_at DESC";
-                                $result = mysqli_query($conn, $query);
-                                
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                    echo "<tr>";
-                                    echo "<td>{$row['kitchen_id']}</td>";
-                                    echo "<td class='user-info'>
-                                            <img src='" . ($row['photo'] ? $row['photo'] : 'assets/images/default-avatar.png') . "' alt='Profile' class='user-avatar'>
-                                            <span>{$row['fname']} {$row['lname']}</span>
-                                          </td>";
-                                    echo "<td>{$row['email']}</td>";
-                                    echo "<td>{$row['phone']}</td>";
-                                    echo "<td class='address-cell'>{$row['address']}</td>";
-                                    echo "<td><span class='badge " . ($row['isApproved'] ? 'bg-success' : 'bg-warning') . "'>" . 
-                                         ($row['isApproved'] ? 'Active' : 'Pending') . "</span></td>";
-                                    echo "<td>" . date('M d, Y', strtotime($row['created_at'])) . "</td>";
-                                    echo "<td class='actions-cell'>
-                                            <button class='btn btn-sm btn-primary view-details' data-id='{$row['kitchen_id']}' title='View Details'>
-                                                <i class='bx bx-show'></i>
-                                            </button>
-                                            <button class='btn btn-sm btn-warning suspend-user' data-id='{$row['kitchen_id']}' title='Suspend User'>
-                                                <i class='bx bx-pause-circle'></i>
-                                            </button>
-                                            <button class='btn btn-sm btn-danger delete-user' data-id='{$row['kitchen_id']}' title='Delete User'>
-                                                <i class='bx bx-trash'></i>
-                                            </button>
-                                          </td>";
-                                    echo "</tr>";
-                                }
-                                ?>
+                    $query = "SELECT * FROM kitchens ORDER BY created_at DESC";
+                    $result = mysqli_query($conn, $query);
+                    
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr>";
+                        echo "<td>#{$row['kitchen_id']}</td>";
+                        echo "<td>{$row['fname']} {$row['lname']}</td>";
+                        echo "<td>{$row['email']}</td>";
+                        echo "<td>{$row['phone']}</td>";
+                        echo "<td class='address-cell'>{$row['address']}</td>";
+                        echo "<td><span class='status-badge " . ($row['isApproved'] ? 'active' : 'pending') . "'>" . 
+                             ($row['isApproved'] ? 'Active' : 'Pending') . "</span></td>";
+                        echo "<td>" . date('M d, Y', strtotime($row['created_at'])) . "</td>";
+                        echo "<td class='actions-cell'>
+                                <div class='action-buttons'>
+                                    <button class='btn-action view' onclick='viewUser({$row['kitchen_id']}, \"kitchen\")'>
+                                        <i class='bx bx-show'></i>
+                                    </button>
+                                    <button class='btn-action edit' onclick='editUser({$row['kitchen_id']}, \"kitchen\")'>
+                                        <i class='bx bx-edit'></i>
+                                    </button>
+                                    <button class='btn-action delete' onclick='deleteUser({$row['kitchen_id']}, \"kitchen\")'>
+                                        <i class='bx bx-trash'></i>
+                                    </button>
+                                </div>
+                              </td>";
+                        echo "</tr>";
+                    }
+                    ?>
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <div class="table-footer">
                         <div class="showing-entries">
-                            Showing <span>1</span> to <span>10</span> of <span><?php echo $stats['kitchens']['total']; ?></span> entries
+                            Showing <span>1</span> to <span>10</span> of
+                            <span><?php echo $stats['kitchens']['total']; ?></span> entries
                         </div>
                         <div class="pagination">
                             <button class="btn btn-sm" disabled><i class='bx bx-chevron-left'></i></button>
@@ -180,8 +179,168 @@ $stats = [
                     </div>
                 </div>
 
-                <!-- Similar structure for Riders and Customers tabs... -->
-                <!-- [Previous rider and customer tab content remains the same] -->
+                <!-- Delivery Riders Tab -->
+                <div class="tab-pane fade <?php echo ($tab == '1') ? 'show active' : ''; ?>" id="rider" role="tabpanel">
+                    <div class="table-header">
+                        <div class="table-title">
+                            <i class='bx bx-cycling'></i>
+                            <h3>Delivery Riders</h3>
+                        </div>
+                        <div class="table-actions">
+                            <div class="search-box">
+                                <i class='bx bx-search'></i>
+                                <input type="text" class="form-control" placeholder="Search riders...">
+                            </div>
+                            <div class="filter-box">
+                                <select class="form-select">
+                                    <option value="">All Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="pending">Pending</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Vehicle</th>
+                                    <th>Status</th>
+                                    <th>Joined Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                    $query = "SELECT * FROM delivery_riders ORDER BY created_at DESC";
+                    $result = mysqli_query($conn, $query);
+                    
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr>";
+                        echo "<td>#{$row['rider_id']}</td>";
+                        echo "<td>{$row['first_name']} {$row['last_name']}</td>";
+                        echo "<td>{$row['email']}</td>";
+                        echo "<td>{$row['phone']}</td>";
+                        echo "<td>{$row['vehicle_type']}</td>";
+                        echo "<td><span class='status-badge " . ($row['isApproved'] ? 'active' : 'pending') . "'>" . 
+                             ($row['isApproved'] ? 'Active' : 'Pending') . "</span></td>";
+                        echo "<td>" . date('M d, Y', strtotime($row['created_at'])) . "</td>";
+                        echo "<td class='actions-cell'>
+                                <div class='action-buttons'>
+                                    <button class='btn-action view' onclick='viewUser({$row['rider_id']}, \"rider\")'>
+                                        <i class='bx bx-show'></i>
+                                    </button>
+                                    <button class='btn-action edit' onclick='editUser({$row['rider_id']}, \"rider\")'>
+                                        <i class='bx bx-edit'></i>
+                                    </button>
+                                    <button class='btn-action delete' onclick='deleteUser({$row['rider_id']}, \"rider\")'>
+                                        <i class='bx bx-trash'></i>
+                                    </button>
+                                </div>
+                              </td>";
+                        echo "</tr>";
+                    }
+                    ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-footer">
+                        <div class="showing-entries">
+                            Showing <span>1</span> to <span>10</span> of
+                            <span><?php echo $stats['riders']['total']; ?></span> entries
+                        </div>
+                        <div class="pagination">
+                            <button class="btn btn-sm" disabled><i class='bx bx-chevron-left'></i></button>
+                            <button class="btn btn-sm active">1</button>
+                            <button class="btn btn-sm">2</button>
+                            <button class="btn btn-sm">3</button>
+                            <button class="btn btn-sm"><i class='bx bx-chevron-right'></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customers Tab -->
+                <div class="tab-pane fade <?php echo ($tab == '2') ? 'show active' : ''; ?>" id="customer"
+                    role="tabpanel">
+                    <div class="table-header">
+                        <div class="table-title">
+                            <i class='bx bx-user'></i>
+                            <h3>Customers</h3>
+                        </div>
+                        <div class="table-actions">
+                            <div class="search-box">
+                                <i class='bx bx-search'></i>
+                                <input type="text" class="form-control" placeholder="Search customers...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Location</th>
+                                    <th>Joined Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                    $query = "SELECT * FROM customers ORDER BY created_at DESC";
+                    $result = mysqli_query($conn, $query);
+                    
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr>";
+                        echo "<td>#{$row['customer_id']}</td>";
+                        echo "<td>{$row['first_name']} {$row['last_name']}</td>";
+                        echo "<td>{$row['email']}</td>";
+                        echo "<td>{$row['phone']}</td>";
+                        echo "<td class='address-cell'>{$row['location']}</td>";
+                        echo "<td>" . date('M d, Y', strtotime($row['created_at'])) . "</td>";
+                        echo "<td class='actions-cell'>
+                                <div class='action-buttons'>
+                                    <button class='btn-action view' onclick='viewUser({$row['customer_id']}, \"customer\")'>
+                                        <i class='bx bx-show'></i>
+                                    </button>
+                                    <button class='btn-action edit' onclick='editUser({$row['customer_id']}, \"customer\")'>
+                                        <i class='bx bx-edit'></i>
+                                    </button>
+                                    <button class='btn-action delete' onclick='deleteUser({$row['customer_id']}, \"customer\")'>
+                                        <i class='bx bx-trash'></i>
+                                    </button>
+                                </div>
+                              </td>";
+                        echo "</tr>";
+                    }
+                    ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-footer">
+                        <div class="showing-entries">
+                            Showing <span>1</span> to <span>10</span> of
+                            <span><?php echo $stats['customers']['total']; ?></span> entries
+                        </div>
+                        <div class="pagination">
+                            <button class="btn btn-sm" disabled><i class='bx bx-chevron-left'></i></button>
+                            <button class="btn btn-sm active">1</button>
+                            <button class="btn btn-sm">2</button>
+                            <button class="btn btn-sm">3</button>
+                            <button class="btn btn-sm"><i class='bx bx-chevron-right'></i></button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -255,7 +414,7 @@ $stats = [
                 const userId = this.dataset.id;
                 const userType = document.querySelector('.tab-pane.active').id;
                 const modal = document.querySelector('#userDetailsModal');
-                
+
                 // AJAX call to get user details
                 fetch(`get_user_details.php?id=${userId}&type=${userType}`)
                     .then(response => response.json())
@@ -272,7 +431,7 @@ $stats = [
             modal.querySelector('.user-avatar-large').src = data.photo || 'assets/images/default-avatar.png';
             modal.querySelector('.user-name').textContent = data.fname + ' ' + data.lname;
             modal.querySelector('.user-email').textContent = data.email;
-            
+
             // Update badge status
             const badge = modal.querySelector('.badge');
             badge.className = 'badge ' + (data.isApproved ? 'bg-success' : 'bg-warning');
@@ -290,7 +449,7 @@ $stats = [
                 }
             }
             detailsHtml += '</div>';
-            
+
             modal.querySelector('.user-details-content').innerHTML = detailsHtml;
         }
 
@@ -301,4 +460,5 @@ $stats = [
     <?php include 'includes/appbar.php'; ?>
     <?php include 'includes/scripts.php'; ?>
 </body>
+
 </html>

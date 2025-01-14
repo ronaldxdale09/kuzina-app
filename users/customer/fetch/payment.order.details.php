@@ -1,5 +1,5 @@
 <?php
-// Fetch cart items for the customer
+
 $sql = "SELECT ci.quantity, fl.food_name, fl.price
         FROM cart_items ci
         JOIN food_listings fl ON ci.food_id = fl.food_id
@@ -30,16 +30,22 @@ while ($row = $result->fetch_assoc()) {
         'item_total' => number_format($item_total, 2)
     ];
 }
+$stmt->close();
+
+// Get base delivery fee from system settings
+$fee_sql = "SELECT setting_value FROM system_settings WHERE setting_key = 'rider_fee'";
+$fee_result = $conn->query($fee_sql);
+$base_delivery_fee = ($fee_result && $fee_result->num_rows > 0) ? 
+    floatval($fee_result->fetch_assoc()['setting_value']) : 50; // Default to 50 if not found
 
 // Calculate delivery fee
-$delivery_fee = 50; // Base fee
+$delivery_fee = $base_delivery_fee; // Use base fee from database
 if($total_items > 1) {
     $delivery_fee += ($total_items - 1) * 10; // Add ₱10 for each additional item
 }
 $delivery_fee = min($delivery_fee, 150); // Cap at ₱150
 
 $total_amount = $bag_total + $delivery_fee;
-$stmt->close();
 
 // Fetch the default address_id for the customer
 $sql_address = "SELECT address_id FROM user_addresses WHERE user_id = ? AND is_default = 1 LIMIT 1";
@@ -50,7 +56,6 @@ $stmt_address->bind_result($default_address_id);
 $stmt_address->fetch();
 $stmt_address->close();
 ?>
-
 <section class="order-detail">
     <h3 class="title-2">Order Details</h3>
     <ul>

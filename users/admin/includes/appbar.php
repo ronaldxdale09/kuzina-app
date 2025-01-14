@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </a>
         </li>
         <li class="footer-item <?php echo ($current_page === 'reports.php') ? 'active' : ''; ?>">
-            <a href="#" class="footer-link">
+            <a href="reports.php" class="footer-link">
                 <i class="bx bx-line-chart icli"></i>
                 <span>Reports</span>
             </a>
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </a>
         </li>
         <li class="footer-item">
-            <a href="#" class="footer-link">
+            <a href="settings.php" class="footer-link">
                 <i class="bx bx-cog icli"></i>
                 <span>Settings</span>
             </a>

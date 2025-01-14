@@ -1,28 +1,25 @@
-<!-- Critical scripts loaded with defer -->
-<script defer src="assets/js/jquery-3.6.0.min.js"></script>
-<script defer src="assets/js/bootstrap.bundle.min.js"></script>
+<!-- At the end of your body tag, before closing </body> -->
 
-<!-- Non-critical scripts loaded efficiently -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Array of scripts to load
-    const scripts = [
-        'assets/js/lord-icon-2.1.0.js',
-        'assets/js/feather.min.js',
-        'assets/js/slick.js',
-        'assets/js/slick-custom.js',
-        'assets/js/theme-setting.js',
-        'assets/js/script.js'
-    ];
+<!-- jQuery (load first since other scripts depend on it) -->
+<script src="assets/js/jquery-3.6.0.min.js"></script>
 
-    // Load scripts sequentially
-    scripts.forEach(src => {
-        const script = document.createElement('script');
-        script.src = src;
-        script.defer = true;
-        document.body.appendChild(script);
-    });
-});
-</script>
+<!-- Core scripts -->
+<script src="assets/js/bootstrap.bundle.min.js" defer></script>
 
+<!-- Icons and theme -->
+<script src="assets/js/lord-icon-2.1.0.js" defer></script>
+<script src="assets/js/feather.min.js" defer></script>
+
+<!-- Slider scripts (only load if slick slider exists on page) -->
+<?php if(strpos(file_get_contents(__FILE__), 'slick-slider') !== false): ?>
+    <script src="assets/js/slick.js" defer></script>
+    <script src="assets/js/slick.min.js" defer></script>
+    <script src="assets/js/slick-custom.js" defer></script>
+<?php endif; ?>
+
+<!-- Theme and custom scripts -->
+<script src="assets/js/theme-setting.js" defer></script>
+<script src="assets/js/script.js" defer></script>
+
+<!-- Modals -->
 <?php include 'modal/modal.dev.php'?>

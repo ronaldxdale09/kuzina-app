@@ -31,7 +31,7 @@
     <!-- Main Start -->
     <main class="main-wrap payment-page mb-xxl">
 
-        <?php include 'fetch/cart.address.php'; ?>
+        <?php include 'components/cart.address.php'; ?>
         <!-- Payment Section Start -->
         <section class="payment-section">
             <div class="accordion" id="accordionExample">
@@ -49,11 +49,11 @@
                         <div class="accordion-body">
                             <ul class="filter-row">
                                 <li class="filter-col" data-payment-method="gcash">
-                                    GCash<span class="check"><img src="assets/icons/svg/active.svg"
+                                    GCash (Demo) <span class="check"><img src="assets/icons/svg/active.svg"
                                             alt="active" /></span>
                                 </li>
                                 <li class="filter-col" data-payment-method="maya">
-                                    Maya<span class="check"><img src="assets/icons/svg/active.svg"
+                                    Maya (Demo)<span class="check"><img src="assets/icons/svg/active.svg"
                                             alt="active" /></span>
                                 </li>
                             </ul>

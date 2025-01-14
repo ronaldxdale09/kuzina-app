@@ -50,11 +50,20 @@ if (!in_array($new_status, $valid_statuses)) {
 $conn->begin_transaction();
 
 try {
-    // Updated query to include coordinates
-    $check_query = "SELECT o.*, k.fname as kitchen_name, c.first_name as customer_name, 
-                           c.phone as customer_phone, ua.street_address,
-                           ua.latitude, ua.longitude,
-                           k.latitude as kitchen_lat, k.longitude as kitchen_lng
+    // Get order details with coordinates
+    $check_query = "SELECT o.*, 
+                           k.fname as kitchen_name, 
+                           k.kitchen_id,
+                           c.first_name as customer_name,
+                           c.customer_id, 
+                           c.phone as customer_phone, 
+                           ua.street_address,
+                           ua.latitude, 
+                           ua.longitude,
+                           k.latitude as kitchen_lat, 
+                           k.longitude as kitchen_lng,
+                           o.final_total_amount,
+                           o.delivery_fee
                    FROM orders o
                    JOIN kitchens k ON o.kitchen_id = k.kitchen_id
                    JOIN customers c ON o.customer_id = c.customer_id
@@ -123,22 +132,84 @@ try {
         throw new Exception('Failed to update delivery status: ' . $stmt->error);
     }
 
+    // Handle earnings when order is delivered
+    if ($new_status === 'Delivered') {
+        // Calculate earnings
+        $kitchen_amount = $order['final_total_amount'];
+        $rider_amount = $order['delivery_fee']; // Full delivery fee to rider
+
+        // Update kitchen balance
+        $kitchen_update_sql = "UPDATE kitchens 
+                             SET balance = balance + ? 
+                             WHERE kitchen_id = ?";
+        $stmt = $conn->prepare($kitchen_update_sql);
+        $stmt->bind_param("di", $kitchen_amount, $order['kitchen_id']);
+        if (!$stmt->execute()) {
+            throw new Exception('Failed to update kitchen balance');
+        }
+
+        // Update rider balance
+        $rider_update_sql = "UPDATE delivery_riders 
+                           SET balance = balance + ? 
+                           WHERE rider_id = ?";
+        $stmt = $conn->prepare($rider_update_sql);
+        $stmt->bind_param("di", $rider_amount, $rider_id);
+        if (!$stmt->execute()) {
+            throw new Exception('Failed to update rider balance');
+        }
+
+        // Insert kitchen earnings record
+        $kitchen_earnings_sql = "INSERT INTO kitchen_earnings (kitchen_id, order_id, amount) 
+                                VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($kitchen_earnings_sql);
+        $stmt->bind_param("iid", 
+            $order['kitchen_id'],
+            $order_id,
+            $kitchen_amount
+        );
+        if (!$stmt->execute()) {
+            throw new Exception('Failed to insert kitchen earnings');
+        }
+
+        // Insert rider earnings record
+        $rider_earnings_sql = "INSERT INTO rider_earnings (rider_id, order_id, amount) 
+                             VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($rider_earnings_sql);
+        $stmt->bind_param("iid", 
+            $rider_id,
+            $order_id,
+            $rider_amount
+        );
+        if (!$stmt->execute()) {
+            throw new Exception('Failed to insert rider earnings');
+        }
+
+        debug_log("Earnings recorded and balances updated", [
+            'kitchen_amount' => $kitchen_amount,
+            'rider_amount' => $rider_amount,
+            'kitchen_id' => $order['kitchen_id'],
+            'rider_id' => $rider_id
+        ]);
+    }
+
     // Update rider routes when status changes to 'On the Way'
     if ($new_status === 'On the Way' && isset($data['current_lat'], $data['current_lng'])) {
         $route_insert = "INSERT INTO rider_routes 
-                        (delivery_id, start_latitude, start_longitude, 
-                         end_latitude, end_longitude, 
+                        (order_id, rider_id, 
+                         start_latitude, start_longitude,
+                         end_latitude, end_longitude,
                          current_latitude, current_longitude)
-                        VALUES (?, ?, ?, ?, ?, ?, ?)";
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         
         $stmt = $conn->prepare($route_insert);
-        $stmt->bind_param("idddddd", 
+        $stmt->bind_param("iiiddddd", 
             $order_id,
-            $order['kitchen_lat'],  // Start from kitchen
+            $rider_id,
+            $order['kitchen_lat'],
             $order['kitchen_lng'],
-            $order['latitude'],     // End at delivery address
+            $order['latitude'],
             $order['longitude'],
-            $data['current_lat'],   // Current rider position
+            $data['current_lat'],
             $data['current_lng']
         );
         
@@ -147,9 +218,8 @@ try {
         }
     }
 
-    // Create notifications based on status
+    // Create notifications
     $notifications = [];
-    
     if ($new_status === 'On the Way') {
         $notifications[] = [
             'user_id' => $order['customer_id'],
@@ -193,10 +263,6 @@ try {
                 $notification['message']
             );
             if (!$stmt->execute()) {
-                debug_log("Notification insert error", [
-                    'notification' => $notification,
-                    'error' => $stmt->error
-                ]);
                 throw new Exception('Failed to create notification: ' . $stmt->error);
             }
         }

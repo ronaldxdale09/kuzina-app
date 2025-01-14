@@ -1,14 +1,26 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     let couponDiscount = 0.00;
+    let baseFee = 50.00; // Default value until API responds
 
-    function calculateDeliveryFee() {
+    // Fetch base delivery fee from database
+    fetch('functions/getDeliveryFee.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                baseFee = data.fee;
+                calculateTotals(); // Recalculate with new base fee
+            }
+        })
+        .catch(error => console.error('Error fetching delivery fee:', error));
+
+        function calculateDeliveryFee() {
         const totalItems = Array.from(document.querySelectorAll('.quantity-input'))
             .reduce((total, input) => {
                 return total + (parseInt(input.value) || 0);
             }, 0);
 
-        let deliveryFee = 50.00; // Base fee
+        let deliveryFee = baseFee; // Use the fetched base fee
 
         if (totalItems > 1) {
             // Add ₱10 for each additional item
@@ -18,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Cap at ₱150
         return Math.min(deliveryFee, 150);
     }
+
 
     function calculateTotals() {
         let bagTotal = Array.from(document.querySelectorAll('.quantity-input')).reduce((total, input) => {
@@ -38,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('coupon-discount').innerText = couponDiscount.toFixed(2);
         document.getElementById('delivery-fee').innerText = deliveryFee.toFixed(2);
         document.getElementById('total-amount').innerText = (bagTotal + deliveryFee - couponDiscount).toFixed(
-        2);
+            2);
 
         // Update hidden input if it exists
         const deliveryFeeInput = document.querySelector('input[name="delivery_fee"]');

@@ -134,9 +134,30 @@ try {
 
     // Handle earnings when order is delivered
     if ($new_status === 'Delivered') {
+        // Get platform commission rate
+        $settings_query = "SELECT setting_value FROM system_settings WHERE setting_key = 'kitchen_commission_rate'";
+        $commission_result = $conn->query($settings_query);
+        $commission_rate = ($commission_result && $commission_result->num_rows > 0) ? 
+            floatval($commission_result->fetch_assoc()['setting_value']) : 15; // Default 15%
+
         // Calculate earnings
-        $kitchen_amount = $order['final_total_amount'];
+        $total_amount = $order['final_total_amount'];
         $rider_amount = $order['delivery_fee']; // Full delivery fee to rider
+        $commission_amount = ($total_amount * $commission_rate) / 100;
+        $kitchen_amount = $total_amount - $commission_amount;
+
+        // Insert platform earnings
+        $platform_earnings_sql = "INSERT INTO platform_earnings 
+            (order_id, order_amount, commission_rate, commission_amount, status) 
+            VALUES (?, ?, ?, ?, 'completed')";
+        $stmt = $conn->prepare($platform_earnings_sql);
+        if (!$stmt) {
+            throw new Exception('Failed to prepare platform earnings statement: ' . $conn->error);
+        }
+        $stmt->bind_param("iddd", $order_id, $total_amount, $commission_rate, $commission_amount);
+        if (!$stmt->execute()) {
+            throw new Exception('Failed to insert platform earnings: ' . $stmt->error);
+        }
 
         // Update kitchen balance
         $kitchen_update_sql = "UPDATE kitchens 
@@ -158,22 +179,24 @@ try {
             throw new Exception('Failed to update rider balance');
         }
 
-        // Insert kitchen earnings record
-        $kitchen_earnings_sql = "INSERT INTO kitchen_earnings (kitchen_id, order_id, amount) 
-                                VALUES (?, ?, ?)";
+        // Insert kitchen earnings
+        $kitchen_earnings_sql = "INSERT INTO kitchen_earnings 
+            (kitchen_id, order_id, amount) 
+            VALUES (?, ?, ?)";
         $stmt = $conn->prepare($kitchen_earnings_sql);
         $stmt->bind_param("iid", 
             $order['kitchen_id'],
             $order_id,
-            $kitchen_amount
+            $kitchen_amount  // Commission-adjusted amount
         );
         if (!$stmt->execute()) {
             throw new Exception('Failed to insert kitchen earnings');
         }
 
-        // Insert rider earnings record
-        $rider_earnings_sql = "INSERT INTO rider_earnings (rider_id, order_id, amount) 
-                             VALUES (?, ?, ?)";
+        // Insert rider earnings
+        $rider_earnings_sql = "INSERT INTO rider_earnings 
+            (rider_id, order_id, amount) 
+            VALUES (?, ?, ?)";
         $stmt = $conn->prepare($rider_earnings_sql);
         $stmt->bind_param("iid", 
             $rider_id,
@@ -185,6 +208,9 @@ try {
         }
 
         debug_log("Earnings recorded and balances updated", [
+            'total_amount' => $total_amount,
+            'commission_rate' => $commission_rate,
+            'commission_amount' => $commission_amount,
             'kitchen_amount' => $kitchen_amount,
             'rider_amount' => $rider_amount,
             'kitchen_id' => $order['kitchen_id'],

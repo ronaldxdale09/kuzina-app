@@ -32,14 +32,14 @@
     <!-- Main Start -->
     <main class="main-wrap cart-page mb-xxl">
         <?php       
-            include 'fetch/cart.address.php';
+            include 'components/cart.address.php';
             ?> <br>
 
         <!-- Cart Item Section Start  -->
         <div class="cart-item-wrap pt-0">
             <?php       
-            include 'fetch/cart.items.php';
-            include 'fetch/cart.order.details.php';
+            include 'components/cart.items.php';
+            include 'components/cart.order.details.php';
             ?>
         </div>
         <!-- Cart Item Section End  -->
@@ -104,25 +104,12 @@
     </div>
     <!-- Offer Offcanvas End -->
 
-
-    <!-- jquery 3.6.0 -->
-    <script src="assets/js/jquery-3.6.0.min.js"></script>
-
-    <!-- Bootstrap Js -->
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Feather Icon -->
-    <script src="assets/js/feather.min.js"></script>
-
-    <!-- Theme Setting js -->
-    <script src="assets/js/theme-setting.js"></script>
-
     <!-- Swiper Js -->
     <script src="assets/js/jquery-swipe-1.11.3.min.js"></script>
     <script src="assets/js/jquery.mobile-1.4.5.min.js"></script>
 
-    <!-- Script js -->
-    <script src="assets/js/script.js"></script>
+    <?php include 'includes/scripts.php'; ?>
+
 </body>
 <!-- Body End -->
 
