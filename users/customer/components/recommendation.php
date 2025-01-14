@@ -34,7 +34,7 @@
                             LEFT JOIN reviews r ON fl.food_id = r.food_id
                             WHERE fl.available = 1 
                             AND fl.listed = 1
-                            AND fl.isApproved = 0
+                            AND fl.isApproved = 1
                             AND (
                                 FIND_IN_SET(?, fl.diet_type_suitable) > 0
                                 OR FIND_IN_SET(?, fl.health_goal_suitable) > 0
@@ -56,7 +56,7 @@
                             LEFT JOIN reviews r ON fl.food_id = r.food_id
                             WHERE fl.available = 1 
                             AND fl.listed = 1
-                            AND fl.isApproved = 0
+                            AND fl.isApproved = 1
                             GROUP BY fl.food_id
                             LIMIT ?";
                             

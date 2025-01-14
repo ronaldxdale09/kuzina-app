@@ -9,7 +9,7 @@ FROM food_listings fl
 LEFT JOIN reviews r ON fl.food_id = r.food_id
 WHERE fl.available = 1 
 AND fl.listed = 1 
-AND fl.isApproved = 0
+AND fl.isApproved = 1
 GROUP BY fl.food_id
 ORDER BY RAND()
 LIMIT ?";  // Order by RAND() for random products
