@@ -1,6 +1,5 @@
 <?php 
 
-<?php
 function isMobile() {
     $useragent = $_SERVER['HTTP_USER_AGENT'];
     
@@ -29,8 +28,6 @@ if (isset($_GET['app']) || isMobile()) {
     header("Location: desktop.php");
     exit;
 }
-
-
 include 'includes/header.php'; 
 
 // Check if splash screen has been shown
