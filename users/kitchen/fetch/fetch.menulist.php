@@ -81,45 +81,45 @@ function renderMenuItems($items) {
     }
 
     foreach ($items as $item): ?>
+<!-- Modified menu item structure -->
 <div id="menu-item-<?= $item['food_id'] ?>" class="menu-item">
-    <img src="../../uploads/<?= htmlspecialchars($item['photo1']) ?>"
-        alt="<?= htmlspecialchars($item['food_name']) ?>" />
-    <div class="menu-info">
-        <h5><?= htmlspecialchars($item['food_name']) ?></h5>
-
-        <div class="menu-badges">
-            <span class="badge meal-type"><?= htmlspecialchars($item['meal_type']) ?></span>
-            <span class="badge category"><?= htmlspecialchars($item['category']) ?></span>
+    <div class="menu-content">
+        <div class="menu-image">
+            <img src="../../uploads/<?= htmlspecialchars($item['photo1']) ?>" 
+                 alt="<?= htmlspecialchars($item['food_name']) ?>" />
         </div>
+        <div class="menu-info">
+            <h5><?= htmlspecialchars($item['food_name']) ?></h5>
+            
+            <div class="menu-badges">
+                <span class="badge meal-type"><?= htmlspecialchars($item['meal_type']) ?></span>
+                <span class="badge category"><?= htmlspecialchars($item['category']) ?></span>
+            </div>
 
-        <!-- Description -->
-        <p class="description">
-            <?= nl2br(htmlspecialchars(substr($item['description'], 0, 100) . (strlen($item['description']) > 100 ? '...' : ''))); ?>
-        </p>
+            <p class="description">
+                <?= nl2br(htmlspecialchars(substr($item['description'], 0, 100) . (strlen($item['description']) > 100 ? '...' : ''))); ?>
+            </p>
 
-        <!-- Nutritional Summary -->
-        <div class="nutrition-summary">
-            <span class="nutrition-item">
-                <i class='bx bx-bowl-hot'></i> <?= htmlspecialchars($item['calories']) ?> cal
-            </span>
-            <span class="nutrition-item">
-                <i class='bx bx-donate-heart'></i> <?= htmlspecialchars($item['protein']) ?>g protein
-            </span>
-        </div>
+            <div class="nutrition-summary">
+                <span class="nutrition-item">
+                    <i class='bx bx-bowl-hot'></i> <?= htmlspecialchars($item['calories']) ?> cal
+                </span>
+                <span class="nutrition-item">
+                    <i class='bx bx-donate-heart'></i> <?= htmlspecialchars($item['protein']) ?>g protein
+                </span>
+            </div>
 
-        <div class="item-bottom">
             <div class="price">PHP <?= number_format($item['price'], 2) ?></div>
+            
             <div class="action-buttons">
-                <button class="action-btn edit"
-                    onclick="window.location.href='add_menu.php?food_id=<?= $item['food_id'] ?>'">
+                <button class="action-btn edit" onclick="window.location.href='add_menu.php?food_id=<?= $item['food_id'] ?>'">
                     <i class='bx bx-edit'></i> Edit
                 </button>
-                <button class="action-btn remove"
-                    onclick="openRemoveModal('<?= $item['food_id'] ?>', '<?= htmlspecialchars($item['food_name']) ?>', '<?= number_format($item['price'], 2) ?>')">
+                <button class="action-btn remove" onclick="openRemoveModal('<?= $item['food_id'] ?>', '<?= htmlspecialchars($item['food_name']) ?>', '<?= number_format($item['price'], 2) ?>')">
                     <i class='bx bx-trash'></i> Remove
                 </button>
-                <button class="action-btn availability <?= $item['listed'] ? 'available' : 'unavailable' ?>"
-                    onclick="toggleAvailability(<?= $item['food_id'] ?>, '<?= htmlspecialchars($item['food_name']) ?>', <?= $item['listed'] ?>)">
+                <button class="action-btn availability <?= $item['listed'] ? 'available' : 'unavailable' ?>" 
+                        onclick="toggleAvailability(<?= $item['food_id'] ?>, '<?= htmlspecialchars($item['food_name']) ?>', <?= $item['listed'] ?>)">
                     <i class='bx <?= $item['listed'] ? 'bx-check-circle' : 'bx-x-circle' ?>'></i>
                     <?= $item['listed'] ? 'Listed' : 'Unlisted' ?>
                 </button>

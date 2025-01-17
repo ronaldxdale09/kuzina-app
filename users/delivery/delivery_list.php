@@ -23,7 +23,7 @@ if (!$rider_id) {
             <div class="filter-section">
                 <select id="order-filter" class="custom-select">
                     <option value="all">All Deliveries</option>
-                    <option value="active">Active Deliveries</option>
+                    <option value="active" selected>Active Deliveries</option>
                     <option value="completed">Completed</option>
                 </select>
             </div>
@@ -153,9 +153,21 @@ if (!$rider_id) {
                     Find Orders
                 </a>
             </div>
+
             <?php
             }
             ?>
+        </div>
+        <!-- Add this right after the orders-container div -->
+        <div id="no-active-orders" class="no-orders" style="display: none;">
+            <i class='bx bx-cycling'></i>
+            <h2>No Active Deliveries</h2>
+            <p>All current deliveries have been completed</p>
+            <a href="order_list.php" class="btn-primary">
+            <i class='bx bx-filter'></i>
+
+                Find New Orders
+            </a>
         </div>
     </main>
 
@@ -316,24 +328,46 @@ if (!$rider_id) {
         window.location.href = `delivery_details.php?order_id=${orderId}`;
     }
 
-    // Filter handling
-    document.getElementById('order-filter').addEventListener('change', function() {
-        const filterValue = this.value;
+    // Function to filter orders
+    function filterOrders(filterValue) {
         const cards = document.querySelectorAll('.order-card');
+        const noActiveOrders = document.getElementById('no-active-orders');
+        let visibleCards = 0;
 
         cards.forEach(card => {
             const status = card.dataset.status;
+
             if (filterValue === 'all') {
                 card.style.display = 'block';
-            } else if (filterValue === 'active' && (status === 'for pickup' || status ===
-                'on the way')) {
+                visibleCards++;
+            } else if (filterValue === 'active' && (status === 'for pickup' || status === 'on the way')) {
                 card.style.display = 'block';
+                visibleCards++;
             } else if (filterValue === 'completed' && status === 'delivered') {
                 card.style.display = 'block';
+                visibleCards++;
             } else {
                 card.style.display = 'none';
             }
         });
+
+        // Show "no active orders" message if no cards are visible for active filter
+        if (filterValue === 'active' && visibleCards === 0) {
+            noActiveOrders.style.display = 'block';
+        } else {
+            noActiveOrders.style.display = 'none';
+        }
+    }
+
+    // Apply filter on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const select = document.getElementById('order-filter');
+        filterOrders(select.value);
+    });
+
+    // Apply filter when selection changes
+    document.getElementById('order-filter').addEventListener('change', function() {
+        filterOrders(this.value);
     });
     </script>
 </body>

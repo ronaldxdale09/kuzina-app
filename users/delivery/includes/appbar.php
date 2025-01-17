@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </li>
         <li class="footer-item <?php echo ($current_page === 'delivery.php') ? 'active' : ''; ?>">
             <a href="delivery_list.php" class="footer-link">
-                <i class="bx bx-cycling icli"></i>
+                <i class="bx bx-book icli"></i>
                 <span>Delivery</span>
             </a>
         </li>
