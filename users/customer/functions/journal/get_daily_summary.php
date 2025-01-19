@@ -1,6 +1,6 @@
 <?php
-include '../../../../ connection/db.php';
-header('Content-Type: application/json');
+include '../../../../connection/db.php';
+
 
 try {
     $input = json_decode(file_get_contents('php://input'), true);
@@ -68,3 +68,16 @@ try {
 
 $conn->close();
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+

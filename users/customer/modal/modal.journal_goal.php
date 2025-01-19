@@ -62,6 +62,20 @@
     </div>
 </div>
 
+<div class="success-modal" id="successModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5>Success</h5>
+            <span class="close-btn">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="success-icon">
+                <i class='bx bx-check'></i>
+            </div>
+            <p id="successMessage">Operation completed successfully!</p>
+        </div>
+    </div>
+</div>
 <style>
 .goals-modal {
     height: 80vh;
@@ -133,10 +147,40 @@
     color: var(--text-light);
 }
 </style>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const goalsModal = new bootstrap.Offcanvas(document.getElementById('goalsModal'));
+
+    window.showSuccessModal = function(message = 'Operation completed successfully!') {
+        const modal = document.getElementById('successModal');
+        const messageElement = document.getElementById('successMessage');
+        
+        messageElement.textContent = message;
+        modal.style.display = 'block';
+        
+        // Auto close after 2 seconds
+        setTimeout(() => {
+            closeSuccessModal();
+            // Refresh the page or update the UI as needed
+            location.reload();
+        }, 2000);
+    }
+
+    window.closeSuccessModal = function() {
+        const modal = document.getElementById('successModal');
+        modal.style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('successModal');
+        if (event.target === modal) {
+            closeSuccessModal();
+        }
+    }
+
+    // Close button handler
+    document.querySelector('.success-modal .close-btn').onclick = closeSuccessModal;
 
     window.openGoalsModal = function() {
         goalsModal.show();
@@ -146,22 +190,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = new FormData(document.getElementById('goalsForm'));
 
         fetch('functions/journal/update_goals.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    goalsModal.hide();
-                    showSuccessModal('Goals updated successfully');
-                } else {
-                    alert(data.message || 'Error updating goals');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error updating goals');
-            });
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                goalsModal.hide();
+                showSuccessModal('Goals updated successfully');
+            } else {
+                alert(data.message || 'Error updating goals');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error updating goals');
+        });
     }
 });
 </script>

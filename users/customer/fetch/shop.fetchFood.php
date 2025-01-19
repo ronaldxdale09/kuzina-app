@@ -14,7 +14,7 @@ try {
 FROM food_listings 
 WHERE available = 1 
 AND listed = 1 
-AND isApproved = 0";
+AND isApproved = 1";
     
     if (!empty($category)) {
         $query .= " AND category = ?";

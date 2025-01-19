@@ -96,6 +96,21 @@
     </div>
 </div>
 
+<!-- Success Modal -->
+<div class="modal" id="successNotificationModal">
+    <div class="modal-content">
+        <span class="close-modal" id="closeSuccessModal">&times;</span>
+        <div class="modal-item-info">
+            <h2>Success</h2>
+            <p>Food has been added to your journal.</p>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-confirm" id="successModalConfirm">OK</button>
+        </div>
+    </div>
+</div>
+
+
 <style>
 .food-selection-modal {
     height: 80vh;
