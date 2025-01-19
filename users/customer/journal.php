@@ -186,10 +186,16 @@ $display_percentages = [
         <!-- Daily Summary Card -->
         <div class="summary-card">
             <h2>Daily Summary</h2>
-            <button class="edit-goals-btn" onclick="openGoalsModal()">
-                <i class='bx bx-slider'></i>
-                Edit Goals
-            </button>
+            <div class="button-group">
+                <button class="edit-goals-btn" onclick="openGoalsModal()">
+                    <i class='bx bx-slider'></i>
+                    Edit Goals
+                </button>
+                <a href="journal_report.php" class="report-btn">
+                    <i class='bx bx-chart'></i>
+                    View Report
+                </a>
+            </div> <br>
             <div class="macro-circles">
                 <div class="circle-progress calories">
                     <svg viewBox="0 0 36 36">

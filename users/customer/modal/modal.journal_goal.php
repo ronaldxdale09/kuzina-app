@@ -146,6 +146,65 @@
     padding: 0 12px;
     color: var(--text-light);
 }
+.success-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.close-btn {
+    cursor: pointer;
+    font-size: 24px;
+    color: #666;
+}
+
+.success-icon {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.success-icon i {
+    font-size: 48px;
+    color: #4CAF50;
+}
+
+.modal-body {
+    text-align: center;
+}
+
+.modal-body p {
+    margin: 10px 0;
+    color: #333;
+}
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', function() {

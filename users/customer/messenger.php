@@ -34,7 +34,7 @@ $stmt->execute();
 <link rel="stylesheet" href="assets/css/messenger.css">
 <link rel="stylesheet" href="assets/boxicons/css/boxicons.min.css">
 
-<body class="chat-app"> 
+<body class="chat-app">
 
     <!-- Header -->
     <header class="chat-header">
@@ -94,7 +94,7 @@ $stmt->execute();
             <div class="input-container">
                 <textarea name="message" placeholder="Type a message..." required></textarea>
                 <button type="submit" class="send-btn">
-                <i class='bx bxs-paper-plane'></i>
+                    <i class='bx bxs-paper-plane'></i>
 
                 </button>
             </div>
@@ -107,47 +107,77 @@ $stmt->execute();
         try {
             const response = await fetch(
                 `fetch/messenger.get_messages.php?kitchen_id=<?php echo $kitchen_id; ?>&customer_id=<?php echo $customer_id; ?>`
-                );
+            );
             const messages = await response.json();
 
             if (messages.length > 0) {
                 const container = document.querySelector('.messages-container');
+                const isScrolledToBottom = container.scrollHeight - container.clientHeight <= container.scrollTop +
+                    1;
                 let html = '';
                 let currentDate = '';
 
                 messages.forEach(message => {
                     const messageDate = new Date(message.created_at).toISOString().split('T')[0];
 
+                    // Handle date divider
                     if (messageDate !== currentDate) {
                         currentDate = messageDate;
                         html += `
-                       <div class="date-divider">
-                           <span>${new Date(currentDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                       </div>`;
+                        <div class="date-divider">
+                            <span>${new Date(currentDate).toLocaleDateString('en-US', { 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                            })}</span>
+                        </div>`;
                     }
 
+                    // Escape HTML to prevent XSS
+                    const escapedMessage = message.message
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;")
+                        .replace(/'/g, "&#039;");
+
+                    // Build message HTML
                     html += `
-                   <div class="message ${message.sender_role === 'customer' ? 'outgoing' : 'incoming'}">
-                       <div class="message-content">
-                           <p>${message.message}</p>
-                           <div class="message-meta">
-                               <span class="time">${new Date(message.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}</span>
-                               ${message.sender_role === 'customer' ? `
-                                   <i class='bx ${message.is_read ? 'bx-check-double' : 'bx-check'}'></i>
-                               ` : ''}
-                           </div>
-                       </div>
-                   </div>`;
+                    <div class="message ${message.sender_role === 'customer' ? 'outgoing' : 'incoming'}">
+                        <div class="message-content">
+                            <p>${escapedMessage}</p>
+                            <div class="message-meta">
+                                <span class="time">${new Date(message.created_at).toLocaleTimeString('en-US', { 
+                                    hour: 'numeric', 
+                                    minute: '2-digit', 
+                                    hour12: true 
+                                })}</span>
+                                ${message.sender_role === 'customer' ? `
+                                    <i class='bx ${message.is_read ? 'bx-check-double' : 'bx-check'}'></i>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>`;
                 });
 
                 container.innerHTML = html;
-                container.scrollTop = container.scrollHeight;
+
+                // Smooth scroll to bottom only if user was already at bottom or it's a new message
+                if (isScrolledToBottom) {
+                    setTimeout(() => {
+                        container.scrollTo({
+                            top: container.scrollHeight,
+                            behavior: 'smooth'
+                        });
+                    }, 100);
+                }
             }
         } catch (error) {
             console.error('Error fetching messages:', error);
         }
     }
 
+    // Handle message form submission
     document.getElementById('messageForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const form = e.target;
@@ -169,21 +199,44 @@ $stmt->execute();
             if (response.ok) {
                 textarea.value = '';
                 await updateMessages();
+
+                // Force scroll to bottom after sending a message
+                const container = document.querySelector('.messages-container');
+                setTimeout(() => {
+                    container.scrollTo({
+                        top: container.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                }, 100);
             }
         } catch (error) {
             console.error('Error:', error);
         } finally {
             textarea.disabled = false;
+            textarea.focus(); // Return focus to textarea
         }
     });
 
-    // Update messages every 3 seconds
-    setInterval(updateMessages, 3000);
+    // Auto-resize textarea
+    const textarea = document.querySelector('textarea');
+    textarea.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+        this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+    });
+
+    // Update messages every 5 seconds
+    const messageUpdateInterval = setInterval(updateMessages, 5000);
 
     // Initial load
     window.onload = () => {
         updateMessages();
     };
+
+    // Cleanup interval on page unload
+    window.addEventListener('unload', () => {
+        clearInterval(messageUpdateInterval);
+    });
     </script>
 </body>
 

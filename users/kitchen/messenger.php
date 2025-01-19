@@ -93,7 +93,7 @@ $stmt->execute();
             <input type="hidden" name="customer_id" value="<?php echo $customer_id; ?>">
             <div class="input-container">
                 <textarea name="message" placeholder="Type a message..." required></textarea>
-                <button type="submit" class="send-btn">Send</button>
+                <button type="submit" class="send-btn"><i class='bx bxs-paper-plane'></i></button>
             </div>
         </form>
     </footer>

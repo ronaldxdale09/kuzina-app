@@ -1,84 +1,142 @@
 <?php 
 include 'includes/header.php';
 
-// Define meal types array at the beginning
-$meal_types = array(
-    array(
+// Check for onboarding
+if (empty($_COOKIE['onboarding_journal'])) {
+    header("Location: ob.journal.php");
+    exit();
+}
+
+// Define meal types with their properties
+$meal_types = [
+    [
         'name' => 'Breakfast',
         'icon' => 'bx-coffee',
         'time' => '6:00 AM - 10:00 AM'
-    ),
-    array(
+    ],
+    [
         'name' => 'Lunch',
         'icon' => 'bx-bowl-rice',
         'time' => '11:00 AM - 2:00 PM'
-    ),
-    array(
+    ],
+    [
         'name' => 'Dinner',
         'icon' => 'bx-restaurant',
         'time' => '6:00 PM - 9:00 PM'
-    ),
-    array(
+    ],
+    [
         'name' => 'Snacks',
         'icon' => 'bx-cookie',
         'time' => 'Any Time'
-    )
-);
+    ]
+];
 
-
-// Get current date or selected date
-$selected_date = $_GET['date'] ?? date('Y-m-d');
-
-try {
-    // Fetch customer's nutritional assessment
-    $assess_query = "SELECT * FROM nutritional_assessments 
-                    WHERE customer_id = ? 
-                    ORDER BY created_at DESC LIMIT 1";
-    $stmt = $conn->prepare($assess_query);
-    $stmt->bind_param("i", $customer_id);
-    $stmt->execute();
-    $assessment = $stmt->get_result()->fetch_assoc();
-
-    // Fetch daily totals from order items
-    $daily_totals_query = "SELECT 
-    COALESCE(SUM(calories * portion), 0) as total_calories,
-    COALESCE(SUM(protein * portion), 0) as total_protein,
-    COALESCE(SUM(carbs * portion), 0) as total_carbs,
-    COALESCE(SUM(fat * portion), 0) as total_fat
-FROM food_journal
-WHERE customer_id = ? 
-AND entry_date = ?";
-
-    $stmt = $conn->prepare($daily_totals_query);
-    $stmt->bind_param("is", $customer_id, $selected_date);
-    $stmt->execute();
-    $daily_totals = $stmt->get_result()->fetch_assoc();
-} catch (Exception $e) {
-    error_log("Error in food journal: " . $e->getMessage());
-    $daily_totals = array(
-        'total_calories' => 0,
-        'total_protein' => 0,
-        'total_carbs' => 0,
-        'total_fat' => 0
-    );
+// Get selected date with validation
+$selected_date = filter_input(INPUT_GET, 'date') ?? date('Y-m-d');
+if (!validateDate($selected_date)) {
+    $selected_date = date('Y-m-d');
 }
 
-// Fetch current goals
-$goals_query = "SELECT * FROM journal_goals 
-                WHERE customer_id = ? 
-                AND is_active = 1 
-                ORDER BY created_at DESC LIMIT 1";
-$stmt = $conn->prepare($goals_query);
-$stmt->bind_param("i", $customer_id);
-$stmt->execute();
-$current_goals = $stmt->get_result()->fetch_assoc() ?? [
+// Default nutritional goals
+$default_goals = [
     'daily_calories' => 2000,
     'daily_protein' => 50,
     'daily_carbs' => 300,
     'daily_fat' => 65
 ];
-?>
 
+// Initialize daily totals
+$daily_totals = [
+    'total_calories' => 0,
+    'total_protein' => 0,
+    'total_carbs' => 0,
+    'total_fat' => 0
+];
+
+try {
+    // Start transaction for consistency
+    $conn->begin_transaction();
+
+    // Fetch active nutritional goals
+    $goals_query = "SELECT 
+        COALESCE(daily_calories, ?) as daily_calories,
+        COALESCE(daily_protein, ?) as daily_protein,
+        COALESCE(daily_carbs, ?) as daily_carbs,
+        COALESCE(daily_fat, ?) as daily_fat
+    FROM journal_goals
+    WHERE customer_id = ? AND is_active = 1
+    ORDER BY created_at DESC
+    LIMIT 1";
+    
+    $stmt = $conn->prepare($goals_query);
+    $stmt->bind_param("iiiii", 
+        $default_goals['daily_calories'],
+        $default_goals['daily_protein'],
+        $default_goals['daily_carbs'],
+        $default_goals['daily_fat'],
+        $customer_id
+    );
+    $stmt->execute();
+    $current_goals = $stmt->get_result()->fetch_assoc() ?? $default_goals;
+
+    // Fetch daily totals with proper NULL and zero handling
+    $daily_totals_query = "SELECT
+        ROUND(COALESCE(SUM(NULLIF(calories * portion, 0)), 0), 2) AS total_calories,
+        ROUND(COALESCE(SUM(NULLIF(protein * portion, 0)), 0), 2) AS total_protein,
+        ROUND(COALESCE(SUM(NULLIF(carbs * portion, 0)), 0), 2) AS total_carbs,
+        ROUND(COALESCE(SUM(NULLIF(fat * portion, 0)), 0), 2) AS total_fat
+    FROM food_journal
+    WHERE customer_id = ? 
+    AND entry_date = ?
+    AND calories IS NOT NULL";
+    
+    $stmt = $conn->prepare($daily_totals_query);
+    $stmt->bind_param("is", $customer_id, $selected_date);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($row = $result->fetch_assoc()) {
+        $daily_totals = array_map('floatval', $row);
+    }
+
+    $conn->commit();
+
+} catch (Exception $e) {
+    $conn->rollback();
+    error_log("Error in journal.php: " . $e->getMessage());
+    // Keep using default values set above
+}
+
+// Safe calculation functions
+function validateDate($date, $format = 'Y-m-d') {
+    $d = DateTime::createFromFormat($format, $date);
+    return $d && $d->format($format) === $date;
+}
+
+function calculatePercentage($value, $goal) {
+    if ($goal <= 0 || !is_numeric($value)) return 0;
+    $percentage = min(($value / $goal) * 100, 100);
+    return is_finite($percentage) ? round($percentage, 1) : 0;
+}
+
+// Calculate percentages
+$calories_percentage = calculatePercentage($daily_totals['total_calories'], $current_goals['daily_calories']);
+$protein_percentage = calculatePercentage($daily_totals['total_protein'], $current_goals['daily_protein']);
+$carbs_percentage = calculatePercentage($daily_totals['total_carbs'], $current_goals['daily_carbs']);
+$fat_percentage = calculatePercentage($daily_totals['total_fat'], $current_goals['daily_fat']);
+
+// Ensure all values are properly formatted for display
+$display_totals = array_map(function($value) {
+    return number_format(floatval($value), 1);
+}, $daily_totals);
+
+$display_percentages = [
+    'calories' => number_format($calories_percentage, 1),
+    'protein' => number_format($protein_percentage, 1),
+    'carbs' => number_format($carbs_percentage, 1),
+    'fat' => number_format($fat_percentage, 1)
+];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -87,196 +145,12 @@ $current_goals = $stmt->get_result()->fetch_assoc() ?? [
 <title>Food Journal - <?= date('M d, Y', strtotime($selected_date)) ?></title>
 <link rel="stylesheet" href="assets/css/journal.css">
 <link rel="stylesheet" href="assets/boxicons/css/boxicons.min.css">
-<style>
-.meal-items {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 15px;
-}
-
-.food-card {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    border: 1px solid #eee;
-}
-
-.food-card-inner {
-    display: flex;
-    gap: 15px;
-    padding: 12px;
-}
-
-.food-image-wrapper {
-    position: relative;
-    width: 80px;
-    height: 80px;
-    flex-shrink: 0;
-}
-
-.food-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-.delete-entry {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: white;
-    border: 1px solid #eee;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    opacity: 0;
-    transition: all 0.2s ease;
-}
-
-.food-card:hover .delete-entry {
-    opacity: 1;
-}
-
-.delete-entry i {
-    color: #dc3545;
-    font-size: 14px;
-}
-
-.food-content {
-    flex: 1;
-    min-width: 0;
-    /* Prevents flex item from overflowing */
-}
-
-.food-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 8px;
-}
-
-.food-title {
-    flex: 1;
-    min-width: 0;
-}
-
-.food-title h4 {
-    margin: 0;
-    font-size: 0.95rem;
-    color: #333;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.kitchen-name {
-    margin: 2px 0 0 0;
-    font-size: 0.8rem;
-    color: #666;
-}
-
-.portion-badge {
-    background: var(--accent-green);
-    color: white;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    margin-left: 8px;
-}
-
-.macro-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-
-.tag-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    white-space: nowrap;
-}
-
-.tag-item i {
-    font-size: 12px;
-}
-
-.tag-item.calories {
-    background: #fff3e0;
-    color: var(--primary-orange);
-}
-
-.tag-item.protein {
-    background: #ffe0e0;
-    color: var(--primary-red);
-}
-
-.tag-item.carbs {
-    background: #e3f2fd;
-    color: #1976d2;
-}
-
-.tag-item.fat {
-    background: #f0f9e8;
-    color: var(--accent-green);
-}
-
-/* Empty State */
-.empty-meal {
-    text-align: center;
-    padding: 30px 20px;
-    background: #f8f9fa;
-    border-radius: 12px;
-}
-
-.empty-meal i {
-    font-size: 24px;
-    color: #adb5bd;
-    margin-bottom: 8px;
-}
-
-.empty-meal p {
-    margin: 0 0 12px 0;
-    color: #6c757d;
-}
-
-/* Mobile Optimization */
-@media (max-width: 480px) {
-    .food-card-inner {
-        gap: 10px;
-    }
-
-    .food-image-wrapper {
-        width: 60px;
-        height: 60px;
-    }
-
-    .macro-tags {
-        gap: 4px;
-    }
-
-    .tag-item {
-        padding: 3px 6px;
-        font-size: 0.75rem;
-    }
-}
-</style>
 
 <body>
     <!-- Header -->
     <header class="header">
         <div class="logo-wrap">
-            <a href="javascript:void(0);" onclick="window.history.back();" class="back-button">
+            <a href="homepage.php" class="back-button">
                 <i class='bx bx-chevron-left'></i>
             </a>
             <h1 class="title-color font-md">Food Journal</h1>
@@ -320,59 +194,49 @@ $current_goals = $stmt->get_result()->fetch_assoc() ?? [
                 <div class="circle-progress calories">
                     <svg viewBox="0 0 36 36">
                         <path d="M18 2.0845
-                        a 15.9155 15.9155 0 0 1 0 31.831
-                        a 15.9155 15.9155 0 0 1 0 -31.831"
-                            stroke-dasharray="<?= min(($daily_totals['total_calories'] ?? 0) / 2000 * 100, 100) ?>, 100" />
+                    a 15.9155 15.9155 0 0 1 0 31.831
+                    a 15.9155 15.9155 0 0 1 0 -31.831" stroke-dasharray="<?= $calories_percentage ?>, 100" />
                         <text x="18" y="18"
-                            class="percentage"><?= number_format($daily_totals['total_calories'] ?? 0) ?></text>
+                            class="percentage"><?= number_format($daily_totals['total_calories']) ?></text>
                         <text x="18" y="23" class="label">kcal</text>
                     </svg>
                     <span class="macro-label">Calories</span>
                 </div>
-
-                <!-- Macro Stats -->
                 <div class="macro-stats">
                     <div class="macro-item">
                         <div class="macro-icon protein-bg">
                             <i class='bx bx-bowl-hot'></i>
                         </div>
                         <div class="macro-info">
-                            <span class="macro-value"><?= number_format($daily_totals['total_protein'] ?? 0) ?>g</span>
+                            <span class="macro-value"><?= number_format($daily_totals['total_protein']) ?>g</span>
                             <span class="macro-name">Protein</span>
                         </div>
                         <div class="progress-mini">
-                            <div class="progress protein"
-                                style="width: <?= min(($daily_totals['total_protein'] ?? 0) / 50 * 100, 100) ?>%"></div>
+                            <div class="progress protein" style="width: <?= $protein_percentage ?>%"></div>
                         </div>
                     </div>
-
-                    <!-- Carbs -->
                     <div class="macro-item">
                         <div class="macro-icon carbs-bg">
-                            <i class='bx bx-baguette  '></i>
+                            <i class='bx bx-baguette'></i>
                         </div>
                         <div class="macro-info">
-                            <span class="macro-value"><?= number_format($daily_totals['total_carbs'] ?? 0) ?>g</span>
+                            <span class="macro-value"><?= number_format($daily_totals['total_carbs']) ?>g</span>
                             <span class="macro-name">Carbs</span>
                         </div>
                         <div class="progress-mini">
-                            <div class="progress carbs"
-                                style="width: <?= min(($daily_totals['total_carbs'] ?? 0) / 300 * 100, 100) ?>%"></div>
+                            <div class="progress carbs" style="width: <?= $carbs_percentage ?>%"></div>
                         </div>
                     </div>
-
-                    <!-- Fat -->
                     <div class="macro-item">
                         <div class="macro-icon fat-bg">
                             <i class='bx bx-droplet'></i>
                         </div>
                         <div class="macro-info">
-                            <span class="macro-value"><?= number_format($daily_totals['total_fat'] ?? 0) ?>g</span>
+                            <span class="macro-value"><?= number_format($daily_totals['total_fat']) ?>g</span>
                             <span class="macro-name">Fat</span>
                         </div>
                         <div class="progress-mini">
-                            <div class="progress fat"
-                                style="width: <?= min(($daily_totals['total_fat'] ?? 0) / 65 * 100, 100) ?>%"></div>
+                            <div class="progress fat" style="width: <?= $fat_percentage ?>%"></div>
                         </div>
                     </div>
                 </div>
@@ -397,25 +261,25 @@ $current_goals = $stmt->get_result()->fetch_assoc() ?? [
 
             <?php
     // Fetch entries from food journal
-    $journal_query = "SELECT 
-        j.*,
-        f.photo1,
-        k.fname as kitchen_name
-    FROM food_journal j
-    LEFT JOIN orders o ON j.order_id = o.order_id
-    LEFT JOIN order_items oi ON o.order_id = oi.order_id
-    LEFT JOIN food_listings f ON oi.food_id = f.food_id
-    LEFT JOIN kitchens k ON f.kitchen_id = k.kitchen_id
-    WHERE j.customer_id = ? 
-    AND j.entry_date = ?
-    AND j.meal_type = ?
-    ORDER BY j.created_at DESC";
+            $journal_query = "SELECT 
+                j.*,
+                f.photo1,
+                k.fname as kitchen_name
+            FROM food_journal j
+            LEFT JOIN orders o ON j.order_id = o.order_id
+            LEFT JOIN order_items oi ON o.order_id = oi.order_id
+            LEFT JOIN food_listings f ON oi.food_id = f.food_id
+            LEFT JOIN kitchens k ON f.kitchen_id = k.kitchen_id
+            WHERE j.customer_id = ? 
+            AND j.entry_date = ?
+            AND j.meal_type = ?
+            ORDER BY j.created_at DESC";
 
-    $stmt = $conn->prepare($journal_query);
-    $stmt->bind_param("iss", $customer_id, $selected_date, $meal['name']);
-    $stmt->execute();
-    $journal_items = $stmt->get_result();
-    ?>
+            $stmt = $conn->prepare($journal_query);
+            $stmt->bind_param("iss", $customer_id, $selected_date, $meal['name']);
+            $stmt->execute();
+            $journal_items = $stmt->get_result();
+                    ?>
 
             <div class="meal-items">
                 <?php if ($journal_items && $journal_items->num_rows > 0): ?>
@@ -565,6 +429,33 @@ $current_goals = $stmt->get_result()->fetch_assoc() ?? [
     function openMealSelector(mealType) {
         // Implement your meal selection logic
         window.location.href = `add_food.php?meal_type=${mealType}&date=${<?= json_encode($selected_date) ?>}`;
+    }
+
+    function deleteJournalEntry(journalId) {
+        if (confirm('Are you sure you want to remove this food entry?')) {
+            fetch('functions/delete_journal_entry.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        journal_id: journalId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Reload current page to refresh stats
+                        window.location.reload();
+                    } else {
+                        alert(data.message || 'Failed to delete entry');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the entry');
+                });
+        }
     }
     </script>
 

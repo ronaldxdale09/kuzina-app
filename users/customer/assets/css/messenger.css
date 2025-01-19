@@ -71,6 +71,18 @@
     margin-top: 72px;
     margin-bottom: 70px;
     padding: 1rem;
+    position: fixed;
+    /* Add this */
+    top: 0;
+    /* Add this */
+    bottom: 0;
+    /* Add this */
+    left: 0;
+    /* Add this */
+    right: 0;
+    /* Add this */
+    -webkit-overflow-scrolling: touch;
+    /* Add this for iOS smooth scrolling */
 }
 
 .messages-container {
@@ -79,6 +91,24 @@
     height: 100%;
     overflow-y: auto;
     padding: 1rem;
+    padding-bottom: 80px;
+    /* Add more padding at bottom */
+}
+
+
+/* Add this new style for better mobile scrolling */
+
+.messages-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
 }
 
 
@@ -131,6 +161,8 @@
     display: flex;
     margin-bottom: 1rem;
     max-width: 75%;
+    margin-bottom: 16px;
+    /* Increase bottom margin */
 }
 
 .message.incoming {
@@ -183,6 +215,11 @@
     justify-content: flex-end;
 }
 
+.message:last-child {
+    margin-bottom: 24px;
+    /* Extra space for last message */
+}
+
 
 /* Input Area Styles */
 
@@ -194,6 +231,8 @@
     left: 0;
     right: 0;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    /* Add this to ensure it stays on top */
 }
 
 .input-form {

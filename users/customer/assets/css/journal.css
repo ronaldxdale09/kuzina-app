@@ -738,3 +738,71 @@
         font-size: 0.75rem;
     }
 }
+
+
+/* Button Container */
+
+.button-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 12px;
+    vertical-align: middle;
+}
+
+
+/* Common Button Styles */
+
+.edit-goals-btn,
+.report-btn {
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    border: none;
+}
+
+
+/* Edit Goals Button */
+
+.edit-goals-btn {
+    background: #AED581;
+    color: #333;
+}
+
+
+/* View Report Button */
+
+.report-btn {
+    background: #f5f5f5;
+    color: #333;
+}
+
+
+/* Icon styles */
+
+.edit-goals-btn i,
+.report-btn i {
+    font-size: 14px;
+}
+
+
+/* Title Section */
+
+.summary-card h2 {
+    margin-bottom: 24px;
+    /* Add space below the title and buttons */
+}
+
+
+/* Macro Circles */
+
+.macro-circles {
+    margin-top: 24px;
+    /* Add space above the macro circles */
+    display: flex;
+    gap: 24px;
+}
