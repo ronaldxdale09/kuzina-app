@@ -27,6 +27,15 @@
                     </a>
                     <a class="arrow" href="education.php"><i data-feather="chevron-right"></i></a>
                 </li>
+
+                <li>
+                    <a href="bug.report.php" class="nav-link title-color font-sm">
+                        <i class="bx bx-bug"></i> <span>Report Bugs</span>
+                    </a>
+                    <a class="arrow" href="bug.report.php">
+                        <i data-feather="chevron-right"></i>
+                    </a>
+                </li>
                 <!-- 
         <li>
             <a href="pages-list.html" class="nav-link title-color font-sm">
