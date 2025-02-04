@@ -5,8 +5,8 @@
             <div class="media">
                 <a href="homepage.php"> <img src="assets/images/logo/logo49.png" alt="avatar" /></a>
                 <div class="media-body">
-                    <a href="homepage.php" class="title-color font-sm"><?php echo  $_COOKIE['user_fname']?>
-                        <span class="content-color font-xs"><?php echo  $_COOKIE['user_email']?></span>
+                    <a href="homepage.php" class="title-color font-sm"><?php echo  $_COOKIE['user_fname'] ?>
+                        <span class="content-color font-xs"><?php echo  $_COOKIE['user_email'] ?></span>
                     </a>
                 </div>
             </div>
@@ -20,6 +20,12 @@
                         <span>Home</span>
                     </a>
                     <a class="arrow" href="homepage.php"><i data-feather="chevron-right"></i></a>
+                </li>
+                <li>
+                    <a href="education.php" class="nav-link title-color font-sm">
+                        <i class="bx bxs-food-menu"></i> <span>Food Education</span>
+                    </a>
+                    <a class="arrow" href="education.php"><i data-feather="chevron-right"></i></a>
                 </li>
                 <!-- 
         <li>
@@ -35,49 +41,42 @@
                         <i class="iconly-Category icli"></i>
                         <span>Shop by Category</span>
                     </a>
-                    <a class="arrow" href="category-wide.html"><i data-feather="chevron-right"></i></a>
+                    <a class="arrow" href="shop.php"><i data-feather="chevron-right"></i></a>
                 </li>
 
                 <li>
-                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="nav-link title-color font-sm">
+                    <a href="order-history.php" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="nav-link title-color font-sm">
                         <i class="iconly-Document icli"></i>
                         <span>Orders</span>
                     </a>
-                    <a class="arrow" href="#"><i data-feather="chevron-right"></i></a>
+                    <a class="arrow" href="order-history.php"><i data-feather="chevron-right"></i></a>
                 </li>
 
-                <li>
-                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev"  class="nav-link title-color font-sm">
-                        <i class="iconly-Heart icli"></i>
-                        <span>Your Wishlist</span>
-                    </a>
-                    <a class="arrow" href="#"><i data-feather="chevron-right"></i></a>
-                </li>
 
-    
 
-                <li>
-                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev"  class="nav-link title-color font-sm">
+
+                <!-- <li>
+                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="nav-link title-color font-sm">
                         <i class="iconly-Add-User icli"></i>
                         <span>Your Account</span>
                     </a>
                     <a class="arrow" href="#"><i data-feather="chevron-right"></i></a>
-                </li>
-
+                </li> -->
+                <!-- 
                 <li>
                     <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="nav-link title-color font-sm">
                         <i class="iconly-Notification icli"></i>
                         <span>Notification</span>
                     </a>
                     <a class="arrow" href="#"><i data-feather="chevron-right"></i></a>
-                </li>
+                </li> -->
 
                 <li>
-                    <a href="#"  data-bs-toggle="offcanvas" data-bs-target="#underDev"  class="nav-link title-color font-sm">
+                    <a href="user.profile.php" class="nav-link title-color font-sm">
                         <i class="iconly-Setting icli"></i>
                         <span>Settings</span>
                     </a>
-                    <a class="arrow" href="#"><i data-feather="chevron-right"></i></a>
+                    <a class="arrow" href="user.profile.php"><i data-feather="chevron-right"></i></a>
                 </li>
 
                 <!-- <li>
@@ -107,7 +106,7 @@
         </nav>
 
     </div>
-<!-- 
+    <!-- 
     <div class="contact-us">
         <span class="title-color">Contact Support</span>
         <p class="content-color font-xs">If you have any problem,queries or questions feel free to reach out</p>

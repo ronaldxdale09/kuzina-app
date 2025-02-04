@@ -3,6 +3,16 @@
 <?php 
 // Database connection
 include '../../connection/db.php';
+
+
+// Check if the 'user_id' cookie is set and not empty
+if (!isset($_COOKIE['user_id']) || empty($_COOKIE['user_id'])) {
+    // Redirect to login.php
+    header('Location: ../../index.php');
+    exit(); // Stop further execution
+}
+
+// If the cookie is set, proceed with the rest of the script
 $customer_id = $_COOKIE['user_id'];
 
 // Cache headers

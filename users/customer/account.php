@@ -27,10 +27,10 @@
         <div class="account-wrap section-b-t">
             <div class="user-panel">
                 <div class="media">
-                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" > <img src="assets/images/logo/logo49.png" alt="avatar" /></a>
+                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev"> <img src="assets/images/logo/logo49.png" alt="avatar" /></a>
                     <div class="media-body">
-                        <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev"  class="title-color"><?php echo  $_COOKIE['user_fname']?>
-                            <span class="content-color font-sm"><?php echo  $_COOKIE['user_email']?></span>
+                        <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="title-color"><?php echo  $_COOKIE['user_fname'] ?>
+                            <span class="content-color font-sm"><?php echo  $_COOKIE['user_email'] ?></span>
                         </a>
                     </div>
                 </div>
@@ -46,41 +46,29 @@
                     </a>
                     <a href="homepage.php" class="arrow"><i data-feather="chevron-right"></i></a>
                 </li>
-
+                <li>
+                    <a href="education.php" class="nav-link title-color font-sm">
+                        <i class="bx bxs-food-menu"></i> <span>Food Education</span>
+                    </a>
+                    <a class="arrow" href="education.php"><i data-feather="chevron-right"></i></a>
+                </li>
 
 
                 <li>
-                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev"  class="nav-link title-color font-sm">
+                    <a href="order-history.php" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="nav-link title-color font-sm">
                         <i class="iconly-Document icli"></i>
                         <span>Orders</span>
                     </a>
-                    <a href="#" class="arrow"><i data-feather="chevron-right"></i></a>
-                </li>
-
-                <li>
-                    <a href="#"  data-bs-toggle="offcanvas" data-bs-target="#underDev" class="nav-link title-color font-sm">
-                        <i class="iconly-Heart icli"></i>
-                        <span>Your Wishlist</span>
-                    </a>
-                    <a href="#" class="arrow"><i data-feather="chevron-right"></i></a>
+                    <a href="order-history.php" class="arrow"><i data-feather="chevron-right"></i></a>
                 </li>
 
 
-
                 <li>
-                    <a href="#"data-bs-toggle="offcanvas" data-bs-target="#underDev" class="nav-link title-color font-sm">
-                        <i class="iconly-Notification icli"></i>
-                        <span>Notification</span>
-                    </a>
-                    <a href="#" class="arrow"><i data-feather="chevron-right"></i></a>
-                </li>
-
-                <li>
-                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev"  class="nav-link title-color font-sm">
+                    <a href="user.profile.php" class="nav-link title-color font-sm">
                         <i class="iconly-Setting icli"></i>
                         <span>Settings</span>
                     </a>
-                    <a href="#" class="arrow"><i data-feather="chevron-right"></i></a>
+                    <a href="user.profile.php" class="arrow"><i data-feather="chevron-right"></i></a>
                 </li>
 
             </ul>
