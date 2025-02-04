@@ -31,13 +31,13 @@
 
     <!-- Main Start -->
     <main class="main-wrap cart-page mb-xxl">
-        <?php       
-            include 'components/cart.address.php';
-            ?> <br>
+        <?php
+        include 'components/cart.address.php';
+        ?> <br>
 
         <!-- Cart Item Section Start  -->
         <div class="cart-item-wrap pt-0">
-            <?php       
+            <?php
             include 'components/cart.items.php';
             include 'components/cart.order.details.php';
             ?>
@@ -52,7 +52,7 @@
     </main>
 
     <!-- Main End -->
-
+    <div id="min-order-warning" class="alert alert-warning" style="display: none;"></div>
     <!-- Footer Start -->
     <footer class="footer-wrap footer-button">
         <a href="payment.php" class="font-md">Proceed to Checkout</a>

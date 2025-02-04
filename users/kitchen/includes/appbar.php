@@ -139,5 +139,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 <span>Messages</span>
             </a>
         </li>
+        <li class="footer-item">
+    <a href="kitchen_profile.php" class="footer-link">
+        <i class="bx bx-cog icli"></i>
+        <span>Settings</span>
+    </a>
+</li>
     </ul>
 </footer>

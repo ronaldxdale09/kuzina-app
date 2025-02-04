@@ -1,56 +1,52 @@
 <?php
-include '../../../connection/db.php'; // Include DB connection
+include '../../../connection/db.php';
 
-header('Content-Type: application/json');
-
-$response = ['success' => false, 'foods' => [], 'message' => ''];
-
-$category = isset($_POST['category']) ? $_POST['category'] : '';
+$response = ['success' => false, 'message' => '', 'foods' => []];
 
 try {
-    // Query to fetch all food items if no category is specified, otherwise fetch based on category
-    $query = "SELECT food_id, meal_type, category, description, food_name, diet_type_suitable, 
-       health_goal_suitable, price, photo1 
-FROM food_listings 
-WHERE available = 1 
-AND listed = 1 
-AND isApproved = 1";
-    
+    $category = $_POST['category'] ?? '';
+    $search = $_POST['search'] ?? '';
+
+    $query = "SELECT f.*, c.name as category_name 
+              FROM food_listings f 
+              LEFT JOIN food_categories c ON f.category_id = c.category_id 
+              WHERE f.isApproved = 1 AND f.available = 1";
+
+    $params = [];
+    $types = "";
+
     if (!empty($category)) {
-        $query .= " AND category = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("s", $category);
-    } else {
-        $stmt = $conn->prepare($query); // No filtering by category
+        $query .= " AND c.name = ?";
+        $params[] = $category;
+        $types .= "s";
+    }
+
+    if (!empty($search)) {
+        $search = "%$search%";
+        $query .= " AND (f.food_name LIKE ? OR f.description LIKE ? OR c.name LIKE ? OR f.diet_type_suitable LIKE ?)";
+        $params = array_merge($params, [$search, $search, $search, $search]);
+        $types .= "ssss";
+    }
+
+    $query .= " ORDER BY f.created_at DESC";
+
+    $stmt = $conn->prepare($query);
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
     }
 
     $stmt->execute();
     $result = $stmt->get_result();
 
-    if ($result->num_rows > 0) {
-        $foods = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $foods[] = [
-                'food_id' => $row['food_id'],
-                'food_name' => $row['food_name'],
-                'meal_type' => $row['meal_type'],
-                'category' => $row['category'],
-                'diet_type_suitable' => $row['diet_type_suitable'],
-                'health_goal_suitable' => $row['health_goal_suitable'],
-                'price' => $row['price'],
-                'photo1' => $row['photo1'] ? $row['photo1'] : 'assets/images/default-food.jpg'
-            ];
-        }
-
-        $response['success'] = true;
-        $response['foods'] = $foods;
-    } else {
-        $response['message'] = 'No food items available';
+    $foods = [];
+    while ($row = $result->fetch_assoc()) {
+        $foods[] = $row;
     }
+
+    $response['success'] = true;
+    $response['foods'] = $foods;
 } catch (Exception $e) {
-    $response['message'] = 'Error: ' . $e->getMessage();
+    $response['message'] = $e->getMessage();
 }
 
 echo json_encode($response);
-?>

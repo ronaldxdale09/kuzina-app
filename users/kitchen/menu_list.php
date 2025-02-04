@@ -1,4 +1,4 @@
-<?php 
+<?php
 include 'includes/header.php';
 include 'fetch/fetch.menulist.php';
 ?>
@@ -20,7 +20,7 @@ include 'fetch/fetch.menulist.php';
 
     <!-- Sidebar Start -->
     <a href="javascript:void(0)" class="overlay-sidebar"></a>
-   
+
     <!-- Sidebar End -->
 
     <!-- Main Start -->
@@ -42,11 +42,17 @@ include 'fetch/fetch.menulist.php';
         </ul>
         <div class="header-content">
             <h3>Menu List</h3>
+    
             <a href="add_menu.php" class="add-new-btn">
                 <i class='bx bx-plus-circle'></i>
                 Add New Product
             </a>
         </div>
+                <!-- Add search box -->
+                <div class="search-box">
+                <input type="text" id="searchFood" placeholder="Search food items...">
+                <i class='bx bx-search'></i>
+            </div>
         <!-- Tab Content -->
         <div class="tab-content container menu-list">
             <!-- All Menu Items -->
@@ -73,7 +79,7 @@ include 'fetch/fetch.menulist.php';
 
     </main>
 
-
+   
     <!-- Footer Start -->
 
     <?php include 'includes/appbar.php'; ?>

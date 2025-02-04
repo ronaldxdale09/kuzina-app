@@ -324,3 +324,46 @@
      .action-btn:hover {
          opacity: 0.9;
      }
+     .badge.approval-status {
+        padding: 5px 10px;
+        font-size: 12px;
+        border-radius: 4px;
+    }
+    
+    .badge.approval-status.approved {
+        background-color: #28a745;
+        color: white;
+    }
+    
+    .badge.approval-status.pending {
+        background-color: #ffc107;
+        color: #000;
+    }
+    .search-box {
+        position: relative;
+        margin: 10px 0;
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    .search-box input {
+        width: 100%;
+        padding: 10px 40px 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+    
+    .search-box i {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+    }
+    
+    .no-results {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+    }

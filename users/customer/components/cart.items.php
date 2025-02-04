@@ -19,7 +19,7 @@ if ($resultKitchen && $resultKitchen->num_rows > 0) {
     $kitchen_name = htmlspecialchars($kitchen['fname'] . ' ' . $kitchen['lname'], ENT_QUOTES, 'UTF-8');
     $kitchen_photo = htmlspecialchars($kitchen['photo'], ENT_QUOTES, 'UTF-8');
     $kitchen_description = htmlspecialchars($kitchen['description'], ENT_QUOTES, 'UTF-8');
-    ?>
+?>
     <a href="kitchen.php?id=<?= $kitchen_id ?>" class="kitchen-details">
         <div class="kitchen-header">
             <img src="../../uploads/profile/<?= $kitchen_photo ?>" class="kitchen-img" alt="<?= $kitchen_name ?>" loading="lazy" />
@@ -34,18 +34,15 @@ if ($resultKitchen && $resultKitchen->num_rows > 0) {
 $stmtKitchen->close();
 
 // Fetch cart items and calculate initial bag total
-$sql = "SELECT ci.quantity, fl.food_id, fl.food_name, fl.photo1, fl.price 
+$sql = "SELECT ci.quantity, fl.food_id, fl.food_name, fl.photo1, fl.price
         FROM cart_items ci
         JOIN food_listings fl ON ci.food_id = fl.food_id
         WHERE ci.customer_id = ?";
-
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $customer_id);
 $stmt->execute();
 $result = $stmt->get_result();
-
 $bagTotal = 0;
-$couponDiscount = 0.00;
 
 // Display cart items
 if ($result && $result->num_rows > 0) {
@@ -58,7 +55,7 @@ if ($result && $result->num_rows > 0) {
         $quantity = intval($row['quantity']);
         $itemTotal = $price * $quantity;
         $bagTotal += $itemTotal;
-        ?>
+    ?>
         <div class="swipe-to-show" data-food-id="<?= $food_id ?>">
             <div class="product-list media">
                 <a href="product.php?prod=<?= $food_id ?>">
@@ -66,7 +63,6 @@ if ($result && $result->num_rows > 0) {
                 </a>
                 <div class="media-body">
                     <a href="product.php?prod=<?= $food_id ?>" class="font-sm title-color"><?= $food_name ?></a>
-                    <span class="content-color font-xs">Quantity: <span class="quantity-display"><?= $quantity ?></span></span>
                     <span class="title-color font-sm">₱<span class="price-display" data-price="<?= $price ?>" data-food-id="<?= $food_id ?>"><?= number_format($itemTotal, 2) ?></span></span>
                 </div>
                 <div class="plus-minus">
@@ -79,48 +75,43 @@ if ($result && $result->num_rows > 0) {
                 <i class="bx bx-trash"></i>
             </div>
         </div>
-        <?php
+    <?php
     }
     echo '</div>';
 } else {
-    echo '<div class="cart-items"><p>Your cart is empty.</p></div>';
+    ?>
+    <div class="cart-items">
+        <div class="empty-cart-container">
+            <div class="empty-cart-content">
+                <div class="empty-cart-icon">
+                    <i class="bx bx-cart-alt"></i>
+                </div>
+                <h3 class="empty-cart-title">Your Cart is Empty</h3>
+                <div class="empty-cart-suggestions">
+                    <h5>What you can do:</h5>
+                    <ul>
+                        <li><i class="bx bx-food-menu"></i> Explore our healthy meal </li>
+                        <li><i class="bx bx-store"></i> Find local food providers</li>
+                        <li><i class="bx bx-heart"></i> Save your favorite meals</li>
+                    </ul>
+                </div>
+                <div class="empty-cart-actions">
+                    <a href="homepage.php" class="btn btn-primary">
+                        <i class="bx bx-restaurant"></i> Browse Menu
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+<?php
 }
 $stmt->close();
 ?>
 
-<!-- Coupons Section Start -->
-<section class="pt-0 coupon-ticket-wrap">
-    <div class="coupon-ticket" data-bs-toggle="offcanvas" data-bs-target="#offer-1" aria-controls="offer-1">
-        <div class="media">
-            <div class="off">
-                <span>50</span>
-                <span><span>%</span><span>OFF</span> </span>
-            </div>
-            <div class="media-body">
-                <h2 class="title-color">on your first order</h2>
-                <span class="content-color">on order above ₱250.00</span>
-            </div>
-            <div class="big-circle">
-                <span></span>
-            </div>
-            <div class="code">
-                <span class="content-color">Use Code: </span>
-                <a href="javascript:void(0)">KUZINA123</a>
-            </div>
-        </div>
-        <div class="circle-5 left">
-            <span class="circle-shape"></span>
-            <span class="circle-shape"></span>
-        </div>
-        <div class="circle-5 right">
-            <span class="circle-shape"></span>
-            <span class="circle-shape"></span>
-        </div>
-    </div>
-</section>
-<!-- Coupons Section End  -->
+<div id="min-order-warning" class="alert alert-warning" style="display: none;"></div>
 
-<!-- Order Details Section (Only Displayed Once) -->
+<!-- Order Details Section -->
 <section class="order-detail pt-1">
     <h3 class="title-2">Order Details</h3>
     <ul>
@@ -128,21 +119,13 @@ $stmt->close();
             <span>Bag total</span>
             <span>₱<span id="bag-total"><?= number_format($bagTotal, 2) ?></span></span>
         </li>
-        <li class="coupon-row">
-            <span>Coupon Discount</span>
-            <div class="coupon-section">
-                <input type="text" id="coupon-code" placeholder="Enter coupon code">
-                <button id="apply-coupon-btn">Apply</button>
-                <span class="discount-amount">₱<span id="coupon-discount"><?= number_format($couponDiscount, 2) ?></span></span>
-            </div>
-        </li>
-        <li>
+        <li id="delivery-fee-section" >
             <span>Delivery</span>
-            <span>₱<span id="delivery-fee"></span></span>
+            <span>₱<span id="delivery-fee">0.00</span></span>
         </li>
         <li>
             <span>Total Amount</span>
-            <span>₱<span id="total-amount"><?= number_format($bagTotal + $deliveryFee - $couponDiscount, 2) ?></span></span>
+            <span>₱<span id="total-amount"><?= number_format($bagTotal + $deliveryFee, 2) ?></span></span>
         </li>
     </ul>
 </section>

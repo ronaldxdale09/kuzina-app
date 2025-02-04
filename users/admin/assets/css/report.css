@@ -1,0 +1,124 @@
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.dashboard-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.filter-section {
+    display: flex;
+    align-items: center;
+}
+
+.time-filter {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: white;
+    color: #502121;
+    font-size: 0.9rem;
+    cursor: pointer;
+    outline: none;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.chart-card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 12px;
+   
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.stat-label {
+    font-size: 0.75rem;
+    color: #666;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.stat-number {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #502121;
+}
+
+.chart-container {
+    height: 200px;
+    margin: 8px 0;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    font-size: 0.8rem;
+    color: #666;
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.table td {
+    padding: 8px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #eee;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Responsive design */
+@media (min-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .charts-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat-number {
+        font-size: 1.4rem;
+    }
+
+    .chart-container {
+        height: 250px;
+    }
+}

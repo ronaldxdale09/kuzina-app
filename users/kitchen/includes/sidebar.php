@@ -21,30 +21,14 @@
                     </a>
                     <a class="arrow" href="homepage.php"><i data-feather="chevron-right"></i></a>
                 </li>
-                <!-- 
-        <li>
-            <a href="pages-list.html" class="nav-link title-color font-sm">
-                <i class="iconly-Paper icli"></i>
-                <span>Fastkart Pages list</span>
-            </a>
-            <a class="arrow" href="pages-list.html"><i data-feather="chevron-right"></i></a>
-        </li> -->
-
+         
 
                 <li>
-                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="nav-link title-color font-sm">
+                    <a href="order_list.php" class="nav-link title-color font-sm">
                         <i class="iconly-Document icli"></i>
                         <span>Orders</span>
                     </a>
-                    <a class="arrow" href="#"><i data-feather="chevron-right"></i></a>
-                </li>
-
-                <li>
-                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev"  class="nav-link title-color font-sm">
-                        <i class="iconly-Heart icli"></i>
-                        <span>Your Wishlist</span>
-                    </a>
-                    <a class="arrow" href="#"><i data-feather="chevron-right"></i></a>
+                    <a class="arrow" href="order_list.php"><i data-feather="chevron-right"></i></a>
                 </li>
 
     
@@ -58,11 +42,11 @@
                 </li>
 
                 <li>
-                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="nav-link title-color font-sm">
+                    <a href="notification.php" class="nav-link title-color font-sm">
                         <i class="iconly-Notification icli"></i>
                         <span>Notification</span>
                     </a>
-                    <a class="arrow" href="#"><i data-feather="chevron-right"></i></a>
+                    <a class="arrow" href="notification.php"><i data-feather="chevron-right"></i></a>
                 </li>
 
                 <li>

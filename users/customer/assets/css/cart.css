@@ -158,3 +158,124 @@
     font-size: 0.9rem;
     color: #666;
 }
+
+.empty-cart-container {
+    padding: 40px 20px;
+    text-align: center;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.empty-cart-content {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.empty-cart-icon {
+    margin-bottom: 20px;
+}
+
+.empty-cart-icon i {
+    font-size: 40px;
+    color: #502121;
+    opacity: 0.8;
+}
+
+.empty-cart-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.empty-cart-message {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.empty-cart-suggestions {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.empty-cart-suggestions h5 {
+    color: #444;
+    margin-bottom: 15px;
+}
+
+.empty-cart-suggestions ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.empty-cart-suggestions li {
+    padding: 8px 0;
+    color: #666;
+}
+
+.empty-cart-suggestions i {
+    margin-right: 10px;
+    color: #502121;
+}
+
+.empty-cart-actions .btn {
+    padding: 12px 30px;
+    font-size: 14px;
+    border-radius: 8px;
+    background: #502121;
+    border-color: #502121;
+    transition: all 0.3s ease;
+}
+
+.empty-cart-actions .btn:hover {
+    background: #632929;
+    transform: translateY(-2px);
+}
+
+.empty-cart-actions i {
+    margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+    .empty-cart-container {
+        padding: 30px 15px;
+    }
+
+    .empty-cart-icon i {
+        font-size: 60px;
+    }
+
+    .empty-cart-title {
+        font-size: 20px;
+    }
+
+    .empty-cart-actions .btn {
+        width: 100%;
+        padding: 10px 20px;
+    }
+}
+.footer-wrap.footer-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-wrap.footer-button a {
+    transition: opacity 0.3s ease;
+}
+#delivery-fee-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.order-detail li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}

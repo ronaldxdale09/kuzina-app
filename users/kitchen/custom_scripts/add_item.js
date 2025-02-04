@@ -24,6 +24,22 @@ document.querySelectorAll('.chip').forEach(chip => {
     });
 });
 
+
+const categorySelect = document.getElementById('category_id');
+if (categorySelect) {
+    categorySelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const icon = selectedOption.dataset.icon;
+
+        // Update the icon display if needed
+        const iconElement = this.parentElement.querySelector('i.bx-chevron-down');
+        if (icon && iconElement) {
+            iconElement.className = icon + ' category-icon';
+        }
+    });
+}
+
+
 // Toggle radio options for pickup or delivery
 function toggleOption(option) {
     document.querySelectorAll('.pickup-delivery .option').forEach(opt => {

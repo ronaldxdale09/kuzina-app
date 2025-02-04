@@ -32,10 +32,15 @@ try {
     $carbs = filter_var($_POST['carbs'] ?? 0, FILTER_VALIDATE_FLOAT);
     $fat = filter_var($_POST['fat'] ?? 0, FILTER_VALIDATE_FLOAT);
     $totalCalories = filter_var($_POST['totalCalories'] ?? 0, FILTER_VALIDATE_FLOAT);
-
+    $category_id = filter_var($_POST['category_id'] ?? 0, FILTER_VALIDATE_INT);
     // Check for required fields
     if (empty($itemName) || !$price || empty($description)) {
         $response['message'] = 'Item name, price, and description are required.';
+        echo json_encode($response);
+        exit;
+    }
+    if (!$category_id) {
+        $response['message'] = 'Valid category is required.';
         echo json_encode($response);
         exit;
     }
@@ -100,45 +105,47 @@ try {
         }
     }
 
-    // Update database
+    // Update the database query
     $stmt = $conn->prepare("UPDATE food_listings SET 
-        food_name = ?,
-        meal_type = ?,
-        price = ?,
-        description = ?,
-        category = ?,
-        photo1 = ?,
-        photo2 = ?,
-        photo3 = ?,
-        diet_type_suitable = ?,
-        health_goal_suitable = ?,
-        allergens = ?,
-        protein = ?,
-        carbs = ?,
-        fat = ?,
-        calories = ?
-        WHERE food_id = ? AND kitchen_id = ?");
+    food_name = ?,
+    meal_type = ?,
+    price = ?,
+    description = ?,
+    category = ?,
+    photo1 = ?,
+    photo2 = ?,
+    photo3 = ?,
+    diet_type_suitable = ?,
+    health_goal_suitable = ?,
+    allergens = ?,
+    protein = ?,
+    carbs = ?,
+    fat = ?,
+    calories = ?,
+    category_id = ?
+    WHERE food_id = ? AND kitchen_id = ?");
 
     if ($stmt) {
         $stmt->bind_param(
-            "ssdsssssssssssiii",
-            $itemName,
-            $mealType,
-            $price,
-            $description,
-            $pickupDelivery,
-            $photo1,
-            $photo2,
-            $photo3,
-            $dietType,
-            $healthGoal,
-            $allergens,
-            $protein,
-            $carbs,
-            $fat,
-            $totalCalories,
-            $food_id,
-            $kitchen_id
+            "ssdssssssssddddiii",  // Updated type string to match parameters
+            $itemName,          // s (string)
+            $mealType,          // s (string)
+            $price,            // d (double)
+            $description,      // s (string)
+            $pickupDelivery,   // s (string)
+            $photo1,           // s (string)
+            $photo2,           // s (string)
+            $photo3,           // s (string)
+            $dietType,         // s (string)
+            $healthGoal,       // s (string)
+            $allergens,        // s (string)
+            $protein,          // d (double)
+            $carbs,            // d (double)
+            $fat,              // d (double)
+            $totalCalories,    // d (double)
+            $category_id,      // i (integer)
+            $food_id,          // i (integer)
+            $kitchen_id        // i (integer)
         );
 
         if ($stmt->execute()) {
