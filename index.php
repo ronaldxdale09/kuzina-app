@@ -1,28 +1,5 @@
 <?php 
 
-// function isWebView() {
-//     if (isset($_GET['app'])) {
-//         return true;  // If URL has ?app parameter
-//     }
-    
-//     $userAgent = $_SERVER['HTTP_USER_AGENT'];
-    
-//     // Check for WebView indicators
-//     $isWebView = (
-//         strpos($userAgent, 'wv') !== false ||         // Android WebView
-//         strpos($userAgent, 'WebView') !== false ||    // Generic WebView
-//         isset($_SERVER['HTTP_X_REQUESTED_WITH'])      // App requests
-//     );
-    
-//     return $isWebView;
-// }
-
-// // If NOT a WebView (not from app), redirect to desktop page
-// if (!isWebView()) {
-//     header("Location: desktop.php");
-//     exit;
-// }
-
 include 'includes/header.php'; 
 
 // Check if splash screen has been shown

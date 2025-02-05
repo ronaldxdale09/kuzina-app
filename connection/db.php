@@ -12,9 +12,9 @@ if ( mysqli_connect_errno() ) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
 
-?>
 
-<?php
+
+
 // session_start(); 
 // // Change this to your connection info.
 // $DATABASE_HOST = 'localhost';
@@ -28,4 +28,34 @@ if ( mysqli_connect_errno() ) {
 // 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 // }
 
+
+function isWebView() {
+    if (isset($_GET['app'])) {
+        return true;  // If URL has ?app parameter
+    }
+    
+    $userAgent = $_SERVER['HTTP_USER_AGENT'];
+    
+    // Check for WebView indicators
+    $isWebView = (
+        strpos($userAgent, 'wv') !== false ||         // Android WebView
+        strpos($userAgent, 'WebView') !== false ||    // Generic WebView
+        isset($_SERVER['HTTP_X_REQUESTED_WITH'])      // App requests
+    );
+    
+    return $isWebView;
+}
+
+// Determine if we're in localhost environment
+$isLocalhost = ($_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['HTTP_HOST'] === '127.0.0.1');
+
+// If NOT a WebView (not from app), redirect appropriately based on environment
+if (!isWebView()) {
+    if ($isLocalhost) {
+        header("Location: /kuzina-app/desktop.php");  // Local development path
+    } else {
+        header("Location: /desktop.php");  // Production path
+    }
+    exit;
+}
 ?>

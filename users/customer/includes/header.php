@@ -3,6 +3,7 @@
 <?php 
 // Database connection
 include '../../connection/db.php';
+include '../../includes/webview.php';
 
 
 // Check if the 'user_id' cookie is set and not empty
