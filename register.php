@@ -4,7 +4,6 @@
 <!-- Head End -->
 
 <!-- Body Start -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' cdn.jsdelivr.net; connect-src 'self' https://maps.googleapis.com; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net https://maps.googleapis.com; img-src 'self' data: https://*.googleapis.com https://*.gstatic.com;">
 
 <body>
     <div class="bg-pattern-wrap ratio2_1">
