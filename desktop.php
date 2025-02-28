@@ -293,8 +293,8 @@
         <p>Unlock the full potential of Kuzina's healthy food delivery service with our mobile app. Enjoy seamless ordering, real-time delivery tracking, and exclusive mobile-only offers.</p>
         
         <div class="download-section">
-            <a href="app/KUZINA_8_2.5.apk" 
-               download="KUZINA_8_2.5.apk" 
+            <a href="app/KUZINA_9_3.apk" 
+               download="KUZINA_9_3.apk" 
                class="download-btn"
                onclick="trackDownload()"
                 <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
