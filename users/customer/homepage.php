@@ -23,12 +23,14 @@
 
     <!-- Main Start -->
     <main class="main-wrap index-page mb-xxl">
+        <br>
         <!-- Search Box Start -->
-        <div class="search-box">
-            <i class="iconly-Search icli search"></i>
-            <input class="form-control" type="search" placeholder="Search here..." />
-            <i class="iconly-Voice icli mic"></i>
-        </div>
+        <form id="homeSearchForm" action="shop.php" method="get" class="m-0 p-0">
+            <div class="search-box">
+                <i class="iconly-Search icli search" id="searchSubmitIcon"></i>
+                <input class="form-control" type="search" name="search" placeholder="Search here..." />
+            </div>
+        </form>
         <!-- Search Box End -->
 
 
@@ -51,7 +53,7 @@
                 <a href="shop.php" class="font-theme">See More</a>
             </div>
 
-                <?php include 'components/homepage.kitchenListing.php'; ?>
+            <?php include 'components/homepage.kitchenListing.php'; ?>
 
 
         </section>
@@ -71,12 +73,12 @@
             </div>
 
             <div class="product-slider">
-            <?php include 'components/random.product.php'; ?>
+                <?php include 'components/random.product.php'; ?>
 
                 <?php
-               
-               fetch_and_render_random_products($conn)
-               ?>
+
+                fetch_and_render_random_products($conn)
+                ?>
             </div>
         </section>
         <!-- Lowest Price 2 End -->
@@ -116,6 +118,30 @@
 
     <?php include 'includes/scripts.php'; ?>
 
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the form and search icon
+            const searchForm = document.getElementById('homeSearchForm');
+            const searchIcon = document.getElementById('searchSubmitIcon');
+
+            // Make the search icon clickable
+            if (searchIcon) {
+                searchIcon.style.cursor = 'pointer';
+                searchIcon.addEventListener('click', function() {
+                    searchForm.submit();
+                });
+            }
+
+            // Prevent empty form submission
+            searchForm.addEventListener('submit', function(event) {
+                const searchInput = this.querySelector('input[type="search"]');
+                if (!searchInput.value.trim()) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
 </body>
 <!-- Body End -->
 

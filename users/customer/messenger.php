@@ -43,7 +43,7 @@ $stmt->execute();
                 <i class='bx bx-arrow-back'></i>
             </a>
             <div class="contact-info">
-                <img src="../../uploads/profile/<?php echo htmlspecialchars($kitchen['photo'] ?? 'assets/images/default-avatar.png'); ?>"
+                <img src="../../uploads/kitchen_photos/<?php echo htmlspecialchars($kitchen['photo'] ?? 'assets/images/default-avatar.png'); ?>"
                     alt="Kitchen" class="contact-avatar">
                 <div class="contact-details">
                     <h1><?php echo htmlspecialchars($kitchen['fname'] . ' ' . $kitchen['lname']); ?></h1>

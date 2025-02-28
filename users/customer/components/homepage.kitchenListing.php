@@ -52,7 +52,7 @@
             ?>
 <a href="kitchen.php?id=<?= $kitchen_id ?>" class="kitchen-profile">
     <div class="kitchen-header">
-        <img src="../../uploads/profile/<?= $kitchen_photo ?>" class="kitchen-img" alt="<?= $kitchen_name ?>"
+        <img src="../../uploads/kitchen_photos/<?= $kitchen_photo ?>" class="kitchen-img" alt="<?= $kitchen_name ?>"
             loading="lazy" />
         <div class="kitchen-info">
             <h3><?= $kitchen_name ?></h3>

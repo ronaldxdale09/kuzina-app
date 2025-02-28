@@ -3477,7 +3477,23 @@ input:-webkit-autofill:focus {
     stroke: #4C0710
 }
 
-.account-page .account-wrap .log-out {
+.account-page .account-wrap  {
+    padding: 8px 30px;
+    font-weight: 600;
+    background-color: #fafafa;
+    border-radius: 9px;
+    margin-top: 25px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: calc(16px + (18 - 16) * ((100vw - 320px) / (1920 - 320)));
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    gap: 8px
+}
+
+.log-out {
     padding: 8px 30px;
     font-weight: 600;
     background-color: #fafafa;

@@ -48,7 +48,7 @@
     <a href="kitchen.php?id=<?php echo $kitchen_id; ?>" class="kitchen-profile-link">
         <div class="kitchen-profile">
             <div class="kitchen-img">
-                <img src="../../uploads/profile/<?php echo htmlspecialchars($kitchenPhoto); ?>"
+                <img src="../../uploads/kitchen_photos/<?php echo htmlspecialchars($kitchenPhoto); ?>"
                     alt="<?php echo $kitchenName; ?>'s Kitchen">
             </div>
             <div class="kitchen-info">

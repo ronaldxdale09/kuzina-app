@@ -1,13 +1,13 @@
 <div class="skeleton-loader">
     <!-- Header Start -->
-    <header class="header">
+    <!-- <header class="header">
       <div class="logo-wrap">
         <i class="iconly-Category icli"></i>
         <a href="homepage.php"> <img class="logo logo-w" src="assets/images/logo/logo-w2.png" alt="logo" /></a><a
           href="homepage.php"> <img class="logo" src="assets/images/logo/logo-w2.png" alt="logo" /></a>
       </div>
     
-    </header>
+    </header> -->
     <!-- Header End -->
 
     <!--Main Start -->

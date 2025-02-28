@@ -11,7 +11,7 @@
 <script src="assets/js/feather.min.js" defer></script>
 
 <!-- Slider scripts (only load if slick slider exists on page) -->
-<?php if(strpos(file_get_contents(__FILE__), 'slick-slider') !== false): ?>
+<?php if (strpos(file_get_contents(__FILE__), 'slick-slider') !== false): ?>
     <script src="assets/js/slick.js" defer></script>
     <script src="assets/js/slick.min.js" defer></script>
     <script src="assets/js/slick-custom.js" defer></script>
@@ -22,4 +22,10 @@
 <script src="assets/js/script.js" defer></script>
 
 <!-- Modals -->
-<?php include 'modal/modal.dev.php'?>
+<?php include 'modal/modal.dev.php' ?>
+
+
+
+<!-- Pricing Slider js -->
+<script src="assets/js/pricing-slider.js"></script>
+

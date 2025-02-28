@@ -4,6 +4,7 @@
 <!-- Head End -->
 
 <!-- Body Start -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' cdn.jsdelivr.net; connect-src 'self' https://maps.googleapis.com; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net https://maps.googleapis.com; img-src 'self' data: https://*.googleapis.com https://*.gstatic.com;">
 
 <body>
     <div class="bg-pattern-wrap ratio2_1">
@@ -79,7 +80,7 @@
 
                 <button id="submit-btn" class="btn-solid" type="submit">Register</button>
                 <span class="content-color font-sm d-block text-center fw-600">Already have an Account?
-                    <a href="login.html" class="underline">Sign In</a>
+                    <a href="index.php" class="underline">Sign In</a>
                 </span>
             </form>
             <!-- Registration Form End -->

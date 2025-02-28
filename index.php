@@ -99,14 +99,14 @@ if (!isset($_SESSION['splash_shown'])) {
                     </span>
 
                     <div class="help-links">
-                        <a href="#" class="help-link">
+                        <a href="forgot-password.php" class="help-link">
                             <i class='bx bx-help-circle'></i>
                             Forgot Password?
                         </a>
-                        <a href="#" class="help-link">
+                        <!-- <a href="#" class="help-link">
                             <i class='bx bx-support'></i>
                             Support
-                        </a>
+                        </a> -->
                     </div>
 
                     <div class="portal-selection">
@@ -386,14 +386,7 @@ if (!isset($_SESSION['splash_shown'])) {
         }
 
         // Handle "Under Development" features
-        document.querySelectorAll('.help-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const underDevModal = new bootstrap.Offcanvas(document.getElementById(
-                    'underDev'));
-                underDevModal.show();
-            });
-        });
+
 
         // Geolocation handling
         function requestGeolocationPermission() {

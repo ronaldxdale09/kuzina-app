@@ -20,7 +20,7 @@ $kitchen = $stmt->get_result()->fetch_assoc();
         <form id="profileForm" class="profile-form" enctype="multipart/form-data">
             <div class="profile-photo-section">
                 <div class="profile-photo">
-                    <img src="<?php echo $kitchen['photo'] ? '../../uploads/profile/' . $kitchen['photo'] : 'assets/images/default-kitchen.png'; ?>"
+                    <img src="<?php echo $kitchen['photo'] ? '../../uploads/kitchen_photos/' . $kitchen['photo'] : 'assets/images/default-kitchen.png'; ?>"
                         alt="Kitchen Profile" id="profilePreview">
                     <div class="photo-overlay">
                         <i class='bx bx-camera'></i>

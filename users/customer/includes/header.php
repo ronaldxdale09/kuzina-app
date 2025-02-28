@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php 
-// Database connection
-include '../../connection/db.php';
-include '../../includes/webview.php';
-
-
-// Check if the 'user_id' cookie is set and not empty
+// Quick auth check
 if (!isset($_COOKIE['user_id']) || empty($_COOKIE['user_id'])) {
-    // Redirect to login.php
     header('Location: ../../index.php');
-    exit(); // Stop further execution
+    exit();
 }
 
-// If the cookie is set, proceed with the rest of the script
 $customer_id = $_COOKIE['user_id'];
 
-// Cache headers
+// Better caching
 header('Cache-Control: public, max-age=31536000');
 header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 31536000) . ' GMT');
-header('Vary: Accept-Encoding');
+
+// Include required files
+include '../../connection/db.php';
+include '../../includes/webview.php';
 ?>
 
 <head>
-    <!-- Primary Meta Tags -->
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Kuzina - Your Food Delivery Partner">
-    <meta name="keywords" content="Kuzina, food delivery, restaurant">
-    <meta name="author" content="Kuzina">
-    
-    <!-- Browser Caching -->
-    <meta http-equiv="Cache-Control" content="max-age=31536000">
-    
-    <!-- Title -->
     <title>Kuzina</title>
-
-    <!-- Favicon -->
     <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
     
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#502121">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <!-- Fast loading: Critical CSS inline -->
+    <style>
+    /* Only essential styles for first render */
+    body {margin: 0; -webkit-tap-highlight-color: transparent;}
+    .header {display: flex; align-items: center; justify-content: space-between; padding: 16px;  position: sticky; top: 0; z-index: 999; box-shadow: 0 2px 8px rgba(0,0,0,0.1);}
+    .logo-wrap {display: flex; align-items: center;}
+    .logo {height: 28px;}
+    .cart-icon-wrap {position: relative;}
+    .cart-count {position: absolute; top: -8px; right: -8px; background-color: #FF6B35; color: white; font-size: 11px; font-weight: 600; height: 18px; min-width: 18px; border-radius: 9px; display: flex; align-items: center; justify-content: center;}
+    </style>
+
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="assets/images/favicon.png">

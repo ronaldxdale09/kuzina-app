@@ -11,11 +11,11 @@ if (isset($_COOKIE['rider_id'])) {
     setcookie('rider_id', '', time() - 3600, "/"); // Clear the user_id cookie
 }
 
-if (isset($_COOKIE['kitchen_fname'])) {
-    setcookie('kitchen_fname', '', time() - 3600, "/"); // Clear the user_fname cookie
+if (isset($_COOKIE['rider_name'])) {
+    setcookie('rider_name', '', time() - 3600, "/"); // Clear the user_fname cookie
 }
 
 // Redirect to login page or homepage
-header("Location: ../../../kitchen.php"); // Replace with the actual path to your login or homepage
+header("Location: ../../../rider.php"); // Replace with the actual path to your login or homepage
 exit();
 ?>

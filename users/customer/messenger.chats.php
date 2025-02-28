@@ -60,7 +60,7 @@ $chats = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                <?php foreach ($chats as $chat): ?>
                    <a href="messenger.php?kitchen_id=<?php echo $chat['kitchen_id']; ?>" class="chat-item">
                        <div class="chat-avatar">
-                           <img src="../../uploads/profile/<?php echo htmlspecialchars($chat['photo'] ?? 'default.png'); ?>" 
+                           <img src="../../uploads/kitchen_photos/<?php echo htmlspecialchars($chat['photo'] ?? 'default.png'); ?>" 
                                 alt="<?php echo htmlspecialchars($chat['fname']); ?>">
                            <?php if ($chat['unread_count'] > 0): ?>
                                <span class="unread-dot"></span>

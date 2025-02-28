@@ -36,14 +36,7 @@
                         <i data-feather="chevron-right"></i>
                     </a>
                 </li>
-                <!-- 
-        <li>
-            <a href="pages-list.html" class="nav-link title-color font-sm">
-                <i class="iconly-Paper icli"></i>
-                <span>Fastkart Pages list</span>
-            </a>
-            <a class="arrow" href="pages-list.html"><i data-feather="chevron-right"></i></a>
-        </li> -->
+
 
                 <li>
                     <a href="shop.php" class="nav-link title-color font-sm">
@@ -64,21 +57,6 @@
 
 
 
-                <!-- <li>
-                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="nav-link title-color font-sm">
-                        <i class="iconly-Add-User icli"></i>
-                        <span>Your Account</span>
-                    </a>
-                    <a class="arrow" href="#"><i data-feather="chevron-right"></i></a>
-                </li> -->
-                <!-- 
-                <li>
-                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#underDev" class="nav-link title-color font-sm">
-                        <i class="iconly-Notification icli"></i>
-                        <span>Notification</span>
-                    </a>
-                    <a class="arrow" href="#"><i data-feather="chevron-right"></i></a>
-                </li> -->
 
                 <li>
                     <a href="user.profile.php" class="nav-link title-color font-sm">
@@ -88,37 +66,26 @@
                     <a class="arrow" href="user.profile.php"><i data-feather="chevron-right"></i></a>
                 </li>
 
-                <!-- <li>
-            <a href="javascript:void(0)" class="nav-link title-color font-sm">
-                <i class="iconly-Graph icli"></i>
-                <span>Dark</span>
-            </a>
-
-            <div class="dark-switch">
-                <input id="darkButton" type="checkbox" />
-                <span></span>
-            </div>
-        </li>
-
-        <li>
-            <a href="javascript:void(0)" class="nav-link title-color font-sm">
-                <i class="iconly-Filter icli"></i>
-                <span>RTL</span>
-            </a>
-
-            <div class="dark-switch">
-                <input id="rtlButton" type="checkbox" />
-                <span class="before-none"></span>
-            </div>
-        </li> -->
             </ul>
+            <button class="log-out" data-bs-toggle="offcanvas" data-bs-target="#confirmation"
+                aria-controls="confirmation"><i class="iconly-Logout icli"></i>Sign Out</button>
         </nav>
 
     </div>
-    <!-- 
-    <div class="contact-us">
-        <span class="title-color">Contact Support</span>
-        <p class="content-color font-xs">If you have any problem,queries or questions feel free to reach out</p>
-        <a href="javascript:void(0)" class="btn-solid"> Contact Us </a>
-    </div> -->
+
 </aside>
+<div class="action action-confirmation offcanvas offcanvas-bottom" tabindex="-1" id="confirmation"
+        aria-labelledby="confirmation">
+        <div class="offcanvas-body small">
+            <div class="confirmation-box">
+                <h2>Are You Sure?</h2>
+                <p class="font-sm content-color">The permission for the use/group, preview is inherited from the object,
+                    Modifiying it for this object will create a new permission for this object</p>
+                <div class="btn-box">
+                    <button class="btn-outline" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
+                    <a href="functions/logout.php" class="btn-solid d-block" data-bs-dismiss="offcanvas"
+                        aria-label="Close">Sign Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
