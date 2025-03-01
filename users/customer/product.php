@@ -135,11 +135,11 @@
             <a href="messenger.php?kitchen_id=<?php echo $kitchen_id; ?>" class="footer-btn chat-btn" aria-label="Chat with seller">
                 <i class='bx bx-message-rounded-dots'></i>
             </a>
-            <a href="cart.php" class="footer-btn view-cart-btn" aria-label="View cart">
+            <!-- <a href="cart.php" class="footer-btn view-cart-btn" aria-label="View cart">
                 <i class='bx bx-shopping-bag'></i>
                 <span class="btn-text">Cart</span>
                 <span class="cart-badge" id="cart-item-count">0</span>
-            </a>
+            </a> -->
             <a href="#" class="footer-btn add-cart-btn add-to-cart-btn" aria-label="Add to cart">
                 <i class='bx bx-plus'></i>
                 <span class="btn-text">Add to Cart</span>
