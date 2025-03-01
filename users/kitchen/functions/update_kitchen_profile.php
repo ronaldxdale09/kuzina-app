@@ -16,6 +16,10 @@ try {
     $phone = trim($_POST['phone'] ?? '');
     $address = trim($_POST['address'] ?? '');
     $description = trim($_POST['description'] ?? '');
+    
+    // Get location coordinates
+    $latitude = isset($_POST['latitude']) ? floatval($_POST['latitude']) : null;
+    $longitude = isset($_POST['longitude']) ? floatval($_POST['longitude']) : null;
 
     // Handle photo upload
     $photo = null;
@@ -44,6 +48,14 @@ try {
     $params = [$fname, $lname, $email, $phone, $address, $description];
     $types = "ssssss";
 
+    // Add location coordinates if provided
+    if ($latitude !== null && $longitude !== null) {
+        $sql .= ", latitude = ?, longitude = ?";
+        $params[] = $latitude;
+        $params[] = $longitude;
+        $types .= "dd"; // d is for double (float)
+    }
+
     if ($photo) {
         $sql .= ", photo = ?";
         $params[] = $photo;
@@ -60,13 +72,23 @@ try {
     if ($stmt->execute()) {
         $response['success'] = true;
         $response['message'] = 'Profile updated successfully';
+        
+        // Add location info to response
+        if ($latitude !== null && $longitude !== null) {
+            $response['location_updated'] = true;
+            $response['latitude'] = $latitude;
+            $response['longitude'] = $longitude;
+        }
     } else {
-        throw new Exception('Failed to update profile');
+        throw new Exception('Failed to update profile: ' . $conn->error);
     }
 
 } catch (Exception $e) {
     $response['message'] = $e->getMessage();
+    error_log('Kitchen profile update error: ' . $e->getMessage());
 }
 
+// Return JSON response
+header('Content-Type: application/json');
 echo json_encode($response);
 ?>
