@@ -3,6 +3,7 @@
     aria-labelledby="foodSelectionModalLabel">
     <div class="offcanvas-header">
         <h5>Add Food to <span id="selectedMealType">Meal</span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
 
     <div class="offcanvas-body" id="foodSelectionContent">
@@ -13,7 +14,6 @@
 
         <div class="ordered-foods">
             <?php
-            // Fetch all delivered orders for this customer
             $food_query = "SELECT 
                 f.food_id,
                 f.food_name,
@@ -40,7 +40,10 @@
 
             <div class="food-items-list">
                 <?php while($food = $foods->fetch_assoc()): ?>
-                <div class="food-select-item" data-food-id="<?= $food['food_id'] ?>" onclick="selectFood(this)">
+                <div class="food-select-item" 
+                     data-food-id="<?= $food['food_id'] ?>" 
+                     data-food-name="<?= htmlspecialchars($food['food_name']) ?>"
+                     onclick="selectFood(this)">
                     <img src="../../uploads/<?= htmlspecialchars($food['photo1']) ?>"
                         alt="<?= htmlspecialchars($food['food_name']) ?>"
                         onerror="this.src='assets/img/placeholder.jpg'">
@@ -69,47 +72,51 @@
     </div>
 </div>
 
+<!-- Delete Confirmation Modal -->
+<div class="modal" id="deleteConfirmModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Confirm Delete</h2>
+            <span class="close-modal" onclick="closeModal('deleteConfirmModal')">×</span>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to remove "<span id="deleteItemName"></span>" from your journal?</p>
+            <p>This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="closeModal('deleteConfirmModal')">Cancel</button>
+            <button class="btn-delete" id="confirmDeleteBtn">Delete</button>
+        </div>
+    </div>
+</div>
+
 <!-- Success Modal -->
 <div class="modal" id="successNotificationModal">
     <div class="modal-content">
-        <span class="close-modal" id="closeSuccessModal">&times;</span>
+        <span class="close-modal" id="closeSuccessModal" onclick="closeModal('successNotificationModal')">×</span>
         <div class="modal-item-info">
             <h2>Success</h2>
             <p>Food has been added to your journal.</p>
         </div>
         <div class="modal-actions">
-            <button class="btn-confirm" id="successModalConfirm">OK</button>
+            <button class="btn-confirm" id="successModalConfirm" onclick="closeModal('successNotificationModal')">OK</button>
         </div>
     </div>
 </div>
 
+<!-- Error Modal -->
 <div class="modal" id="errorModal">
     <div class="modal-content">
-        <span class="close-modal" onclick="closeErrorModal()">&times;</span>
+        <span class="close-modal" onclick="closeModal('errorModal')">×</span>
         <div class="modal-item-info">
             <h2>Error</h2>
             <p id="errorMessage" style="color: #dc3545;"></p>
         </div>
         <div class="modal-actions">
-            <button class="btn-confirm" onclick="closeErrorModal()">OK</button>
+            <button class="btn-confirm" onclick="closeModal('errorModal')">OK</button>
         </div>
     </div>
 </div>
-
-<!-- Success Modal -->
-<div class="modal" id="successNotificationModal">
-    <div class="modal-content">
-        <span class="close-modal" id="closeSuccessModal">&times;</span>
-        <div class="modal-item-info">
-            <h2>Success</h2>
-            <p>Food has been added to your journal.</p>
-        </div>
-        <div class="modal-actions">
-            <button class="btn-confirm" id="successModalConfirm">OK</button>
-        </div>
-    </div>
-</div>
-
 
 <style>
 .food-selection-modal {
@@ -191,207 +198,343 @@
     justify-content: flex-end;
     gap: 12px;
 }
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.modal.show {
+    display: block;
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.btn-delete {
+    background-color: #ff4444;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    background-color: #cc0000;
+}
 </style>
 
-<script>document.addEventListener('DOMContentLoaded', function() {
-    // Initialize constants and variables
-    const foodSelectionModal = new bootstrap.Offcanvas(document.getElementById('foodSelectionModal'));
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Configuration object for better maintainability
+    const CONFIG = {
+        SELECTORS: {
+            foodSelectionModal: '#foodSelectionModal',
+            errorMessage: '#errorMessage',
+            errorModal: '#errorModal',
+            successNotificationModal: '#successNotificationModal',
+            selectedMealType: '#selectedMealType',
+            foodSearch: '#foodSearch',
+            deleteItemName: '#deleteItemName',
+            deleteConfirmModal: '#deleteConfirmModal'
+        },
+        CLASSES: {
+            foodSelectItem: '.food-select-item',
+            selected: 'selected',
+            foodCard: '.food-card',
+            mealItems: '.meal-items'
+        },
+        ENDPOINTS: {
+            ADD_TO_JOURNAL: 'functions/journal/add_to_journal.php',
+            DELETE_JOURNAL_ENTRY: 'functions/delete_journal_entry.php',
+            FETCH_DAILY_SUMMARY: 'fetch/get_daily_summary.php'
+        }
+    };
+
+    const foodSelectionModal = new bootstrap.Offcanvas(document.querySelector(CONFIG.SELECTORS.foodSelectionModal));
     let selectedFoodId = null;
     let currentMealType = '';
+    let currentJournalId = null;
 
-    // Modal control functions
-    window.showErrorModal = function(message) {
-        const modal = document.getElementById('errorModal');
-        if (modal) {
-            document.getElementById('errorMessage').textContent = message;
-            modal.classList.add('show');
-            setTimeout(() => closeErrorModal(), 3000);
+    // Improved error handling with centralized modal management
+    const ModalManager = {
+        showError: function(message) {
+            const errorModal = document.querySelector(CONFIG.SELECTORS.errorModal);
+            const messageElement = errorModal.querySelector(CONFIG.SELECTORS.errorMessage);
+            messageElement.textContent = message;
+            errorModal.style.display = 'block';
+            console.error('Error:', message);
+        },
+        
+        close: function(modalId) {
+            const modal = document.querySelector(modalId);
+            if (modal) modal.style.display = 'none';
+            if (modalId === CONFIG.SELECTORS.deleteConfirmModal) currentJournalId = null;
+        },
+        
+        showSuccess: function(message = 'Operation successful!') {
+            const modal = document.querySelector(CONFIG.SELECTORS.successNotificationModal);
+            const messageElement = modal.querySelector('p');
+            messageElement.textContent = message;
+            modal.style.display = 'block';
+            setTimeout(() => this.close(CONFIG.SELECTORS.successNotificationModal), 2000);
         }
     };
 
-    window.closeErrorModal = function() {
-        const modal = document.getElementById('errorModal');
-        if (modal) modal.classList.remove('show');
-    };
-
-    function showSuccessModal() {
-        const modal = document.getElementById('successNotificationModal');
-        if (modal) {
-            modal.classList.add('show');
-            setTimeout(() => closeSuccessModal(), 2000);
-        }
-    }
-
-    function closeSuccessModal() {
-        const modal = document.getElementById('successNotificationModal');
-        if (modal) modal.classList.remove('show');
-    }
-
-    // Fetch and update daily summary
-    function fetchDailySummary() {
-        fetch('functions/journal/get_daily_summary.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 
-                date: '<?= $selected_date ?>'
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                updateMacroSummary(data.totals, data.goals);
-            } else {
-                console.error('Error fetching summary:', data.message);
+    // Fetch wrapper for better error handling
+    async function safeFetch(url, options) {
+        try {
+            const response = await fetch(url, options);
+            const data = await response.json();
+            
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || 'Request failed');
             }
-        })
-        .catch(error => console.error('Error:', error));
+            
+            return data;
+        } catch (error) {
+            console.error(`Fetch error at ${url}:`, error);
+            ModalManager.showError(error.message);
+            return null;
+        }
     }
 
-    // Food selection functions
-    window.openMealSelector = function(mealType) {
+    // Core functions for journal management
+    function openMealSelector(mealType) {
         currentMealType = mealType;
-        const mealTypeDisplay = document.getElementById('selectedMealType');
-        if (mealTypeDisplay) {
-            mealTypeDisplay.textContent = mealType.charAt(0).toUpperCase() + mealType.slice(1);
-        }
+        document.querySelector(CONFIG.SELECTORS.selectedMealType).textContent = 
+            mealType.charAt(0).toUpperCase() + mealType.slice(1);
         foodSelectionModal.show();
-    };
+    }
 
-    window.selectFood = function(element) {
-        document.querySelectorAll('.food-select-item').forEach(item => {
-            item.classList.remove('selected');
+    function selectFood(element) {
+        document.querySelectorAll(CONFIG.CLASSES.foodSelectItem).forEach(item => {
+            item.classList.remove(CONFIG.CLASSES.selected);
         });
-        element.classList.add('selected');
+        element.classList.add(CONFIG.CLASSES.selected);
         selectedFoodId = element.dataset.foodId;
-    };
+    }
 
-    window.filterFoodItems = function() {
-        const searchText = document.getElementById('foodSearch').value.toLowerCase();
-        document.querySelectorAll('.food-select-item').forEach(item => {
-            const foodName = item.querySelector('h4').textContent.toLowerCase();
+    function filterFoodItems() {
+        const searchText = document.querySelector(CONFIG.SELECTORS.foodSearch).value.toLowerCase();
+        document.querySelectorAll(CONFIG.CLASSES.foodSelectItem).forEach(item => {
+            const foodName = item.querySelector('h6').textContent.toLowerCase();
             item.style.display = foodName.includes(searchText) ? 'flex' : 'none';
         });
-    };
-
-    // Update macro summary display
-    function updateMacroSummary(totals, goals) {
-        // Update calories circle
-        const caloriesCircle = document.querySelector('.circle-progress text.percentage');
-        const caloriesPath = document.querySelector('.circle-progress path');
-        if (caloriesCircle && caloriesPath) {
-            caloriesCircle.textContent = Math.round(totals.total_calories);
-            const caloriesPercentage = goals.daily_calories > 0 ? 
-                Math.min((totals.total_calories / goals.daily_calories) * 100, 100) : 0;
-            caloriesPath.setAttribute('stroke-dasharray', `${caloriesPercentage}, 100`);
-        }
-
-        // Update protein
-        updateMacroElement(
-            'protein',
-            totals.total_protein,
-            goals.daily_protein,
-            '.macro-item .protein-bg + .macro-info .macro-value',
-            '.progress.protein'
-        );
-
-        // Update carbs
-        updateMacroElement(
-            'carbs',
-            totals.total_carbs,
-            goals.daily_carbs,
-            '.macro-item .carbs-bg + .macro-info .macro-value',
-            '.progress.carbs'
-        );
-
-        // Update fat
-        updateMacroElement(
-            'fat',
-            totals.total_fat,
-            goals.daily_fat,
-            '.macro-item .fat-bg + .macro-info .macro-value',
-            '.progress.fat'
-        );
     }
 
-    function updateMacroElement(type, value, goal, valueSelector, progressSelector) {
-        const valueElement = document.querySelector(valueSelector);
-        const progressElement = document.querySelector(progressSelector);
-        
-        if (valueElement && progressElement) {
-            valueElement.textContent = `${Math.round(value)}g`;
-            const percentage = goal > 0 ? Math.min((value / goal) * 100, 100) : 0;
-            progressElement.style.width = `${percentage}%`;
-        }
-    }
-
-    // Journal entry management
-    window.addToJournal = function() {
+    async function addToJournal() {
         if (!selectedFoodId) {
-            showErrorModal('Please select a food item');
-            return;
+            return ModalManager.showError('Please select a food item');
         }
 
-        fetch('functions/journal/add_to_journal.php', {
+        const data = await safeFetch(CONFIG.ENDPOINTS.ADD_TO_JOURNAL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 food_id: selectedFoodId,
                 meal_type: currentMealType,
                 date: '<?= $selected_date ?>'
             })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                updateMealSection(data.food);
-                resetFoodSelection();
-                fetchDailySummary();
-                showSuccessModal();
-            } else {
-                showErrorModal(data.message || 'Error adding food to journal');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showErrorModal('Error adding food to journal');
         });
-    };
 
-    window.deleteJournalEntry = function(journalId) {
-        if (confirm('Are you sure you want to remove this entry?')) {
-            fetch('functions/journal/delete_journal_entry.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ journal_id: journalId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const entry = document.querySelector(`[data-journal-id="${journalId}"]`);
-                    if (entry) {
-                        entry.remove();
-                        checkEmptyMealSection(entry.closest('.meal-items'));
-                    }
-                    fetchDailySummary();
-                    showSuccessModal();
-                } else {
-                    showErrorModal(data.message || 'Error deleting entry');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showErrorModal('Error deleting entry');
-            });
+        if (data) {
+            updateMealSection(data.food);
+            resetFoodSelection();
+            fetchDailySummary();
+            ModalManager.showSuccess('Food added to journal');
         }
-    };
+    }
 
-    // Helper functions
+    function showDeleteConfirm(journalId, foodName) {
+        currentJournalId = journalId;
+        document.querySelector(CONFIG.SELECTORS.deleteItemName).textContent = foodName;
+        document.querySelector(CONFIG.SELECTORS.deleteConfirmModal).style.display = 'block';
+    }
+
+    async function deleteJournalEntry() {
+        if (!currentJournalId) return;
+
+        const data = await safeFetch(CONFIG.ENDPOINTS.DELETE_JOURNAL_ENTRY, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ journal_id: currentJournalId })
+        });
+
+        if (data) {
+            ModalManager.close(CONFIG.SELECTORS.deleteConfirmModal);
+            
+            const entryCard = document.querySelector(`${CONFIG.CLASSES.foodCard}:has([data-journal-id="${currentJournalId}"])`);
+            if (entryCard) {
+                const mealItems = entryCard.closest(CONFIG.CLASSES.mealItems);
+                entryCard.remove();
+                checkEmptyMealSection(mealItems);
+            }
+
+            fetchDailySummary();
+            ModalManager.showSuccess('Entry deleted successfully');
+        }
+    }
+
+    async function fetchDailySummary() {
+        const data = await safeFetch(CONFIG.ENDPOINTS.FETCH_DAILY_SUMMARY, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                customer_id: '<?= $customer_id ?>',
+                date: '<?= $selected_date ?>'
+            })
+        });
+
+        if (data) {
+            updateSummaryDisplay(data.totals);
+        }
+    }
+
+    function updateSummaryDisplay(totals) {
+        const goals = {
+            calories: <?= $current_goals['daily_calories'] ?>,
+            protein: <?= $current_goals['daily_protein'] ?>,
+            carbs: <?= $current_goals['daily_carbs'] ?>,
+            fat: <?= $current_goals['daily_fat'] ?>
+        };
+
+        updateMacroCircle('calories', totals.total_calories, goals.calories);
+        updateMacroProgress('protein', totals.total_protein, goals.protein);
+        updateMacroProgress('carbs', totals.total_carbs, goals.carbs);
+        updateMacroProgress('fat', totals.total_fat, goals.fat);
+
+        updateAchievementMessage(totals, goals);
+    }
+
+    function updateMacroCircle(type, value, goal) {
+        const circleProgress = document.querySelector(`.circle-progress.${type}`);
+        if (!circleProgress) return;
+
+        const percentage = goal > 0 ? Math.min((value / goal) * 100, 100) : 0;
+        const text = circleProgress.querySelector('text.percentage');
+        const path = circleProgress.querySelector('path');
+        const label = circleProgress.querySelector('.macro-label');
+
+        if (text) text.textContent = Math.round(value);
+        if (path) path.setAttribute('stroke-dasharray', `${percentage}, 100`);
+        if (label) {
+            label.textContent = `${type.charAt(0).toUpperCase() + type.slice(1)} (${Math.round(percentage)}%)`;
+        }
+        circleProgress.classList.toggle('full', percentage >= 100);
+    }
+
+    function updateMacroProgress(type, value, goal) {
+        const progressContainer = document.querySelector(`.macro-item .${type}-bg`);
+        if (!progressContainer) return;
+
+        const valueElement = progressContainer.nextElementSibling.querySelector('.macro-value');
+        const nameElement = progressContainer.nextElementSibling.querySelector('.macro-name');
+        const progressElement = document.querySelector(`.progress.${type}`);
+
+        if (valueElement) valueElement.textContent = `${Math.round(value)}g`;
+        
+        const percentage = goal > 0 ? Math.min((value / goal) * 100, 100) : 0;
+        if (progressElement) progressElement.style.width = `${percentage}%`;
+        
+        if (nameElement) {
+            nameElement.textContent = `${type.charAt(0).toUpperCase() + type.slice(1)} (${Math.round(percentage)}%)`;
+        }
+    }
+
+    function updateAchievementMessage(totals, goals) {
+        const calculatePercentage = (value, goal) => goal > 0 ? (value / goal) * 100 : 0;
+        
+        const percentages = {
+            calories: calculatePercentage(totals.total_calories, goals.calories),
+            protein: calculatePercentage(totals.total_protein, goals.protein),
+            carbs: calculatePercentage(totals.total_carbs, goals.carbs),
+            fat: calculatePercentage(totals.total_fat, goals.fat)
+        };
+
+        const summaryCard = document.querySelector('.summary-card');
+        // Remove existing messages
+        const existingMessage = summaryCard.querySelector('.achievement-message, .warning-message');
+        if (existingMessage) existingMessage.remove();
+
+        const allGoalsAchieved = Object.values(percentages).every(p => p >= 90 && p <= 110);
+        const caloriesExceeded = percentages.calories >= 100;
+
+        if (allGoalsAchieved) {
+            summaryCard.insertAdjacentHTML('beforeend', `
+                <div class="achievement-message">
+                    <i class='bx bx-check-circle'></i>
+                    <span>Congratulations! You've achieved your daily nutritional goals!</span>
+                </div>
+            `);
+        } else if (caloriesExceeded) {
+            summaryCard.insertAdjacentHTML('beforeend', `
+                <div class="warning-message">
+                    <i class='bx bx-info-circle'></i>
+                    <span>Warning: You've exceeded your daily calorie goal!</span>
+                </div>
+            `);
+        }
+    }
+
+    function updateMealSection(food) {
+        const mealSection = document.querySelector(
+            `.meal-section.${currentMealType.toLowerCase()} .meal-items`
+        );
+        if (mealSection) {
+            const emptyState = mealSection.querySelector('.empty-meal');
+            if (emptyState) emptyState.remove();
+            mealSection.insertAdjacentHTML('afterbegin', createFoodCardHTML(food));
+        }
+    }
+
+    function checkEmptyMealSection(mealItems) {
+        if (mealItems && mealItems.children.length === 0) {
+            const mealSection = mealItems.closest('.meal-section');
+            const mealType = mealSection.classList[1];
+            const iconClass = mealSection.querySelector('.meal-icon i').className;
+            mealItems.innerHTML = `
+                <div class="empty-meal">
+                    <i class='${iconClass}'></i>
+                    <p>No ${mealType} logged today</p>
+                    <button class="add-meal-btn" onclick="openMealSelector('${mealType}')">
+                        Add Food
+                    </button>
+                </div>
+            `;
+        }
+    }
+
     function createFoodCardHTML(food) {
         const safeFood = {
             journal_id: food.journal_id || 0,
@@ -413,7 +556,8 @@
                              alt="${safeFood.food_name}" 
                              class="food-image"
                              onerror="this.src='assets/img/placeholder.jpg'">
-                        <button class="delete-entry" onclick="deleteJournalEntry(${safeFood.journal_id})">
+                        <button class="delete-entry" 
+                                onclick="showDeleteConfirm(${safeFood.journal_id}, '${safeFood.food_name}')">
                             <i class='bx bx-trash'></i>
                         </button>
                     </div>
@@ -426,22 +570,10 @@
                             <span class="portion-badge">×${safeFood.portion}</span>
                         </div>
                         <div class="macro-tags">
-                            <span class="tag-item calories">
-                                <i class='bx bx-flame'></i>
-                                ${safeFood.calories} kcal
-                            </span>
-                            <span class="tag-item protein">
-                                <i class='bx bx-bowl-hot'></i>
-                                ${safeFood.protein}g
-                            </span>
-                            <span class="tag-item carbs">
-                                <i class='bx bx-baguette'></i>
-                                ${safeFood.carbs}g
-                            </span>
-                            <span class="tag-item fat">
-                                <i class='bx bx-droplet'></i>
-                                ${safeFood.fat}g
-                            </span>
+                            <span class="tag-item calories"><i class='bx bx-flame'></i>${safeFood.calories} kcal</span>
+                            <span class="tag-item protein"><i class='bx bx-bowl-hot'></i>${safeFood.protein}g</span>
+                            <span class="tag-item carbs"><i class='bx bx-baguette'></i>${safeFood.carbs}g</span>
+                            <span class="tag-item fat"><i class='bx bx-droplet'></i>${safeFood.fat}g</span>
                         </div>
                     </div>
                 </div>
@@ -449,42 +581,26 @@
         `;
     }
 
-    function updateMealSection(food) {
-        const mealSection = document.querySelector(
-            `.meal-section.${currentMealType.toLowerCase()} .meal-items`
-        );
-        
-        if (mealSection) {
-            const emptyState = mealSection.querySelector('.empty-meal');
-            if (emptyState) emptyState.remove();
-            
-            mealSection.insertAdjacentHTML('afterbegin', createFoodCardHTML(food));
-        }
-    }
-
-    function checkEmptyMealSection(mealItems) {
-        if (mealItems && !mealItems.querySelector('.food-card')) {
-            mealItems.innerHTML = `
-                <div class="empty-meal">
-                    <i class='bx bx-dish'></i>
-                    <p>No meals logged</p>
-                    <button class="add-meal-btn" onclick="openMealSelector('${currentMealType}')">
-                        Add Food
-                    </button>
-                </div>
-            `;
-        }
-    }
-
     function resetFoodSelection() {
         selectedFoodId = null;
-        document.querySelectorAll('.food-select-item').forEach(item => {
-            item.classList.remove('selected');
+        document.querySelectorAll(CONFIG.CLASSES.foodSelectItem).forEach(item => {
+            item.classList.remove(CONFIG.CLASSES.selected);
         });
         foodSelectionModal.hide();
     }
 
-    // Initialize
+    // Attach global methods for external access
+    window.openMealSelector = openMealSelector;
+    window.selectFood = selectFood;
+    window.filterFoodItems = filterFoodItems;
+    window.addToJournal = addToJournal;
+    window.showDeleteConfirm = showDeleteConfirm;
+    window.deleteJournalEntry = deleteJournalEntry;
+    window.showErrorModal = ModalManager.showError.bind(ModalManager);
+    window.closeModal = ModalManager.close.bind(ModalManager);
+    window.showSuccessModal = ModalManager.showSuccess.bind(ModalManager);
+
+    // Initial load
     fetchDailySummary();
 });
 </script>

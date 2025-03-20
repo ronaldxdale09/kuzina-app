@@ -1,8 +1,26 @@
 <?php include 'includes/header.php'; ?>
 <link rel="stylesheet" href="assets/css/assessment.css">
+<style>
+    #errorModal .modal-content {
+        position: relative;
+        text-align: center;
+    }
+
+    #errorModal .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    #errorModal button.btn-outline {
+        margin: 15px auto 5px;
+        display: block;
+    }
+</style>
 <!-- Head End -->
 
 <!-- Body Start -->
+
 <body>
     <div class="bg-pattern-wrap ratio2_1">
         <!-- Background Image -->
@@ -13,13 +31,8 @@
 
     <!-- Main Start -->
     <main class="main-wrap login-page mb-xxl">
+
         <form id="nutritional-assessment-form" method="POST" class="custom-form">
-            <!-- Progress Indicator -->
-            <div class="form-progress">
-                <div class="progress-step active" id="step-indicator-1">1</div>
-                <div class="progress-step" id="step-indicator-2">2</div>
-                <div class="progress-step" id="step-indicator-3">3</div>
-            </div>
 
             <!-- Step 1: Basic Information -->
             <div id="step-1" class="form-step active">
@@ -75,7 +88,7 @@
                 <div class="input-box">
                     <label>5. Do you have any food allergies or intolerances?</label>
                     <div class="form-group">
-                        <div class="chip-group me-2">
+                        <div class="chip-group  me-2 ">
                             <div class="chip">
                                 <input type="checkbox" id="dairy" name="allergens[]" value="Dairy" hidden />
                                 <label for="dairy">Dairy</label>
@@ -103,6 +116,7 @@
             
             <!-- Step 2: Diet Type and Health Goals -->
             <div id="step-2" class="form-step">
+
                 <!-- Diet Type Selection -->
                 <label class="title-label">Select Your Diet Type:</label>
                 <input type="hidden" id="diet_type_input" name="diet_type" />
@@ -150,74 +164,22 @@
 
                 <div class="form-navigation">
                     <button type="button" class="btn-outline btn-prev">Previous</button>
-                    <button type="button" class="btn-solid btn-next">Next</button>
-                </div>
-            </div>
-            
-            <!-- Step 3: Nutritional Targets -->
-            <div id="step-3" class="form-step">
-                <h2 class="font-md title-color fw-600 mb-4">Set Your Nutritional Targets</h2>
-                
-                <div class="nutrition-targets">                    
-                    <div class="input-box">
-                        <div class="nutrient-input">
-                            <div class="nutrient-icon calorie-icon">🔥</div>
-                            <label for="daily_calories">Daily Calories</label>
-                            <div class="input-with-unit">
-                                <input type="number" name="daily_calories" id="daily_calories" placeholder="2000" value="2000" class="form-control" />
-                                <span class="unit">kcal</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="input-box">
-                        <div class="nutrient-input">
-                            <div class="nutrient-icon protein-icon">🍗</div>
-                            <label for="daily_protein">Daily Protein</label>
-                            <div class="input-with-unit">
-                                <input type="number" name="daily_protein" id="daily_protein" placeholder="50" value="50" class="form-control" />
-                                <span class="unit">g</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="input-box">
-                        <div class="nutrient-input">
-                            <div class="nutrient-icon carbs-icon">🍚</div>
-                            <label for="daily_carbs">Daily Carbs</label>
-                            <div class="input-with-unit">
-                                <input type="number" name="daily_carbs" id="daily_carbs" placeholder="300" value="300" class="form-control" />
-                                <span class="unit">g</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="input-box">
-                        <div class="nutrient-input">
-                            <div class="nutrient-icon fat-icon">🥑</div>
-                            <label for="daily_fat">Daily Fat</label>
-                            <div class="input-with-unit">
-                                <input type="number" name="daily_fat" id="daily_fat" placeholder="65" value="65" class="form-control" />
-                                <span class="unit">g</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-navigation">
-                    <button type="button" class="btn-outline btn-prev">Previous</button>
                     <button type="submit" class="btn-solid" id="submit-assessment">Submit</button>
                 </div>
             </div>
+
         </form>
     </main>
+    </main>
 
-    <!-- Loading Overlay -->
+    <!-- Main End -->
     <div id="loading-overlay" style="display: none;">
         <div id="loading-spinner">
             <img src="assets/loader/loader5.gif" alt="Loading...">
         </div>
     </div>
+
+
 
     <!-- Success Modal -->
     <div id="successModal" class="modal">
@@ -237,7 +199,6 @@
             <button class="btn-outline" onclick="closeModal('errorModal')">Close</button>
         </div>
     </div>
-
     <script>
         // Show the success modal
         function showSuccessModal() {
@@ -356,37 +317,9 @@
                 });
             });
 
-            // Default values for different diet types and goals
-            const nutritionProfiles = {
-                'Vegetarian': {
-                    'Weight Loss': { calories: 1800, protein: 60, carbs: 225, fat: 60 },
-                    'Muscle Gain': { calories: 2200, protein: 100, carbs: 275, fat: 70 },
-                    'Improve Energy': { calories: 2000, protein: 70, carbs: 300, fat: 55 },
-                    'Better Digestion': { calories: 1900, protein: 65, carbs: 250, fat: 60 }
-                },
-                'Seafood-based': {
-                    'Weight Loss': { calories: 1700, protein: 75, carbs: 170, fat: 65 },
-                    'Muscle Gain': { calories: 2300, protein: 120, carbs: 225, fat: 75 },
-                    'Improve Energy': { calories: 2100, protein: 90, carbs: 220, fat: 70 },
-                    'Better Digestion': { calories: 1950, protein: 85, carbs: 200, fat: 65 }
-                },
-                'Low-Carb': {
-                    'Weight Loss': { calories: 1600, protein: 80, carbs: 100, fat: 95 },
-                    'Muscle Gain': { calories: 2200, protein: 130, carbs: 150, fat: 110 },
-                    'Improve Energy': { calories: 2000, protein: 100, carbs: 130, fat: 105 },
-                    'Better Digestion': { calories: 1800, protein: 90, carbs: 120, fat: 100 }
-                },
-                'Balanced Diet': {
-                    'Weight Loss': { calories: 1800, protein: 70, carbs: 200, fat: 60 },
-                    'Muscle Gain': { calories: 2400, protein: 110, carbs: 270, fat: 75 },
-                    'Improve Energy': { calories: 2100, protein: 80, carbs: 250, fat: 65 },
-                    'Better Digestion': { calories: 2000, protein: 75, carbs: 230, fat: 65 }
-                }
-            };
-
             // Form navigation
-            const nextBtns = document.querySelectorAll('.btn-next');
-            const prevBtns = document.querySelectorAll('.btn-prev');
+            const nextBtn = document.querySelector('.btn-next');
+            const prevBtn = document.querySelector('.btn-prev');
             const steps = document.querySelectorAll('.form-step');
             let currentStep = 0;
 
@@ -400,83 +333,37 @@
                         step.classList.remove('active');
                     }
                 });
-                
-                // Update progress indicators
-                document.querySelectorAll('.progress-step').forEach((indicator, index) => {
-                    if (index < stepIndex) {
-                        indicator.classList.remove('active');
-                        indicator.classList.add('completed');
-                        indicator.innerHTML = '✓';
-                    } else if (index === stepIndex) {
-                        indicator.classList.add('active');
-                        indicator.classList.remove('completed');
-                        indicator.innerHTML = index + 1;
-                    } else {
-                        indicator.classList.remove('active', 'completed');
-                        indicator.innerHTML = index + 1;
-                    }
-                });
-                
-                // Update nutrition values when navigating to step 3
-                if (stepIndex === 2) {
-                    updateNutritionValues();
-                }
             }
 
             showStep(currentStep);
 
-            nextBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    // Validate fields before proceeding
-                    if (currentStep === 0) {
-                        const age = document.getElementById('age').value;
-                        const gender = document.getElementById('gender').value;
-                        const height = document.getElementById('height').value;
-                        const weight = document.getElementById('weight').value;
+            nextBtn.addEventListener('click', () => {
+                // Validate fields in step 1 before proceeding
+                if (currentStep === 0) {
+                    const age = document.getElementById('age').value;
+                    const gender = document.getElementById('gender').value;
+                    const height = document.getElementById('height').value;
+                    const weight = document.getElementById('weight').value;
 
-                        if (!age || !gender || !height || !weight) {
-                            showErrorModal('Please fill in all required fields before proceeding.');
-                            return;
-                        }
-                    } else if (currentStep === 1) {
-                        const dietType = document.getElementById('diet_type_input').value;
-                        const healthGoal = document.getElementById('health_goal_input').value;
-
-                        if (!dietType || !healthGoal) {
-                            showErrorModal('Please select both a diet type and a health goal before proceeding.');
-                            return;
-                        }
+                    if (!age || !gender || !height || !weight) {
+                        showErrorModal('Please fill in all required fields before proceeding.');
+                        return;
                     }
+                }
 
-                    if (currentStep < steps.length - 1) {
-                        currentStep++;
-                        showStep(currentStep);
-                    }
-                });
+                if (currentStep < steps.length - 1) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
             });
 
-            prevBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
                     if (currentStep > 0) {
                         currentStep--;
                         showStep(currentStep);
                     }
                 });
-            });
-
-            // Function to update nutritional values
-            function updateNutritionValues() {
-                const dietType = document.getElementById('diet_type_input').value;
-                const healthGoal = document.getElementById('health_goal_input').value;
-                
-                if (dietType && healthGoal && nutritionProfiles[dietType] && nutritionProfiles[dietType][healthGoal]) {
-                    const profile = nutritionProfiles[dietType][healthGoal];
-                    
-                    document.getElementById('daily_calories').value = profile.calories;
-                    document.getElementById('daily_protein').value = profile.protein;
-                    document.getElementById('daily_carbs').value = profile.carbs;
-                    document.getElementById('daily_fat').value = profile.fat;
-                }
             }
 
             // Diet type selection
@@ -499,22 +386,16 @@
 
             // Add validation before form submission
             document.getElementById('submit-assessment').addEventListener('click', function(e) {
-                // Final validation check before submission
                 const dietType = document.getElementById('diet_type_input').value;
                 const healthGoal = document.getElementById('health_goal_input').value;
-                const calories = document.getElementById('daily_calories').value;
-                const protein = document.getElementById('daily_protein').value;
-                const carbs = document.getElementById('daily_carbs').value;
-                const fat = document.getElementById('daily_fat').value;
 
-                if (!dietType || !healthGoal || !calories || !protein || !carbs || !fat) {
+                if (!dietType || !healthGoal) {
                     e.preventDefault();
-                    showErrorModal('Please complete all fields before submitting.');
+                    showErrorModal('Please select both a diet type and a health goal before submitting.');
                 }
             });
         });
     </script>
-    
     <!-- jquery 3.6.0 -->
     <script src="assets/js/jquery-3.6.0.min.js"></script>
 

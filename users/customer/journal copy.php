@@ -6,14 +6,29 @@ if (empty($_COOKIE['onboarding_journal'])) {
     header("Location: ob.journal.php");
     exit();
 }
-$customer_id = $_COOKIE['user_id'];
 
 // Define meal types with their properties
 $meal_types = [
-    ['name' => 'Breakfast', 'icon' => 'bx-coffee', 'time' => '6:00 AM - 10:00 AM'],
-    ['name' => 'Lunch', 'icon' => 'bx-bowl-rice', 'time' => '11:00 AM - 2:00 PM'],
-    ['name' => 'Dinner', 'icon' => 'bx-restaurant', 'time' => '6:00 PM - 9:00 PM'],
-    ['name' => 'Snacks', 'icon' => 'bx-cookie', 'time' => 'Any Time']
+    [
+        'name' => 'Breakfast',
+        'icon' => 'bx-coffee',
+        'time' => '6:00 AM - 10:00 AM'
+    ],
+    [
+        'name' => 'Lunch',
+        'icon' => 'bx-bowl-rice',
+        'time' => '11:00 AM - 2:00 PM'
+    ],
+    [
+        'name' => 'Dinner',
+        'icon' => 'bx-restaurant',
+        'time' => '6:00 PM - 9:00 PM'
+    ],
+    [
+        'name' => 'Snacks',
+        'icon' => 'bx-cookie',
+        'time' => 'Any Time'
+    ]
 ];
 
 // Get selected date with validation
@@ -39,8 +54,10 @@ $daily_totals = [
 ];
 
 try {
+    // Start transaction for consistency
     $conn->begin_transaction();
 
+    // Fetch active nutritional goals
     $goals_query = "SELECT 
         COALESCE(daily_calories, ?) as daily_calories,
         COALESCE(daily_protein, ?) as daily_protein,
@@ -62,6 +79,7 @@ try {
     $stmt->execute();
     $current_goals = $stmt->get_result()->fetch_assoc() ?? $default_goals;
 
+    // Fetch daily totals with proper NULL and zero handling
     $daily_totals_query = "SELECT
         ROUND(COALESCE(SUM(NULLIF(calories * portion, 0)), 0), 2) AS total_calories,
         ROUND(COALESCE(SUM(NULLIF(protein * portion, 0)), 0), 2) AS total_protein,
@@ -86,8 +104,10 @@ try {
 } catch (Exception $e) {
     $conn->rollback();
     error_log("Error in journal.php: " . $e->getMessage());
+    // Keep using default values set above
 }
 
+// Safe calculation functions
 function validateDate($date, $format = 'Y-m-d') {
     $d = DateTime::createFromFormat($format, $date);
     return $d && $d->format($format) === $date;
@@ -105,7 +125,7 @@ $protein_percentage = calculatePercentage($daily_totals['total_protein'], $curre
 $carbs_percentage = calculatePercentage($daily_totals['total_carbs'], $current_goals['daily_carbs']);
 $fat_percentage = calculatePercentage($daily_totals['total_fat'], $current_goals['daily_fat']);
 
-// Format values for display
+// Ensure all values are properly formatted for display
 $display_totals = array_map(function($value) {
     return number_format(floatval($value), 1);
 }, $daily_totals);
@@ -119,14 +139,15 @@ $display_percentages = [
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Journal - <?= date('M d, Y', strtotime($selected_date)) ?></title>
-    <link rel="stylesheet" href="assets/css/journal.css">
-    <link rel="stylesheet" href="assets/boxicons/css/boxicons.min.css">
-</head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Journal - <?= date('M d, Y', strtotime($selected_date)) ?></title>
+<link rel="stylesheet" href="assets/css/journal.css">
+<link rel="stylesheet" href="assets/boxicons/css/boxicons.min.css">
+
 <body>
+    <!-- Header -->
     <header class="header">
         <div class="logo-wrap">
             <a href="homepage.php" class="back-button">
@@ -137,6 +158,7 @@ $display_percentages = [
     </header>
 
     <main class="main-wrap food-journal-page mb-xxl">
+        <!-- Calendar Strip -->
         <div class="calendar-strip">
             <?php
             $today = new DateTime($selected_date);
@@ -161,6 +183,7 @@ $display_percentages = [
             </div>
         </div>
 
+        <!-- Daily Summary Card -->
         <div class="summary-card">
             <h2>Daily Summary</h2>
             <div class="button-group">
@@ -174,16 +197,16 @@ $display_percentages = [
                 </a>
             </div> <br>
             <div class="macro-circles">
-                <div class="circle-progress calories <?= $calories_percentage >= 100 ? 'full' : '' ?>">
+                <div class="circle-progress calories">
                     <svg viewBox="0 0 36 36">
                         <path d="M18 2.0845
-                        a 15.9155 15.9155 0 0 1 0 31.831
-                        a 15.9155 15.9155 0 0 1 0 -31.831" 
-                        stroke-dasharray="<?= $calories_percentage ?>, 100" />
-                        <text x="18" y="18" class="percentage"><?= number_format($daily_totals['total_calories']) ?></text>
+                    a 15.9155 15.9155 0 0 1 0 31.831
+                    a 15.9155 15.9155 0 0 1 0 -31.831" stroke-dasharray="<?= $calories_percentage ?>, 100" />
+                        <text x="18" y="18"
+                            class="percentage"><?= number_format($daily_totals['total_calories']) ?></text>
                         <text x="18" y="23" class="label">kcal</text>
                     </svg>
-                    <span class="macro-label">Calories (<?= $display_percentages['calories'] ?>%)</span>
+                    <span class="macro-label">Calories</span>
                 </div>
                 <div class="macro-stats">
                     <div class="macro-item">
@@ -192,7 +215,7 @@ $display_percentages = [
                         </div>
                         <div class="macro-info">
                             <span class="macro-value"><?= number_format($daily_totals['total_protein']) ?>g</span>
-                            <span class="macro-name">Protein (<?= $display_percentages['protein'] ?>%)</span>
+                            <span class="macro-name">Protein</span>
                         </div>
                         <div class="progress-mini">
                             <div class="progress protein" style="width: <?= $protein_percentage ?>%"></div>
@@ -204,7 +227,7 @@ $display_percentages = [
                         </div>
                         <div class="macro-info">
                             <span class="macro-value"><?= number_format($daily_totals['total_carbs']) ?>g</span>
-                            <span class="macro-name">Carbs (<?= $display_percentages['carbs'] ?>%)</span>
+                            <span class="macro-name">Carbs</span>
                         </div>
                         <div class="progress-mini">
                             <div class="progress carbs" style="width: <?= $carbs_percentage ?>%"></div>
@@ -216,7 +239,7 @@ $display_percentages = [
                         </div>
                         <div class="macro-info">
                             <span class="macro-value"><?= number_format($daily_totals['total_fat']) ?>g</span>
-                            <span class="macro-name">Fat (<?= $display_percentages['fat'] ?>%)</span>
+                            <span class="macro-name">Fat</span>
                         </div>
                         <div class="progress-mini">
                             <div class="progress fat" style="width: <?= $fat_percentage ?>%"></div>
@@ -224,27 +247,9 @@ $display_percentages = [
                     </div>
                 </div>
             </div>
-            <?php
-            $all_goals_achieved = (
-                $calories_percentage >= 90 && $calories_percentage <= 110 &&
-                $protein_percentage >= 90 && $protein_percentage <= 110 &&
-                $carbs_percentage >= 90 && $carbs_percentage <= 110 &&
-                $fat_percentage >= 90 && $fat_percentage <= 110
-            );
-            ?>
-            <?php if ($all_goals_achieved): ?>
-            <div class="achievement-message">
-                <i class='bx bx-check-circle'></i>
-                <span>Congratulations! You've achieved your daily nutritional goals!</span>
-            </div>
-            <?php elseif ($calories_percentage >= 100): ?>
-            <div class="warning-message">
-                <i class='bx bx-info-circle'></i>
-                <span>Warning: You've exceeded your daily calorie goal!</span>
-            </div>
-            <?php endif; ?>
         </div>
 
+        <!-- Meal Sections -->
         <?php foreach ($meal_types as $meal): ?>
         <div class="meal-section <?= strtolower($meal['name']) ?>">
             <div class="meal-header">
@@ -261,6 +266,7 @@ $display_percentages = [
             </div>
 
             <?php
+    // Fetch entries from food journal
             $journal_query = "SELECT 
                 j.*,
                 f.photo1,
@@ -279,31 +285,35 @@ $display_percentages = [
             $stmt->bind_param("iss", $customer_id, $selected_date, $meal['name']);
             $stmt->execute();
             $journal_items = $stmt->get_result();
-            ?>
+                    ?>
 
             <div class="meal-items">
                 <?php if ($journal_items && $journal_items->num_rows > 0): ?>
                 <?php while($journal_item = $journal_items->fetch_assoc()): ?>
                 <div class="food-card">
                     <div class="food-card-inner">
+                        <!-- Food Image -->
                         <div class="food-image-wrapper">
                             <img src="../../uploads/<?= htmlspecialchars($journal_item['photo1'] ?? '') ?>"
-                                alt="<?= htmlspecialchars($journal_item['food_name']) ?>" 
-                                class="food-image"
+                                alt="<?= htmlspecialchars($journal_item['food_name']) ?>" class="food-image"
                                 onerror="this.src='assets/img/placeholder.jpg'">
                             <button class="delete-entry"
-                                onclick="showDeleteConfirm(<?= $journal_item['journal_id'] ?>, '<?= htmlspecialchars($journal_item['food_name']) ?>')">
+                                onclick="deleteJournalEntry(<?= $journal_item['journal_id'] ?>)">
                                 <i class='bx bx-trash'></i>
                             </button>
                         </div>
+
+                        <!-- Food Info -->
                         <div class="food-content">
                             <div class="food-header">
                                 <div class="food-title">
                                     <h4><?= htmlspecialchars($journal_item['food_name']) ?></h4>
-                                    <p class="kitchen-name">by <?= htmlspecialchars($journal_item['kitchen_name'] ?? 'Unknown Kitchen') ?></p>
+                                    <p class="kitchen-name">by
+                                        <?= htmlspecialchars($journal_item['kitchen_name'] ?? 'Unknown Kitchen') ?></p>
                                 </div>
                                 <span class="portion-badge">×<?= $journal_item['portion'] ?></span>
                             </div>
+
                             <div class="macro-tags">
                                 <span class="tag-item calories">
                                     <i class='bx bx-flame'></i>
@@ -340,71 +350,53 @@ $display_percentages = [
         <?php endforeach; ?>
     </main>
 
-    <!-- Delete Confirmation Modal -->
-    <div class="modal" id="deleteConfirmModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Confirm Delete</h2>
-                <span class="close-modal" onclick="closeModal('deleteConfirmModal')">×</span>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to remove "<span id="deleteItemName"></span>" from your journal?</p>
-                <p>This action cannot be undone.</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeModal('deleteConfirmModal')">Cancel</button>
-                <button class="btn-delete" id="confirmDeleteBtn">Delete</button>
-            </div>
-        </div>
-    </div>
 
-    <!-- Add Food Modal remains the same -->
+    <!-- Add this modal HTML after your main content -->
     <div class="modal" id="addFoodModal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Add Food to <span id="selectedMealType">Meal</span></h2>
-                <span class="close-modal" onclick="closeModal('addFoodModal')">×</span>
+                <span class="close-modal" onclick="closeModal('addFoodModal')">&times;</span>
             </div>
             <div class="modal-body">
                 <div class="search-box">
                     <i class='bx bx-search'></i>
-                    <input type="text" id="foodSearch" placeholder="Search your ordered food..." onkeyup="filterFoodItems()">
+                    <input type="text" id="foodSearch" placeholder="Search your ordered food..."
+                        onkeyup="filterFoodItems()">
                 </div>
+
                 <div class="ordered-foods">
                     <?php
-                    $food_query = "SELECT 
-                        f.food_id,
-                        f.food_name,
-                        f.calories,
-                        f.protein,
-                        f.carbs,
-                        f.fat,
-                        f.photo1,
-                        k.fname as kitchen_name,
-                        o.order_date
-                    FROM orders o
-                    JOIN order_items oi ON o.order_id = oi.order_id
-                    JOIN food_listings f ON oi.food_id = f.food_id
-                    JOIN kitchens k ON f.kitchen_id = k.kitchen_id
-                    WHERE o.customer_id = ? 
-                    AND o.order_status = 'Delivered'
-                    ORDER BY o.order_date DESC";
+                // Fetch all delivered orders for this customer
+                $food_query = "SELECT 
+                    f.food_id,
+                    f.food_name,
+                    f.calories,
+                    f.protein,
+                    f.carbs,
+                    f.fat,
+                    f.photo1,
+                    k.fname as kitchen_name,
+                    o.order_date
+                FROM orders o
+                JOIN order_items oi ON o.order_id = oi.order_id
+                JOIN food_listings f ON oi.food_id = f.food_id
+                JOIN kitchens k ON f.kitchen_id = k.kitchen_id
+                WHERE o.customer_id = ? 
+                AND o.order_status = 'Delivered'
+                ORDER BY o.order_date DESC";
 
-                    $stmt = $conn->prepare($food_query);
-                    $stmt->bind_param("i", $customer_id);
-                    $stmt->execute();
-                    $foods = $stmt->get_result();
-                    ?>
+                $stmt = $conn->prepare($food_query);
+                $stmt->bind_param("i", $customer_id);
+                $stmt->execute();
+                $foods = $stmt->get_result();
+                ?>
 
                     <?php while($food = $foods->fetch_assoc()): ?>
-                    <div class="food-select-item" 
-                        data-food-id="<?= $food['food_id'] ?>"
+                    <div class="food-select-item" data-food-id="<?= $food['food_id'] ?>"
                         data-food-name="<?= htmlspecialchars($food['food_name']) ?>"
-                        data-calories="<?= $food['calories'] ?>" 
-                        data-protein="<?= $food['protein'] ?>"
-                        data-carbs="<?= $food['carbs'] ?>" 
-                        data-fat="<?= $food['fat'] ?>" 
-                        onclick="selectFood(this)">
+                        data-calories="<?= $food['calories'] ?>" data-protein="<?= $food['protein'] ?>"
+                        data-carbs="<?= $food['carbs'] ?>" data-fat="<?= $food['fat'] ?>" onclick="selectFood(this)">
                         <img src="../../uploads/<?= htmlspecialchars($food['photo1']) ?>"
                             alt="<?= htmlspecialchars($food['food_name']) ?>"
                             onerror="this.src='assets/img/placeholder.jpg'">
@@ -432,41 +424,51 @@ $display_percentages = [
         </div>
     </div>
 
-    <script>
-    let currentJournalId = null;
 
+
+
+    <script>
     function updateDate(date) {
         window.location.href = `journal.php?date=${date}`;
     }
 
     function openMealSelector(mealType) {
+        // Implement your meal selection logic
         window.location.href = `add_food.php?meal_type=${mealType}&date=${<?= json_encode($selected_date) ?>}`;
     }
 
-    function showDeleteConfirm(journalId, foodName) {
-        currentJournalId = journalId;
-        document.getElementById('deleteItemName').textContent = foodName;
-        document.getElementById('deleteConfirmModal').style.display = 'block';
-        
-        // Remove previous event listeners to prevent multiple bindings
-        const confirmBtn = document.getElementById('confirmDeleteBtn');
-        const newConfirmBtn = confirmBtn.cloneNode(true);
-        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
-        
-        newConfirmBtn.addEventListener('click', function() {
-            deleteJournalEntry(journalId);
-        });
+    function deleteJournalEntry(journalId) {
+        if (confirm('Are you sure you want to remove this food entry?')) {
+            fetch('functions/delete_journal_entry.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        journal_id: journalId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Reload current page to refresh stats
+                        window.location.reload();
+                    } else {
+                        alert(data.message || 'Failed to delete entry');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the entry');
+                });
+        }
     }
-
-    function closeModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
-        currentJournalId = null;
-    }
-
     </script>
 
-    <?php include 'modal/modal.journal.php'; ?>
-    <?php include 'modal/modal.journal_goal.php'; ?>
-    <?php include 'includes/scripts.php'; ?>
 </body>
+<?php include 'modal/modal.journal.php'; ?>
+<?php include 'modal/modal.journal_goal.php'; ?>
+
+<?php include 'includes/scripts.php'; ?>
+
 </html>
