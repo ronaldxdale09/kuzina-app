@@ -93,7 +93,6 @@
 <!-- Success Modal -->
 <div class="modal" id="successNotificationModal">
     <div class="modal-content">
-        <span class="close-modal" id="closeSuccessModal" onclick="closeModal('successNotificationModal')">×</span>
         <div class="modal-item-info">
             <h2>Success</h2>
             <p>Food has been added to your journal.</p>
@@ -376,35 +375,66 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+
     function showDeleteConfirm(journalId, foodName) {
         currentJournalId = journalId;
         document.querySelector(CONFIG.SELECTORS.deleteItemName).textContent = foodName;
-        document.querySelector(CONFIG.SELECTORS.deleteConfirmModal).style.display = 'block';
+        const deleteConfirmModal = document.querySelector(CONFIG.SELECTORS.deleteConfirmModal);
+        deleteConfirmModal.style.display = 'block';
+
+        // Remove any existing event listeners and add a new one
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        // Clone the button to remove all existing event listeners
+        const newConfirmDeleteBtn = confirmDeleteBtn.cloneNode(true);
+        confirmDeleteBtn.parentNode.replaceChild(newConfirmDeleteBtn, confirmDeleteBtn);
+
+        // Add new event listener
+        newConfirmDeleteBtn.addEventListener('click', () => {
+            deleteJournalEntry(currentJournalId);
+        });
     }
 
-    async function deleteJournalEntry() {
-        if (!currentJournalId) return;
+  async function deleteJournalEntry(journalId) {
+    if (!journalId) return;
 
-        const data = await safeFetch(CONFIG.ENDPOINTS.DELETE_JOURNAL_ENTRY, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ journal_id: currentJournalId })
+    const data = await safeFetch(CONFIG.ENDPOINTS.DELETE_JOURNAL_ENTRY, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ journal_id: journalId })
+    });
+
+    if (data) {
+        ModalManager.close(CONFIG.SELECTORS.deleteConfirmModal);
+        
+        // More robust card removal
+        const entryCards = document.querySelectorAll(`${CONFIG.CLASSES.foodCard}[data-journal-id="${journalId}"]`);
+        
+        entryCards.forEach(entryCard => {
+            // Find the closest meal items container
+            const mealItems = entryCard.closest(CONFIG.CLASSES.mealItems);
+            
+            // Fade out and remove the card
+            entryCard.style.transition = 'opacity 0.3s ease-out';
+            entryCard.style.opacity = '0';
+            
+            // Remove the card after animation
+            setTimeout(() => {
+                entryCard.remove();
+                
+                // Check if the meal section is now empty
+                if (mealItems && mealItems.children.length === 0) {
+                    checkEmptyMealSection(mealItems);
+                }
+            }, 300);
         });
 
-        if (data) {
-            ModalManager.close(CONFIG.SELECTORS.deleteConfirmModal);
-            
-            const entryCard = document.querySelector(`${CONFIG.CLASSES.foodCard}:has([data-journal-id="${currentJournalId}"])`);
-            if (entryCard) {
-                const mealItems = entryCard.closest(CONFIG.CLASSES.mealItems);
-                entryCard.remove();
-                checkEmptyMealSection(mealItems);
-            }
+        // Update summary
+        fetchDailySummary();
 
-            fetchDailySummary();
-            ModalManager.showSuccess('Entry deleted successfully');
-        }
+        ModalManager.showSuccess('Entry deleted successfully');
+        window.location.reload();
     }
+}
 
     async function fetchDailySummary() {
         const data = await safeFetch(CONFIG.ENDPOINTS.FETCH_DAILY_SUMMARY, {
